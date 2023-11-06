@@ -1,0 +1,49 @@
+{
+  "name": "iobroker.vis-shelly",
+  "version": "0.0.1",
+  "description": "A VIS adapter for display Shelly devices",
+  "author": {
+    "name": "Kollos2k",
+    "email": "kollos@vorsicht-bissig.de"
+  },
+  "homepage": "https://github.com/Kollos2k/ioBroker.vis-shelly",
+  "license": "MIT",
+  "keywords": [
+    "vis",
+    "shelly"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Kollos2k/ioBroker.vis-shelly.git"
+  },
+  "engines": {
+    "node": ">= 16"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@alcalzone/release-script": "^3.6.0",
+    "@alcalzone/release-script-plugin-iobroker": "^3.6.0",
+    "@alcalzone/release-script-plugin-license": "^3.5.9",
+    "@alcalzone/release-script-plugin-manual-review": "^3.5.9",
+    "@iobroker/adapter-dev": "^1.2.0",
+    "@iobroker/testing": "^4.1.0"
+  },
+  "main": "widgets/vis-shelly.html",
+  "files": [
+    "widgets/**/!(tsconfig|tsconfig.*|.eslintrc).json",
+    "widgets/**/*.{html,css,png,svg,jpg,js}",
+    "www/",
+    "io-package.json",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test:package": "mocha test/package --exit",
+    "test": "npm run test:package",
+    "translate": "translate-adapter",
+    "release": "release-script"
+  },
+  "bugs": {
+    "url": "https://github.com/Kollos2k/ioBroker.vis-shelly/issues"
+  },
+  "readmeFilename": "README.md"
+}

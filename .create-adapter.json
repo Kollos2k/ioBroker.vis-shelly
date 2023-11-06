@@ -1,0 +1,26 @@
+{
+    "cli": true,
+    "target": "directory",
+    "adapterName": "vis-shelly",
+    "title": "Shelly VIS",
+    "description": "A VIS adapter for display Shelly devices",
+    "keywords": [
+        "vis",
+        "shelly"
+    ],
+    "expert": "yes",
+    "features": [
+        "vis"
+    ],
+    "type": "visualization-widgets",
+    "releaseScript": "yes",
+    "authorName": "Kollos2k",
+    "authorGithub": "Kollos2k",
+    "authorEmail": "kollos@vorsicht-bissig.de",
+    "gitRemoteProtocol": "SSH",
+    "gitCommit": "yes",
+    "defaultBranch": "main",
+    "license": "MIT License",
+    "dependabot": "yes",
+    "creatorVersion": "2.5.0"
+}
