@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "vis-shelly",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -55,27 +55,61 @@
         "platform": "Javascript/Node.js",
         "main": "main.js",
         "icon": "vis-shelly.png",
-        "enabled": true,
+        "enabled": false,
         "extIcon": "https://raw.githubusercontent.com/Kollos2k/ioBroker.vis-shelly/main/admin/vis-shelly.png",
         "readme": "https://github.com/Kollos2k/ioBroker.vis-shelly/blob/main/README.md",
         "loglevel": "info",
         "restartAdapters": [
             "vis"
         ],
-        "onlyWWW": true,
-        "noConfig": true,
-        "singleton": true,
+        "compact": true,
+        "onlyWWW": false,
+        "noConfig": false,
+        "singleton": false,
         "type": "visualization-widgets",
-        "mode": "once",
+        "mode": "deamon",
+        "connectionType": "local",
+        "tier": 3,
+        "adminUI": {
+            "config": "json"
+        },
         "dependencies": [
+            {
+                "js-controller": ">=3.3.22"
+            },
             "vis"
         ],
-        "globalDependencies": []
+        "globalDependencies": [
+            {
+                "admin": ">=6.0.0"
+            }
+        ]
     },
     "native": {
         "option1": true,
         "option2": "42"
     },
     "objects": [],
-    "instanceObjects": []
+    "instanceObjects": [
+        {
+            "_id": "",
+            "type": "meta",
+            "common": {
+                "name": {
+                    "en": "Meta storage for user files",
+                    "de": "Meta-Speicher für Benutzerdateien"
+                },
+                "type": "meta.user"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native":{}
+        }
+    ]
 }
