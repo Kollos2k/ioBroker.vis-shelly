@@ -17,7 +17,6 @@ class visShelly extends utils.Adapter {
 			...options,
 			name: "iobroker.vis-shelly",
 		});
-		this.log.error("dddd");
 		this.on("ready", this.onReady.bind(this));
 		//this.on("objectChange", this.onObjectChange.bind(this));
 		this.on("stateChange", this.onStateChange.bind(this));

@@ -63,12 +63,9 @@
             "vis"
         ],
         "compact": true,
-        "onlyWWW": false,
-        "noConfig": false,
-        "singleton": false,
-        "type": "visualization-widgets",
+        "singleton": true,
+        "type": "general",
         "mode": "daemon",
-        "connectionType": "local",
         "tier": 3,
         "adminUI": {
             "config": "json"
@@ -76,8 +73,7 @@
         "dependencies": [
             {
                 "js-controller": ">=3.3.22"
-            },
-            "vis"
+            }
         ],
         "globalDependencies": [
             {
