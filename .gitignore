@@ -2,6 +2,8 @@
 .*/
 !.vscode/
 !.github/
+cp-vis-shelly.sh
+
 
 *.code-workspace
 node_modules
