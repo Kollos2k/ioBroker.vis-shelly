@@ -2,6 +2,7 @@
 # ioBroker.vis-shelly
 
 
+
 [![NPM version](https://img.shields.io/npm/v/iobroker.vis-shelly.svg)](https://www.npmjs.com/package/iobroker.vis-shelly)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vis-shelly.svg)](https://www.npmjs.com/package/iobroker.vis-shelly)
 ![Number of Installations](https://iobroker.live/badges/vis-shelly-installed.svg)

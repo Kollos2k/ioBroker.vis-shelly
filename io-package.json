@@ -67,7 +67,7 @@
         "noConfig": false,
         "singleton": false,
         "type": "visualization-widgets",
-        "mode": "deamon",
+        "mode": "daemon",
         "connectionType": "local",
         "tier": 3,
         "adminUI": {
