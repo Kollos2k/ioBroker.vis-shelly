@@ -15,7 +15,7 @@ class visShelly extends utils.Adapter {
 	constructor(options) {
 		super({
 			...options,
-			name: "iobroker.vis-shelly",
+			name: "vis-shelly",
 		});
 		this.on("ready", this.onReady.bind(this));
 		//this.on("objectChange", this.onObjectChange.bind(this));
@@ -28,12 +28,15 @@ class visShelly extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
+		this.setState("info.connection", false, true);
 		// Initialize your adapter here
 
 //      this.log.info("config Stripes: " + this.config.Stripes);
-      this.log.info("config Background: " + this.config.Background);
+    //   this.log.info("config Background: " + this.config.Background);
 //      this.log.info("config Radius: " + this.config.Radius);
 //      this.log.info("config Info: " + this.config.Info);
+		this.log.info("config option1: " + this.config.option1);
+		this.log.info("config option2: " + this.config.option2);
 
 		/*
 		For every state in the system there has to be also an object of type state
@@ -41,7 +44,7 @@ class visShelly extends utils.Adapter {
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
 		
-        await this.setObjectAsync("CSS.Button2", {
+        await this.setObjectNotExistsAsync("CSS.Button2", {
 			type: "state",
 			common: {
 				name: "Button-Color",
@@ -52,7 +55,7 @@ class visShelly extends utils.Adapter {
 			},
 			native: {},
         });
-        await this.setObjectAsync("CSS.Active", {
+        await this.setObjectNotExistsAsync("CSS.Active", {
 			type: "state",
 			common: {
 				name: "Button-Active-Color",
@@ -63,7 +66,7 @@ class visShelly extends utils.Adapter {
 			},
             native: {},
         });
-        await this.setObjectAsync("CSS.Text", {
+        await this.setObjectNotExistsAsync("CSS.Text", {
 			type: "state",
 			common: {
 				name: "Text-Color",
@@ -74,7 +77,7 @@ class visShelly extends utils.Adapter {
 			},
 			native: {},
        });
-	   await this.setObjectAsync("shellyObjects.count", {
+	   await this.setObjectNotExistsAsync("shellyObjects.count", {
 		   type: "state",
 		   common: {
 			   name: "Count Shelly Objects",
