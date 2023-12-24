@@ -20,13 +20,14 @@ body{--shellyButtonOuterOpacity:0.49;--shellyButtonOuterOffset:1;--shellyButtonO
 
 
 .vis-shelly_DeviceBody {display: grid;background-color: gray;margin: 5px 10px 5px 10px;border-radius: 10px;height: 70px;
-    grid-template-columns: 10px auto 70px;grid-template-rows: 35px 30px;grid-template-areas: "icon name action" "icon info action";}
+    grid-template-columns: 10px auto 70px;grid-template-rows: 10px 30px 20px;grid-template-areas: "status status status" "icon name action" "icon info action";}
+.vis-shelly_DeviceBody > [name="status"]{grid-area: status;background-color: #444;border-top-right-radius: 10px;border-top-left-radius: 10px;padding-left: 20px;}
 .vis-shelly_DeviceBody > [name="icon"]{grid-area: icon;}
 .vis-shelly_DeviceBody > [name="name"]{grid-area: name;color: white;padding: 5px;font-weight: bold;}
-.vis-shelly_DeviceBody > [name="info"]{grid-area: info;background-color: #444;color: #ddd;padding: 6px;border-radius: 10px;}
-.vis-shelly_DeviceBody > [name="info"] .icon{width: 20px;display: inline-block;height: 100%; background-size: 20px;background-repeat: no-repeat;}
+.vis-shelly_DeviceBody > [name="info"]{grid-area: info;background-color: #444;color: #ddd;padding: 3px;border-radius: 10px;position: relative;}
+.vis-shelly_DeviceBody > [name="info"] .icon{width: 20px;display: inline-block;height: 100%; background-size: 15px;background-repeat: no-repeat;}
 .vis-shelly_DeviceBody > [name="info"] .icon.power{background-image: url(/vis/widgets/vis-shelly/images/energy.svg);}
-.vis-shelly_DeviceBody > [name="info"] .value{height: 100%;display: inline-block;margin: 0px 5px 15px 5px;}
+.vis-shelly_DeviceBody > [name="info"] .value{height: 100%;display: inline-block;position: absolute;font-size: 15px;top: 1px;}
 .vis-shelly_DeviceBody > [name="action"]{grid-area: action;}
 .vis-shelly_DeviceBody [name="svgShellyButton"] {padding:3px;cursor: pointer;}
 .vis-shelly_DeviceBody .wait [name="svgShellyButton"] {--shellyButtonOuterColor: rgba(219, 118, 118, 0.849);}

@@ -80,7 +80,7 @@ vis.binds["vis-shelly"] = {
             var text = '';
             $.each(deviceIDs,(k,v)=>{
                 let domID=v.id.replaceAll('#','');
-                text+=`<div id="${domID}" class="vis-shelly_DeviceBody"><span name="icon"></span><span name="name"></span><span name="info"></span><span name="action"></span></div>`;
+                text+=`<div id="${domID}" class="vis-shelly_DeviceBody"><span name="status"></span><span name="icon"></span><span name="name"></span><span name="info"></span><span name="action"></span></div>`;
             });
             // text+=`<object type="image/svg+xml" data="/vis/widgets/vis-shelly/images/shellyButton_opt.svg"></object>`;
             $('#' + widgetID).html(text);
@@ -97,37 +97,40 @@ vis.binds["vis-shelly"] = {
             case "SHPLG-S":dataPoints=[stateID+".Relay0.Power",stateID+".Relay0.Switch",stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
             case "shellyplus1pm":dataPoints=[stateID+".Relay0.Power",stateID+".Relay0.Switch",stateID+".Relay0.Voltage",stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
             case "shellyplusplugs":dataPoints=[stateID+".Relay0.Power",stateID+".Relay0.Switch",stateID+".Relay0.Voltage",stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
+            default: dataPoints=[stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
         }
         // console.log("GetStates: "+stateID);
-        vis.conn.getStates(dataPoints,(error, data)=>{
-            // console.log(data);
-            let bound=[];
-            vis.updateStates(data);
-            vis.conn.subscribe(dataPoints);
+        if(dataPoints.length>0){
+            vis.conn.getStates(dataPoints,(error, data)=>{
+                // console.log(data);
+                let bound=[];
+                vis.updateStates(data);
+                vis.conn.subscribe(dataPoints);
 
-            var dataObj={type:type};
-            var fillObjectDevice=function(dataObj,searchText,key,value,type){
-                if(key.endsWith(searchText)){
-                    if(value==null){dataObj[searchText]={val:null};}
-                    else dataObj[searchText]=value;
-                    dataObj[searchText]['id']=key;
+                var dataObj={type:type};
+                var fillObjectDevice=function(dataObj,searchText,key,value,type){
+                    if(key.endsWith(searchText)){
+                        if(value==null){dataObj[searchText]={val:null};}
+                        else dataObj[searchText]=value;
+                        dataObj[searchText]['id']=key;
 
-                    vis.states.bind(key+".val" , (e, newVal, oldVal)=>{
-                        console.log(searchText + ": " +newVal);
-                        vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,searchText,key,newVal,type);
-                    });
+                        vis.states.bind(key+".val" , (e, newVal, oldVal)=>{
+                            console.log(searchText + ": " +newVal);
+                            vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,searchText,key,newVal,type);
+                        });
+                    }
+                };
+                for (const [k, v] of Object.entries(data)) {
+                    fillObjectDevice(dataObj,"Power",k,v,type);
+                    fillObjectDevice(dataObj,"Switch",k,v,type);
+                    fillObjectDevice(dataObj,"Voltage",k,v,type);
+                    fillObjectDevice(dataObj,"brightness",k,v,type);
+                    fillObjectDevice(dataObj,"name",k,v,type);
+                    fillObjectDevice(dataObj,"overrideName",k,v,type);
                 }
-            };
-            for (const [k, v] of Object.entries(data)) {
-                fillObjectDevice(dataObj,"Power",k,v,type);
-                fillObjectDevice(dataObj,"Switch",k,v,type);
-                fillObjectDevice(dataObj,"Voltage",k,v,type);
-                fillObjectDevice(dataObj,"brightness",k,v,type);
-                fillObjectDevice(dataObj,"name",k,v,type);
-                fillObjectDevice(dataObj,"overrideName",k,v,type);
-            }
-            vis.binds["vis-shelly"].buildDevice(widgetID,domID,dataObj,id,type);
-        });
+                vis.binds["vis-shelly"].buildDevice(widgetID,domID,dataObj,id,type);
+            });
+        }
     },
     repaintDeviceValue: function(widgetID,domID,searchText,stateID,value,type,$div=null){
         console.log("repaint:"+searchText);
@@ -136,7 +139,7 @@ vis.binds["vis-shelly"] = {
         if(type.localeCompare("SHDM-2")){
             if(searchText.localeCompare("Switch")==0){
                 let $dom=$div.find(`[name='action']`);
-                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="70" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
+                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
                 $dom.removeClass("wait");
                 if(value==true){$dom.addClass("active");}
                 else{$dom.removeClass("active");}
@@ -156,7 +159,7 @@ vis.binds["vis-shelly"] = {
         }else if(type.localeCompare("SHPLG-S")){
             if(searchText.localeCompare("Switch")==0){
                 let $dom=$div.find(`[name='action']`);
-                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="70" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
+                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
                 $dom.removeClass("wait");
                 if(value==true){$dom.addClass("active");}
                 else{$dom.removeClass("active");}
@@ -176,7 +179,7 @@ vis.binds["vis-shelly"] = {
         }else if(type.localeCompare("shellyplus1pm")){
             if(searchText.localeCompare("Switch")==0){
                 let $dom=$div.find(`[name='action']`);
-                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="70" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
+                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
                 $dom.removeClass("wait");
                 if(value==true){$dom.addClass("active");}
                 else{$dom.removeClass("active");}
@@ -196,7 +199,7 @@ vis.binds["vis-shelly"] = {
         }else if(type.localeCompare("shellyplusplugs")){
             if(searchText.localeCompare("Switch")==0){
                 let $dom=$div.find(`[name='action']`);
-                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="70" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
+                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
                 $dom.removeClass("wait");
                 if(value==true){$dom.addClass("active");}
                 else{$dom.removeClass("active");}
