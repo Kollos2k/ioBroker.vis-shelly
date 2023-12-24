@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "vis-shelly",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -55,16 +55,15 @@
         "platform": "Javascript/Node.js",
         "main": "main.js",
         "icon": "vis-shelly.png",
-        "enabled": false,
+        "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/Kollos2k/ioBroker.vis-shelly/main/admin/vis-shelly.png",
         "readme": "https://github.com/Kollos2k/ioBroker.vis-shelly/blob/main/README.md",
         "loglevel": "info",
-        "restartAdapters": [
-            "vis"
-        ],
+        "restartAdapters": ["vis"],
+		"connectionType": "local",
+		"dataSource": "assumption",
         "compact": true,
-        "singleton": true,
-        "type": "general",
+        "type": "visualization",
         "mode": "daemon",
         "tier": 3,
         "adminUI": {
@@ -73,7 +72,8 @@
         "dependencies": [
             {
                 "js-controller": ">=3.3.22"
-            }
+            },
+			"vis"
         ],
         "globalDependencies": [
             {
@@ -86,26 +86,27 @@
         "option2": "42"
     },
     "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "",
-            "type": "meta",
-            "common": {
-                "name": {
-                    "en": "Meta storage for user files",
-                    "de": "Meta-Speicher für Benutzerdateien"
-                },
-                "type": "meta.user"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native":{}
-        }
-    ]
+	"instanceObjects": [
+		{
+			"_id": "info",
+			"type": "channel",
+			"common": {
+				"name": "Information"
+			},
+			"native": {}
+		},
+		{
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": "Device or service connected",
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		}
+	]
 }
