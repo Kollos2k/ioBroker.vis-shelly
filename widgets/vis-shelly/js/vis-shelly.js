@@ -216,6 +216,11 @@ vis.binds["vis-shelly"] = {
                 if($dom.children().length==0)$dom.html(`<span class="icon power"></span><span class="value"></span>`);
                 $dom.find(".value").html(value+" W");
             }
+        } else {
+            if(searchText.localeCompare("name")==0||searchText.localeCompare("overrideName")==0) {
+                let $dom=$div.find(`[name='name']`);
+                $dom.html(value);
+            }
         }
     },
     buildDevice: function(widgetID,domID,data,id,type){
