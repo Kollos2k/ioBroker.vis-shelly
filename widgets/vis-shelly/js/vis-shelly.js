@@ -145,8 +145,8 @@ vis.binds["vis-shelly"] = {
         console.log(deviceDomID+"      "+sType+"     "+newVal);
         let dom=null;
         switch(sType){
-            case "name":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_sname",newVal);if(String(dom.attr("data_oname")).length==0)dom.html(newVal);break;
-            case "oname":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_oname",newVal);dom.html(newVal.length==0?dom.attr("data_oname"):newVal);break;
+            case "name":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_sname",newVal);if(String(dom.attr("data_oname")).length==0)dom.html(newVal+" // "+deviceDomID);break;
+            case "oname":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_oname",newVal);dom.html(newVal.length==0?dom.attr("data_sname")+" // "+deviceDomID:newVal+" // "+deviceDomID);break;
             case "power":$("#"+deviceDomID).find("[name='power']").html(newVal+" W");break;
             case "voltage":$("#"+deviceDomID).find("[name='voltage']").html(newVal+" V");break;            
             
