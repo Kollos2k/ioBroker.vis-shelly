@@ -147,6 +147,7 @@ vis.binds["vis-shelly"] = {
     updateDeviceValue: function (widgetID, deviceDomID, sType, newVal) {
         console.log(deviceDomID+"      "+sType+"     "+newVal);
         console.log(newVal);
+        if(typeof newVal=="object")newVal=newVal.val;
         if(newVal==null)newVal="";
         let dom=null;
         switch(sType){
