@@ -83,7 +83,7 @@ vis.binds["vis-shelly"] = {
                 case "shellyplus1pm":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
                 case "shellyplusplugs":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;     
                 case "shellyplus2pm":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName"}}};break;     
-                case "shellyplusht":typeConfig={"domID":domID,dataPoint:{0:{"temperature":val.stateId+".Temperature0","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
+                case "shellyplusht":typeConfig={"domID":domID,dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
 
                 
             }
@@ -107,8 +107,10 @@ vis.binds["vis-shelly"] = {
                 $('#' + widgetID).append(text);
                 $('#' + widgetID).find("#"+deviceDomID).find("[name='switch']").click(function(){$(this).addClass("wait");vis.setValue(dpVal.switch,$(this).attr("curState")=="true"?false:true);});
                 
-                
-                vis.conn.getStates(Object.values(dpVal),(error, data)=>{        
+                console.log("GetStates: ");
+                console.log(Object.values(dpVal));
+                vis.conn.getStates(Object.values(dpVal),(error, data)=>{
+                    console.log("done");
                     vis.updateStates(data);
                     vis.conn.subscribe(Object.values(dpVal));
                     $.each(dpVal,(sType,sID)=>{
