@@ -93,7 +93,7 @@ vis.binds["vis-shelly"] = {
                 let text=`<div id="${deviceDomID}" class="vis-shelly_DeviceBody">`;
                 text+=`<span name="status"><span><span class="connectionState connectionStateOnline"></span></span></span>`;
                 text+=`<span name="icon"></span>`;
-                text+=`<span name="name" data_sname="" data_oname=""></span>`;
+                text+=`<span name="name" data_sname="" data_oname="">${deviceDomID}</span>`;
                 text+=`<span name="info">`;
                 if(typeof dpVal.power!="undefined"){text+=`<span><span name="power" class="icon"></span></span>`;}
                 if(typeof dpVal.voltage!="undefined"){text+=`<span><span name="voltage" class="icon"></span></span>`;}
@@ -114,6 +114,7 @@ vis.binds["vis-shelly"] = {
                     vis.updateStates(data);
                     vis.conn.subscribe(Object.values(dpVal));
                     $.each(dpVal,(sType,sID)=>{
+                        console.log(data[sID]);
                         if(typeof data[sID]!="undefined"){
                             vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,sType,getStateObject(data[sID]).val);
                             vis.states.bind(sID+".val" , (e, newVal, oldVal)=>{                           
