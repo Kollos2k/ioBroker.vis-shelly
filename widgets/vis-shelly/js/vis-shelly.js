@@ -146,6 +146,8 @@ vis.binds["vis-shelly"] = {
     },
     updateDeviceValue: function (widgetID, deviceDomID, sType, newVal) {
         console.log(deviceDomID+"      "+sType+"     "+newVal);
+        console.log(newVal);
+        if(newVal==null)newVal="";
         let dom=null;
         switch(sType){
             case "name":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_sname",newVal);if(String(dom.attr("data_oname")).length==0)dom.html(newVal+" // "+deviceDomID);break;
