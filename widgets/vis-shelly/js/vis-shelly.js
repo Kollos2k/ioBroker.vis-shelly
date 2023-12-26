@@ -7,6 +7,7 @@
 */
 "use strict";
 
+
 /* global $, vis, systemDictionary */
 
 // add translations for edit mode
@@ -28,22 +29,22 @@ $.extend(
         //  "uk": "Розмір"
         // 	"zh-cn": "尺寸"
         // }
-		"iUniversalValueCount": {
-			"en": "Number of states",
-			"de": "Anzahl der Zustände"
-		},
-		"group_iUniversalValues": {
-			"en": "State",
-			"de": "Zustand"
-		},
-        "soid1_1": {
-            "en":"Sub Item 1_1",
-            "de":"Sub Item 1_1"
-        },
-        "soid1_": {
-            "en":"Sub Item 1",
-            "de":"Sub Item 1"
-        }
+		// "iUniversalValueCount": {
+		// 	"en": "Number of states",
+		// 	"de": "Anzahl der Zustände"
+		// },
+		// "group_iUniversalValues": {
+		// 	"en": "State",
+		// 	"de": "Zustand"
+		// },
+        // "soid1_1": {
+        //     "en":"Sub Item 1_1",
+        //     "de":"Sub Item 1_1"
+        // },
+        // "soid1_": {
+        //     "en":"Sub Item 1",
+        //     "de":"Sub Item 1"
+        // }
     }
 );
 
@@ -64,170 +65,96 @@ vis.binds["vis-shelly"] = {
                 vis.binds["vis-shelly"].createAllDevicesWidget(widgetID, view, data, style);
             }, 100);
         }
-        vis.conn.subscribe("vis-shelly.0.devices.ids",()=>{
-                console.log("sub");
-            console.log(vis);
-
-        });
-        // vis.subscribeOidAtRuntime("vis-shelly.0.devices.ids",()=>{
-        //     console.log("sub");
-        //     console.log(vis);
-        // },true);
+        vis.conn.subscribe("vis-shelly.0.devices.ids",()=>{});
+        console.log("vis")
         console.log(vis);
-        
+        $('#' + widgetID).empty();
+        var getStateObject=function(state){
+            if(typeof state==null)return {"ack":true,from:"",lc:0,q:0,ts:0,user:"",val:""}
+            return state;
+        }
+        var buildDevice=function(val){            
+            let vsID="vis-shelly.0.devices."+val.id;
+            let domID=val.id.replaceAll('#','');
+            let typeConfig={};
+            switch(val.type){
+                case "SHDM-2":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".lights.Power","switch":val.stateId+".lights.Switch","brightness":val.stateId+".lights.brightness","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
+                case "SHPLG-S":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
+                case "shellyplus1pm":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
+                case "shellyplusplugs":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;     
+                case "shellyplus2pm":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName"}}};break;     
+                case "shellyplusht":typeConfig={"domID":domID,dataPoint:{0:{"temperature":val.stateId+".Temperature0","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
+
+                
+            }
+            $.each(typeConfig.dataPoint,(dpKey,dpVal)=>{
+                // console.log(dpVal);
+                var deviceDomID=typeConfig.domID+dpKey;
+                let text=`<div id="${deviceDomID}" class="vis-shelly_DeviceBody">`;
+                text+=`<span name="status"><span><span class="connectionState connectionStateOnline"></span></span></span>`;
+                text+=`<span name="icon"></span>`;
+                text+=`<span name="name" data_sname="" data_oname=""></span>`;
+                text+=`<span name="info">`;
+                if(typeof dpVal.power!="undefined"){text+=`<span><span name="power" class="icon"></span></span>`;}
+                if(typeof dpVal.voltage!="undefined"){text+=`<span><span name="voltage" class="icon"></span></span>`;}
+                if(typeof dpVal.humidity!="undefined"){text+=`<span><span name="humidity" class="icon"></span></span>`;}
+                if(typeof dpVal.externalPower!="undefined"||typeof dpVal.batteryPercent!="undefined"){text+=`<span><span name="devicePower" class="icon"></span></span>`;}
+                text+=`</span>`;
+                text+=`<span name="action">`;
+                if(typeof dpVal.switch!="undefined"){text+=`<span name="switch" curState="false"><svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg></span>`;}
+                if(typeof dpVal.temperature!="undefined"){text+=`<span name="temperature"></span>`;}
+                text+=`</span>`;
+                $('#' + widgetID).append(text);
+                $('#' + widgetID).find("#"+deviceDomID).find("[name='switch']").click(function(){$(this).addClass("wait");vis.setValue(dpVal.switch,$(this).attr("curState")=="true"?false:true);});
+                
+                
+                vis.conn.getStates(Object.values(dpVal),(error, data)=>{        
+                    vis.updateStates(data);
+                    vis.conn.subscribe(Object.values(dpVal));
+                    $.each(dpVal,(sType,sID)=>{
+                        if(typeof data[sID]!="undefined"){
+                            vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,sType,getStateObject(data[sID]).val);
+                            vis.states.bind(sID+".val" , (e, newVal, oldVal)=>{                           
+                                vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,sType,newVal);
+                            });
+                        }
+                    });
+
+                    
+                    // vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"name",getStateObject(data[dpVal["oname"]]).val.length>0?data[dpVal["oname"]].val:getStateObject(data[dpVal["name"]]).val);
+                    vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"name",getStateObject(data[dpVal["name"]]).val);
+                    vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"oname",getStateObject(data[dpVal["oname"]]).val);
+                    
+                    // vis.states.bind(key+".val" , (e, newVal, oldVal)=>{
+                    //     console.log(searchText + ": " +newVal);
+                    //     vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,searchText,key,newVal,type);
+                    // });
+                });
+            });
+        }
         vis.conn.getStates(["vis-shelly.0.devices.ids"],(error, data)=>{
             let deviceIDs=JSON.parse(data["vis-shelly.0.devices.ids"].val);
-            var text = '';
+            // console.log(deviceIDs);
             $.each(deviceIDs,(k,v)=>{
-                let domID=v.id.replaceAll('#','');
-                text+=`<div id="${domID}" class="vis-shelly_DeviceBody"><span name="status"></span><span name="icon"></span><span name="name"></span><span name="info"></span><span name="action"></span></div>`;
-            });
-            // text+=`<object type="image/svg+xml" data="/vis/widgets/vis-shelly/images/shellyButton_opt.svg"></object>`;
-            $('#' + widgetID).html(text);
-            $.each(deviceIDs,(k,v)=>{
-                let domID=v.id.replaceAll('#','');
-                vis.binds["vis-shelly"].getDataAndBuildDevice(widgetID,domID,v.stateId,v.id,v.type);
+                buildDevice(v);
             });
         });
-    },
-    getDataAndBuildDevice: function(widgetID,domID,stateID,id,type){
-        let dataPoints=[];
-        switch(type){
-            case "SHDM-2":dataPoints=[stateID+".lights.Power",stateID+".lights.Switch",stateID+".lights.brightness",stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
-            case "SHPLG-S":dataPoints=[stateID+".Relay0.Power",stateID+".Relay0.Switch",stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
-            case "shellyplus1pm":dataPoints=[stateID+".Relay0.Power",stateID+".Relay0.Switch",stateID+".Relay0.Voltage",stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
-            case "shellyplusplugs":dataPoints=[stateID+".Relay0.Power",stateID+".Relay0.Switch",stateID+".Relay0.Voltage",stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
-            default: dataPoints=[stateID+".name","vis-shelly.0.devices."+id+".overrideName"];break;
-        }
-        // console.log("GetStates: "+stateID);
-        if(dataPoints.length>0){
-            vis.conn.getStates(dataPoints,(error, data)=>{
-                // console.log(data);
-                let bound=[];
-                vis.updateStates(data);
-                vis.conn.subscribe(dataPoints);
 
-                var dataObj={type:type};
-                var fillObjectDevice=function(dataObj,searchText,key,value,type){
-                    if(key.endsWith(searchText)){
-                        if(value==null){dataObj[searchText]={val:null};}
-                        else dataObj[searchText]=value;
-                        dataObj[searchText]['id']=key;
-
-                        vis.states.bind(key+".val" , (e, newVal, oldVal)=>{
-                            console.log(searchText + ": " +newVal);
-                            vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,searchText,key,newVal,type);
-                        });
-                    }
-                };
-                for (const [k, v] of Object.entries(data)) {
-                    fillObjectDevice(dataObj,"Power",k,v,type);
-                    fillObjectDevice(dataObj,"Switch",k,v,type);
-                    fillObjectDevice(dataObj,"Voltage",k,v,type);
-                    fillObjectDevice(dataObj,"brightness",k,v,type);
-                    fillObjectDevice(dataObj,"name",k,v,type);
-                    fillObjectDevice(dataObj,"overrideName",k,v,type);
-                }
-                vis.binds["vis-shelly"].buildDevice(widgetID,domID,dataObj,id,type);
-            });
-        }
     },
-    repaintDeviceValue: function(widgetID,domID,searchText,stateID,value,type,$div=null){
-        console.log("repaint:"+searchText);
-        if($div==null)$div=$("#"+widgetID).find("#"+domID);
-
-        if(type.localeCompare("SHDM-2")){
-            if(searchText.localeCompare("Switch")==0){
-                let $dom=$div.find(`[name='action']`);
-                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
-                $dom.removeClass("wait");
-                if(value==true){$dom.addClass("active");}
-                else{$dom.removeClass("active");}
-                console.log($dom);
-                $dom.click(function(){
-                    $dom.addClass("wait");
-                    vis.setValue(stateID,value?false:true);
-                });
-            } else if(searchText.localeCompare("name")==0||searchText.localeCompare("overrideName")==0) {
-                let $dom=$div.find(`[name='name']`);
-                $dom.html(value);
-            } else if(searchText.localeCompare("Power")==0) {
-                let $dom=$div.find(`[name='info']`);
-                if($dom.children().length==0)$dom.html(`<span class="icon power"></span><span class="value"></span>`);
-                $dom.find(".value").html(value+" W");
-            }
-        }else if(type.localeCompare("SHPLG-S")){
-            if(searchText.localeCompare("Switch")==0){
-                let $dom=$div.find(`[name='action']`);
-                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
-                $dom.removeClass("wait");
-                if(value==true){$dom.addClass("active");}
-                else{$dom.removeClass("active");}
-                console.log($dom);
-                $dom.click(function(){
-                    $dom.addClass("wait");
-                    vis.setValue(stateID,value?false:true);
-                });
-            } else if(searchText.localeCompare("name")==0||searchText.localeCompare("overrideName")==0) {
-                let $dom=$div.find(`[name='name']`);
-                $dom.html(value);
-            } else if(searchText.localeCompare("Power")==0) {
-                let $dom=$div.find(`[name='info']`);
-                if($dom.children().length==0)$dom.html(`<span class="icon power"></span><span class="value"></span>`);
-                $dom.find(".value").html(value+" W");
-            }
-        }else if(type.localeCompare("shellyplus1pm")){
-            if(searchText.localeCompare("Switch")==0){
-                let $dom=$div.find(`[name='action']`);
-                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
-                $dom.removeClass("wait");
-                if(value==true){$dom.addClass("active");}
-                else{$dom.removeClass("active");}
-                console.log($dom);
-                $dom.click(function(){
-                    $dom.addClass("wait");
-                    vis.setValue(stateID,value?false:true);
-                });
-            } else if(searchText.localeCompare("name")==0||searchText.localeCompare("overrideName")==0) {
-                let $dom=$div.find(`[name='name']`);
-                $dom.html(value);
-            } else if(searchText.localeCompare("Power")==0) {
-                let $dom=$div.find(`[name='info']`);
-                if($dom.children().length==0)$dom.html(`<span class="icon power"></span><span class="value"></span>`);
-                $dom.find(".value").html(value+" W");
-            }
-        }else if(type.localeCompare("shellyplusplugs")){
-            if(searchText.localeCompare("Switch")==0){
-                let $dom=$div.find(`[name='action']`);
-                if($dom.children().length==0)$dom.html(`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`);
-                $dom.removeClass("wait");
-                if(value==true){$dom.addClass("active");}
-                else{$dom.removeClass("active");}
-                console.log($dom);
-                $dom.click(function(){
-                    $dom.addClass("wait");
-                    vis.setValue(stateID,value?false:true);
-                });
-            } else if(searchText.localeCompare("name")==0||searchText.localeCompare("overrideName")==0) {
-                let $dom=$div.find(`[name='name']`);
-                $dom.html(value);
-            } else if(searchText.localeCompare("Power")==0) {
-                let $dom=$div.find(`[name='info']`);
-                if($dom.children().length==0)$dom.html(`<span class="icon power"></span><span class="value"></span>`);
-                $dom.find(".value").html(value+" W");
-            }
-        } else {
-            if(searchText.localeCompare("name")==0||searchText.localeCompare("overrideName")==0) {
-                let $dom=$div.find(`[name='name']`);
-                $dom.html(value);
-            }
-        }
-    },
-    buildDevice: function(widgetID,domID,data,id,type){
-        var $div = $("#"+widgetID).find("#"+domID);
-        vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,"Switch",data['Switch'].id,data['Switch'].val,type,$div);
-        vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,"Power",data['Power'].id,data['Power'].val,type,$div);
-        vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,"name",data['name'].id,data['overrideName'].val==null?data['name'].val:data['overrideName'].val,type,$div);
+    updateDeviceValue: function (widgetID, deviceDomID, sType, newVal) {
+        console.log(deviceDomID+"      "+sType+"     "+newVal);
+        let dom=null;
+        switch(sType){
+            case "name":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_sname",newVal);if(String(dom.attr("data_oname")).length==0)dom.html(newVal);break;
+            case "oname":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_oname",newVal);dom.html(newVal.length==0?dom.attr("data_oname"):newVal);break;
+            case "power":$("#"+deviceDomID).find("[name='power']").html(newVal+" W");break;
+            case "voltage":$("#"+deviceDomID).find("[name='voltage']").html(newVal+" V");break;            
+            
+            case "temperature":$("#"+deviceDomID).find("[name='temperature']").html(newVal+" °C");break;
+            case "humidity":$("#"+deviceDomID).find("[name='humidity']").html(newVal+" V");break;
+            case "externalPower":$("#"+deviceDomID).find("[name='devicePower']").html(newVal+" V");break;
+            case "switch":dom=$("#"+deviceDomID).find("[name='switch']");dom.removeClass("wait");if(newVal==true){dom.addClass("active");}else{dom.removeClass("active");} dom.attr("curState",newVal); break;
+        };
         
     },    
     createWidget: function (widgetID, view, data, style) {
@@ -292,6 +219,6 @@ vis.binds["vis-shelly"] = {
 			vis.hideShowAttr("iNavWait", false);
         });
     }
-};
+}
 
 vis.binds["vis-shelly"].showVersion();

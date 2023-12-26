@@ -145,17 +145,6 @@ class visShelly extends utils.Adapter {
 				},
 				native: {},
 			});				
-			this.setObjectNotExists("devices."+deviceName+".overrideName", {
-				type: "state",
-				common: {
-					name: deviceName+".overrideName",
-					type: "string",
-					role: "name",
-					read: true,
-					write: true,
-				},
-				native: {},
-			},()=>{});	
 
 			await this.setObjectNotExistsAsync("devices."+deviceName+".type", {
 				type: "state",
@@ -172,6 +161,30 @@ class visShelly extends utils.Adapter {
 			let typeState=await this.getForeignStateAsync(deviceID+".type");
 			this.setState("devices."+deviceName+".type", { val: typeState.val, ack: true });
 			devJSON.push({"stateId":deviceID,"id":deviceName,"type":typeState.val});
+			let relayCount=1;
+			if(typeState.val=="shellyplus2pm")relayCount=2
+
+			for(let i=0;i<relayCount;i++){
+
+				await this.setObjectNotExistsAsync("devices."+deviceName+"."+i, {
+					type: "device",
+					common: {
+						name: "Device Realay "+deviceName
+					},
+					native: {},
+				});	
+				this.setObjectNotExists("devices."+deviceName+"."+i+".overrideName", {
+					type: "state",
+					common: {
+						name: deviceName+".overrideName",
+						type: "string",
+						role: "name",
+						read: true,
+						write: true,
+					},
+					native: {},
+				},()=>{});	
+			}
 			// this.createAndSetState(deviceID,"devices."+deviceName+".deviceID",deviceName+".deviceID","device.id");
 			// this.createAndSetState(deviceID+".name","devices."+deviceName+".nameID",deviceName+".nameID","name.id");
 			// this.createAndSetStateIfExists(deviceID+".Relay0.Switch","devices."+deviceName+".switchID",deviceName+".switchID","switch.id");
@@ -197,7 +210,7 @@ class visShelly extends utils.Adapter {
         await this.setStateAsync("devices.ids", { val: JSON.stringify(devJSON), ack: true });
 		//var shellyClass = await this.getForeignStateAsync("shelly").val;
 
-        //await this.setStateAsync("shellyObjects.count", { val: shellyClass, ack: true });
+        await this.setStateAsync("shellyObjects.count", { val: shellyClass, ack: true });
 		//await this.setStateAsync("shellyObjects.count", { val: keysInstance.length, ack: true });
 
 		// same thing, but the state is deleted after 30s (getState will return null afterwards)
