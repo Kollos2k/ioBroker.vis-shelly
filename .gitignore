@@ -3,6 +3,7 @@
 !.vscode/
 !.github/
 cp-vis-shelly.sh
+push.sh
 
 
 *.code-workspace
