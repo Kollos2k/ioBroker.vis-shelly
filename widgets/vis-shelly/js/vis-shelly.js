@@ -90,6 +90,18 @@ vis.binds["vis-shelly"] = {
                 $dom.html(oname.val.length>0?oname.val:name.val);
             }
             let basicUpdateValueUnit=function($dom,newVal,options={},data={}){$dom.html(newVal+" "+options.unit);}
+            let basicUpdateDevicePower=function($dom,newVal,options={},data={}){
+                console.log("update external");
+                var exP=null;var percent=null;
+                $.each(data,(k,v)=>{
+                    if(k.lastIndexOf(".ExternalPower")>-1)exP=v;
+                    else if(k.lastIndexOf(".BatteryPercent")>-1)percent=v;
+                });
+                $dom.removeClass("externalPower");
+                $dom.removeClass("battery");
+                if(exP!=null&&typeof exP=="object"&&exP.val==true){$dom.addClass("externalPower");$dom.html("Energie");}
+                else {$dom.addClass("battery"),$dom.html((percent==null||typeof percent!="object"?0:percent.val)+" %");}                
+            }
             let basicUpdateSwitch=function($dom,newVal,options={},data={}){
                 $dom.removeClass("wait");
                 if(newVal==true){$dom.addClass("active");}else{$dom.removeClass("active");}
@@ -129,10 +141,13 @@ vis.binds["vis-shelly"] = {
                     action:{"switch":{"name":"switch","click":basicSwitchAction}},
                     dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName"}}};break;     
                 case "shellyplusht":typeConfig={"domID":domID,
-                    update:{"humidity":{"name":"humidity","unit":"%","updateValue":basicUpdateValueUnit},"temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}},
+                    update:{"humidity":{"name":"humidity","unit":"%","updateValue":basicUpdateValueUnit},"batteryPercent":{"name":"devicePower","updateValue":basicUpdateDevicePower},"externalPower":{"name":"devicePower","updateValue":basicUpdateDevicePower},"temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}},
                     view:{info:{"humidity":{"name":"humidity","class":"icon","html":""},"externalPower":{"name":"devicePower","class":"icon","html":""}},"action":{"temperature":{"name":"temperature","class":"temperature","html":""}}},
-                    dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
-                
+                    dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
+                case "SHTRV-01":typeConfig={"domID":domID,
+                    update:{"valvePosition":{"name":"valvePosition","unit":"%","updateValue":basicUpdateValueUnit},"batteryPercent":{"name":"devicePower","updateValue":basicUpdateDevicePower},"externalPower":{"name":"devicePower","updateValue":basicUpdateDevicePower},"temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}},
+                    view:{info:{"temperature":{"name":"temperature","class":"temperature","html":""},"valvePosition":{"name":"valvePosition","class":"icon","html":""},"devicePower":{"name":"devicePower","class":"icon","html":""}},"action":{}},
+                    dataPoint:{0:{"temperature":val.stateId+".tmp.temperatureC","valvePosition":val.stateId+".tmp.valvePosition","externalPower":val.stateId+".bat.charger","batteryPercent":val.stateId+".bat.value","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;                
                 
             }
             if(typeof typeConfig.dataPoint=="undefined")return false;
@@ -177,18 +192,18 @@ vis.binds["vis-shelly"] = {
                     // console.log("done");
                     vis.updateStates(data);
                     vis.conn.subscribe(Object.values(dpVal));
-                    console.log("");
-                    console.log(deviceDomID);
+                    // console.log("");
+                    // console.log(deviceDomID);
                     $.each(dpVal,(sType,sID)=>{
-                        console.log("bind "+sType);
-                        console.log(data[sID]);
+                        // console.log("bind "+sType);
+                        // console.log(data[sID]);
                         if(typeof data[sID]!="undefined"){
                             vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,typeConfig,sType,sID);
                             vis.states.bind(sID+".val" , (e, newVal, oldVal)=>{                           
                                 vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,typeConfig,sType,sID,newVal);
                             });
                         } else {
-                            console.log(sID+ " == undefined");
+                            // console.log(sID+ " == undefined");
                         }
                     });
 
@@ -212,7 +227,7 @@ vis.binds["vis-shelly"] = {
             let deviceIDs=JSON.parse(data["vis-shelly.0.devices.ids"].val);
             // console.log(deviceIDs);
             $.each(deviceIDs,(k,v)=>{
-                console.log(v);
+                // console.log(v);
                 buildDevice(v);
             });
         });
