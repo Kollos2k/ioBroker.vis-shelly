@@ -80,9 +80,9 @@ vis.binds["vis-shelly"] = {
             let domID=val.id.replaceAll('#','');
             let typeConfig={};            
             let switchButton=`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`;
-            let basicUpdateValue=function($dom,newVal,options={},data={}){$dom.html(newVal);}
-            let basicUpdateMotionValue=function($dom,newVal,options={},data={}){$dom.removeClass("motionyes");$dom.removeClass("motionno");if(newVal==true){$dom.addClass("motionyes");$dom.html("Ja");}else{$dom.addClass("motionno");$dom.html("Nein");}}
-            let basicUpdateValueName=function($dom,newVal,optons={},data={}){
+            let basicUpdateValue=function($dom,newVal,options={},data={},stageID=""){$dom.html(newVal);}
+            let basicUpdateMotionValue=function($dom,newVal,options={},data={},stageID=""){$dom.removeClass("motionyes");$dom.removeClass("motionno");if(newVal==true){$dom.addClass("motionyes");$dom.html("Ja");}else{$dom.addClass("motionno");$dom.html("Nein");}}
+            let basicUpdateValueName=function($dom,newVal,optons={},data={},stageID=""){
                 var name=null;var oname=null;
                 $.each(data,(k,v)=>{
                     if(k.lastIndexOf(".name")>-1)name=v;
@@ -90,8 +90,17 @@ vis.binds["vis-shelly"] = {
                 });if(name==null||typeof name!="object")name={val:""};if(oname==null||typeof oname!="object")oname={val:""};
                 $dom.html(oname.val.length>0?oname.val:name.val);
             }
-            let basicUpdateValueUnit=function($dom,newVal,options={},data={}){$dom.html(newVal+" "+options.unit);}
-            let basicUpdateDevicePower=function($dom,newVal,options={},data={}){
+            let basicUpdateValueUnit=function($dom,newVal,options={},data={},stageID=""){$dom.html(newVal+" "+options.unit);}
+            let basicUpdateValueBrightness=function($dom,newVal,options={},data={},stageID=""){
+                $dom.html(newVal+" "+options.unit);
+                let $b1=$("<button class='brightnessButton'>-</button>");
+                let $b2=$("<button class='brightnessButton'>+</button>");
+                $b1.click(()=>{if(newVal<10){newVal=0;}else{newVal-=10;}vis.setValue(stageID,newVal);});
+                $b2.click(()=>{if(newVal>90){newVal=100;}else{newVal+=10;}vis.setValue(stageID,newVal);});
+                $dom.append($b1);
+                $dom.append($b2);
+            }
+            let basicUpdateDevicePower=function($dom,newVal,options={},data={},stageID=""){
                 console.log("update external");
                 var exP=null;var percent=null;
                 $.each(data,(k,v)=>{
@@ -103,7 +112,7 @@ vis.binds["vis-shelly"] = {
                 if(exP!=null&&typeof exP=="object"&&exP.val==true){$dom.addClass("externalPower");$dom.html("Energie");}
                 else {$dom.addClass("battery"),$dom.html((percent==null||typeof percent!="object"?0:percent.val)+" %");}                
             }
-            let basicUpdateSwitch=function($dom,newVal,options={},data={}){
+            let basicUpdateSwitch=function($dom,newVal,options={},data={},stageID=""){
                 $dom.removeClass("wait");
                 if(newVal==true){$dom.addClass("active");}else{$dom.removeClass("active");}
             }
@@ -114,7 +123,7 @@ vis.binds["vis-shelly"] = {
             }
             switch(val.type){
                 case "SHDM-2":typeConfig={"domID":domID,
-                    update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"brightness":{"name":"brightness","unit":"%","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
+                    update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"brightness":{"name":"brightness","unit":"%","updateValue":basicUpdateValueBrightness},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
                     view:{info:{"power":{"name":"power","class":"icon","html":""},"brightness":{"name":"brightness","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
                     action:{"switch":{"name":"switch","click":basicSwitchAction}},
                     dataPoint:{0:{"power":val.stateId+".lights.Power","switch":val.stateId+".lights.Switch","brightness":val.stateId+".lights.brightness","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
@@ -334,7 +343,7 @@ vis.binds["vis-shelly"] = {
             if(typeof newVal=="object")newVal=newVal.val;
             $domDev.data("data",data);
         }
-        configUpdate.updateValue($dom,newVal,configUpdate,data);
+        configUpdate.updateValue($dom,newVal,configUpdate,data,sID);
         // $dom.html(configUpdate.getValue(newVal,configUpdate,data));
 
         // console.log(typeConfig.update[sType].value(newVal,{"unit":typeConfig.update[sType].unit}));
