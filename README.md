@@ -17,7 +17,15 @@
 A VIS adapter for display Shelly devices
 
 ## Developer manual
-This section is intended for the developer. It can be deleted later.
+
+Moin,
+
+dieses Projekt soll eine einfache Möglichkeit bieten Shelly Geräte die sich peer MQQT mit der Shelly App verbunden haben in VIS zu integrieren. Bisher werden alle Geräte erkannt und bekannte TYPEN automatisch dargestellt.
+
+(readme/images/FotoShellyAnleitung1.png)
+
+Das Projekt ist erst am Anfang und noch lange nicht stable.
+
 
 ### DISCLAIMER
 
