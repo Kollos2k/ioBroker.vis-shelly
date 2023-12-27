@@ -81,6 +81,7 @@ vis.binds["vis-shelly"] = {
             let typeConfig={};            
             let switchButton=`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`;
             let basicUpdateValue=function($dom,newVal,options={},data={}){$dom.html(newVal);}
+            let basicUpdateMotionValue=function($dom,newVal,options={},data={}){$dom.removeClass("motionyes");$dom.removeClass("motionno");if(newVal==true){$dom.addClass("motionyes");$dom.html("Ja");}else{$dom.addClass("motionno");$dom.html("Nein");}}
             let basicUpdateValueName=function($dom,newVal,optons={},data={}){
                 var name=null;var oname=null;
                 $.each(data,(k,v)=>{
@@ -190,7 +191,32 @@ vis.binds["vis-shelly"] = {
                             "name":val.stateId+".name","oname":vsID+".0.overrideName"
                         }
                     }};
-                break;                
+                break;
+                case "SHMOS-02":
+                    typeConfig={"domID":domID,
+                    update:{
+                        "lux":{"name":"lux","unit":"Lux","updateValue":basicUpdateValueUnit},
+                        "batteryPercent":{"name":"devicePower","unit":"%","updateValue":basicUpdateValueUnit},
+                        "motion":{"name":"motion","updateValue":basicUpdateMotionValue},
+                        "temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},
+                        "name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}
+                    },
+                    view:{
+                        info:{
+                            "temperature":{"name":"temperature","class":"icon","html":""},
+                            "batteryPercent":{"name":"batteryPercent","class":"icon","html":""},
+                            "lux":{"name":"lux","class":"icon","html":""}},
+                        "action":{"motion":{"name":"motion","class":"","html":""}}},
+                    dataPoint:{
+                        0:{
+                            "temperature":val.stateId+".sensor.temperatureC",
+                            "motion":val.stateId+".sensor.motion",
+                            "lux":val.stateId+".sensor.lux",
+                            "batteryPercent":val.stateId+".sensor.battery",
+                            "name":val.stateId+".name","oname":vsID+".0.overrideName"
+                        }
+                    }};
+                break;
             }
             if(typeof typeConfig.dataPoint=="undefined")return false;
             $.each(typeConfig.dataPoint,(dpKey,dpVal)=>{
