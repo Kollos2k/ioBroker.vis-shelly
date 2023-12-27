@@ -137,7 +137,7 @@ vis.binds["vis-shelly"] = {
             $.each(typeConfig.dataPoint,(dpKey,dpVal)=>{
                 // console.log(dpVal);
                 var deviceDomID=typeConfig.domID+dpKey;
-                let text=`<div id="${deviceDomID}" class="vis-shelly_DeviceBody">`;
+                let text=`<div id="${deviceDomID}" class="vis-shelly_DeviceBody" title="${val.stateID}">`;
                 text+=`<span name="status"><span><span class="connectionState connectionStateOnline"></span></span></span>`;
                 text+=`<span name="icon"></span>`;
                 text+=`<span name="name" data_sname="" data_oname="">${deviceDomID}</span>`;
@@ -210,20 +210,21 @@ vis.binds["vis-shelly"] = {
             let deviceIDs=JSON.parse(data["vis-shelly.0.devices.ids"].val);
             // console.log(deviceIDs);
             $.each(deviceIDs,(k,v)=>{
+                console.log(v);
                 buildDevice(v);
             });
         });
 
     },
     updateDeviceValue: function (widgetID, deviceDomID,typeConfig, sType,sID, newVal=undefined) {
-        if(deviceDomID=="shellyplushtd4d4da7cdcd410"){
-            console.log(widgetID);
-            console.log(deviceDomID);
-            console.log(typeConfig);
-            console.log(sType);
-            console.log(sID);
-            console.log(newVal);
-        }
+        // if(deviceDomID=="shellyplushtd4d4da7cdcd410"){
+        //     console.log(widgetID);
+        //     console.log(deviceDomID);
+        //     console.log(typeConfig);
+        //     console.log(sType);
+        //     console.log(sID);
+        //     console.log(newVal);
+        // }
         if(typeof typeConfig.update=="undefined")return false;
         if(typeof typeConfig.update[sType]=="undefined")return false;
         let configUpdate=typeConfig.update[sType];
@@ -236,7 +237,7 @@ vis.binds["vis-shelly"] = {
         if($dom.length==0)return false;
         
         var data=$domDev.data("data");
-        if(deviceDomID=="shellyplushtd4d4da7cdcd410")console.log(data);
+        // if(deviceDomID=="shellyplushtd4d4da7cdcd410")console.log(data);
         // console.log(data);
         // console.log(sID);
         if(typeof data[sID]==null)data[sID]={val:""};
