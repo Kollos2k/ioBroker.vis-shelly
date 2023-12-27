@@ -214,8 +214,10 @@ vis.binds["vis-shelly"] = {
         if(deviceDomID=="shellyplushtd4d4da7cdcd410")console.log(data);
         // console.log(data);
         // console.log(sID);
-        if(typeof data[sID]==null)data[sID]={};        
-        data[sID].val=newVal;
+        if(typeof data[sID]==null)data[sID]={};
+        if(typeof newVal=="object")data[sID]=newVal;
+        else data[sID].val=newVal;
+        if(typeof newVal=="object")newVal=newVal.val;
         $dom.html(configUpdate.getValue(newVal,configUpdate,data));
         $domDev.data("data",data);
 
