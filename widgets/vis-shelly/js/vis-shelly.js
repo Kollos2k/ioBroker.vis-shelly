@@ -77,13 +77,45 @@ vis.binds["vis-shelly"] = {
             let vsID="vis-shelly.0.devices."+val.id;
             let domID=val.id.replaceAll('#','');
             let typeConfig={};
+            let switchButton=`<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`;
+            let basicPrintValue=function(newVal,options={},data={}){return newVal;}
+            let basicPrintValueName=function(newVal,optons={},data={}){
+                var name=null;var oname=null;
+                $.each(data,(k,v)=>{
+                    if(k.lastIndexOf(".name")>-1)name=v;
+                    else if(k.lastIndexOf(".overrideName")>-1)oname=v;
+                });if(name==null||typeof name!="object")name={val:""};if(oname==null||typeof oname!="object")oname={val:""};
+                return oname.val.length>0?oname.val:name.val;
+            }
+            let basicPrintValueUnit=function(newVal,options={},data={}){return newVal+" "+options.unit;}
             switch(val.type){
-                case "SHDM-2":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".lights.Power","switch":val.stateId+".lights.Switch","brightness":val.stateId+".lights.brightness","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
-                case "SHPLG-S":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
-                case "shellyplus1pm":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
-                case "shellyplusplugs":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;     
-                case "shellyplus2pm":typeConfig={"domID":domID,dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName"}}};break;     
-                case "shellyplusht":typeConfig={"domID":domID,dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
+                case "SHDM-2":typeConfig={"domID":domID,
+                    update:{"power":{"name":"power","unit":"W","getValue":basicPrintValueUnit},"brightness":{"name":"brightness","unit":"%","getValue":basicPrintValueUnit},"name":{"name":"name","getValue":basicPrintValueName},"oname":{"name":"name","getValue":basicPrintValueName}},
+                    view:{info:{"power":{"name":"power","class":"icon","html":""},"brightness":{"name":"brightness","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
+                    dataPoint:{0:{"power":val.stateId+".lights.Power","switch":val.stateId+".lights.Switch","brightness":val.stateId+".lights.brightness","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
+                    break;
+                case "SHPLG-S":typeConfig={"domID":domID,
+                    update:{"power":{"name":"power","unit":"W","getValue":basicPrintValueUnit},"name":{"name":"name","getValue":basicPrintValueName},"oname":{"name":"name","getValue":basicPrintValueName}},
+                    view:{info:{"power":{"name":"power","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
+                    break;
+                case "shellyplus1pm":typeConfig={"domID":domID,
+                    update:{"power":{"name":"power","unit":"W","getValue":basicPrintValueUnit},"voltage":{"name":"voltage","unit":"V","getValue":basicPrintValueUnit},"name":{"name":"name","getValue":basicPrintValueName},"oname":{"name":"name","getValue":basicPrintValueName}},
+                    view:{info:{"power":{"name":"power","class":"icon","html":""},"voltage":{"name":"voltage","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
+                    break;
+                case "shellyplusplugs":typeConfig={"domID":domID,
+                    update:{"power":{"name":"power","unit":"W","getValue":basicPrintValueUnit},"voltage":{"name":"voltage","unit":"V","getValue":basicPrintValueUnit},"name":{"name":"name","getValue":basicPrintValueName},"oname":{"name":"name","getValue":basicPrintValueName}},
+                    view:{info:{"power":{"name":"power","class":"icon","html":""},"voltage":{"name":"voltage","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;     
+                case "shellyplus2pm":typeConfig={"domID":domID,
+                    update:{"power":{"name":"power","unit":"W","getValue":basicPrintValueUnit},"voltage":{"name":"voltage","unit":"V","getValue":basicPrintValueUnit},"name":{"name":"name","getValue":basicPrintValueName},"oname":{"name":"name","getValue":basicPrintValueName}},
+                    view:{info:{"power":{"name":"power","class":"icon","html":""},"voltage":{"name":"voltage","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName"}}};break;     
+                case "shellyplusht":typeConfig={"domID":domID,
+                    update:{"humidity":{"name":"humidity","unit":"%","getValue":basicPrintValueUnit},"temperature":{"name":"temperature","unit":"°C","getValue":basicPrintValueUnit},"name":{"name":"name","getValue":basicPrintValueName},"oname":{"name":"name","getValue":basicPrintValueName}},
+                    view:{info:{"humidity":{"name":"humidity","class":"icon","html":""},"externalPower":{"name":"devicePower","class":"icon","html":""}},"action":{"temperature":{"name":"temperature","class":"","html":""}}},
+                    dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
 
                 
             }
@@ -95,39 +127,53 @@ vis.binds["vis-shelly"] = {
                 text+=`<span name="icon"></span>`;
                 text+=`<span name="name" data_sname="" data_oname="">${deviceDomID}</span>`;
                 text+=`<span name="info">`;
-                if(typeof dpVal.power!="undefined"){text+=`<span><span name="power" class="icon"></span></span>`;}
-                if(typeof dpVal.voltage!="undefined"){text+=`<span><span name="voltage" class="icon"></span></span>`;}
-                if(typeof dpVal.humidity!="undefined"){text+=`<span><span name="humidity" class="icon"></span></span>`;}
-                if(typeof dpVal.externalPower!="undefined"||typeof dpVal.batteryPercent!="undefined"){text+=`<span><span name="devicePower" class="icon"></span></span>`;}
+                $.each(typeConfig.view.info,(viewKey,viewValue)=>{
+                    text+=`<span><span name="${viewValue.name}" class="${viewValue.class}">${viewValue.html}</span></span>`;
+                });
+                // if(typeof dpVal.power!="undefined"){text+=`<span><span name="power" class="icon"></span></span>`;}
+                // if(typeof dpVal.voltage!="undefined"){text+=`<span><span name="voltage" class="icon"></span></span>`;}
+                // if(typeof dpVal.humidity!="undefined"){text+=`<span><span name="humidity" class="icon"></span></span>`;}
+                // if(typeof dpVal.externalPower!="undefined"||typeof dpVal.batteryPercent!="undefined"){text+=`<span><span name="devicePower" class="icon"></span></span>`;}
                 text+=`</span>`;
                 text+=`<span name="action">`;
-                if(typeof dpVal.switch!="undefined"){text+=`<span name="switch" curState="false"><svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg></span>`;}
-                if(typeof dpVal.temperature!="undefined"){text+=`<span name="temperature"></span>`;}
+                $.each(typeConfig.view.action,(viewKey,viewValue)=>{
+                    text+=`<span><span name="${viewValue.name}" class="${viewValue.class}">${viewValue.html}</span></span>`;
+                });
+                // if(typeof dpVal.switch!="undefined"){text+=`<span name="switch" curState="false"></span>`;}
+                // if(typeof dpVal.temperature!="undefined"){text+=`<span name="temperature"></span>`;}
                 text+=`</span>`;
                 $('#' + widgetID).append(text);
-                $('#' + widgetID).find("#"+deviceDomID).find("[name='switch']").click(function(){$(this).addClass("wait");vis.setValue(dpVal.switch,$(this).attr("curState")=="true"?false:true);});
+                let $domDev=$('#' + widgetID).find("#"+deviceDomID)
+                $domDev.data("config",typeConfig);
+                $domDev.find("[name='switch']").click(function(){$(this).addClass("wait");vis.setValue(dpVal.switch,$(this).attr("curState")=="true"?false:true);});
                 
-                console.log("GetStates: ");
-                console.log(Object.values(dpVal));
+                // console.log("GetStates: ");
+                // console.log(Object.values(dpVal));
                 vis.conn.getStates(Object.values(dpVal),(error, data)=>{
-                    console.log("done");
+                    $domDev.data("data",data);
+                    // console.log("done");
                     vis.updateStates(data);
                     vis.conn.subscribe(Object.values(dpVal));
                     $.each(dpVal,(sType,sID)=>{
-                        console.log(data[sID]);
+                        // console.log("bind "+sType);
+                        // console.log(data[sID]);
                         if(typeof data[sID]!="undefined"){
-                            vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,sType,getStateObject(data[sID]).val);
+                            vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,typeConfig,sType,sID,getStateObject(data[sID]).val);
                             vis.states.bind(sID+".val" , (e, newVal, oldVal)=>{                           
-                                vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,sType,newVal);
+                                vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,typeConfig,sType,sID,newVal);
                             });
                         }
                     });
 
                     
                     // vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"name",getStateObject(data[dpVal["oname"]]).val.length>0?data[dpVal["oname"]].val:getStateObject(data[dpVal["name"]]).val);
-                    vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"name",getStateObject(data[dpVal["name"]]).val);
-                    vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"oname",getStateObject(data[dpVal["oname"]]).val);
+
+
+                    // vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"name",getStateObject(data[dpVal["name"]]).val);
+                    // vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"oname",getStateObject(data[dpVal["oname"]]).val);
                     
+
+
                     // vis.states.bind(key+".val" , (e, newVal, oldVal)=>{
                     //     console.log(searchText + ": " +newVal);
                     //     vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,searchText,key,newVal,type);
@@ -144,23 +190,55 @@ vis.binds["vis-shelly"] = {
         });
 
     },
-    updateDeviceValue: function (widgetID, deviceDomID, sType, newVal) {
-        console.log(deviceDomID+"      "+sType+"     "+newVal);
-        console.log(newVal);
-        if(typeof newVal=="object")newVal=newVal.val;
-        if(newVal==null)newVal="";
-        let dom=null;
-        switch(sType){
-            case "name":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_sname",newVal);if(String(dom.attr("data_oname")).length==0)dom.html(newVal+" // "+deviceDomID);break;
-            case "oname":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_oname",newVal);dom.html(newVal.length==0?dom.attr("data_sname")+" // "+deviceDomID:newVal+" // "+deviceDomID);break;
-            case "power":$("#"+deviceDomID).find("[name='power']").html(newVal+" W");break;
-            case "voltage":$("#"+deviceDomID).find("[name='voltage']").html(newVal+" V");break;            
+    updateDeviceValue: function (widgetID, deviceDomID,typeConfig, sType,sID, newVal) {
+        if(deviceDomID=="shellyplushtd4d4da7cdcd410"){
+            console.log(widgetID);
+            console.log(deviceDomID);
+            console.log(typeConfig);
+            console.log(sType);
+            console.log(sID);
+            console.log(newVal);
+        }
+        if(typeof typeConfig.update=="undefined")return false;
+        if(typeof typeConfig.update[sType]=="undefined")return false;
+        let configUpdate=typeConfig.update[sType];
+        // console.log(configUpdate.getValue(newVal,configUpdate));
+        let $domDev=$("#"+deviceDomID);
+        // console.log($domDev.length);
+        if($domDev.length==0)return false;
+        let $dom=$domDev.find("[name='"+configUpdate.name+"']");
+        // console.log($dom.length);
+        if($dom.length==0)return false;
+        
+        var data=$domDev.data("data");
+        if(deviceDomID=="shellyplushtd4d4da7cdcd410")console.log(data);
+        // console.log(data);
+        // console.log(sID);
+        if(typeof data[sID]==null)data[sID]={};        
+        data[sID].val=newVal;
+        $dom.html(configUpdate.getValue(newVal,configUpdate,data));
+        $domDev.data("data",data);
+
+        // console.log(typeConfig.update[sType].value(newVal,{"unit":typeConfig.update[sType].unit}));
+        // console.log("NEW VALUE");
+        // console.log($("#"+deviceDomID).data("data"));
+        // console.log(deviceDomID+"      "+sType+"     "+newVal);
+        // console.log(newVal);
+
+        // if(typeof newVal=="object")newVal=newVal.val;
+        // if(newVal==null)newVal="";
+        // let dom=null;
+        // switch(sType){
+        //     case "name":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_sname",newVal);if(String(dom.attr("data_oname")).length==0)dom.html(newVal+" // "+deviceDomID);break;
+        //     case "oname":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_oname",newVal);dom.html(newVal.length==0?dom.attr("data_sname")+" // "+deviceDomID:newVal+" // "+deviceDomID);break;
+        //     case "power":$("#"+deviceDomID).find("[name='power']").html(newVal+" W");break;
+        //     case "voltage":$("#"+deviceDomID).find("[name='voltage']").html(newVal+" V");break;            
             
-            case "temperature":$("#"+deviceDomID).find("[name='temperature']").html(newVal+" °C");break;
-            case "humidity":$("#"+deviceDomID).find("[name='humidity']").html(newVal+" V");break;
-            case "externalPower":$("#"+deviceDomID).find("[name='devicePower']").html(newVal+" V");break;
-            case "switch":dom=$("#"+deviceDomID).find("[name='switch']");dom.removeClass("wait");if(newVal==true){dom.addClass("active");}else{dom.removeClass("active");} dom.attr("curState",newVal); break;
-        };
+        //     case "temperature":$("#"+deviceDomID).find("[name='temperature']").html(newVal+" °C");break;
+        //     case "humidity":$("#"+deviceDomID).find("[name='humidity']").html(newVal+" V");break;
+        //     case "externalPower":$("#"+deviceDomID).find("[name='devicePower']").html(newVal+" V");break;
+        //     case "switch":dom=$("#"+deviceDomID).find("[name='switch']");dom.removeClass("wait");if(newVal==true){dom.addClass("active");}else{dom.removeClass("active");} dom.attr("curState",newVal); break;
+        // };
         
     },    
     createWidget: function (widgetID, view, data, style) {
