@@ -133,6 +133,7 @@ vis.binds["vis-shelly"] = {
 
                 
             }
+            if(typeof typeConfig.dataPoint!=="undefined")return false;
             $.each(typeConfig.dataPoint,(dpKey,dpVal)=>{
                 // console.log(dpVal);
                 var deviceDomID=typeConfig.domID+dpKey;
