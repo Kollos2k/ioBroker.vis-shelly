@@ -177,7 +177,7 @@ vis.binds["vis-shelly"] = {
                     },
                     view:{
                         info:{
-                            "temperature":{"name":"temperature","class":"temperature","html":""},
+                            "temperature":{"name":"temperature","class":"icon","html":""},
                             "valvePosition":{"name":"valvePosition","class":"icon","html":""},
                             "devicePower":{"name":"devicePower","class":"icon","html":""}},
                         "action":{}},

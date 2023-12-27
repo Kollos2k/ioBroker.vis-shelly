@@ -35,6 +35,8 @@ body{--shellyButtonOuterOpacity:0.49;--shellyButtonOuterOffset:1;--shellyButtonO
 .vis-shelly_DeviceBody > [name="info"] [name="voltage"] {background-image: url(/vis/widgets/vis-shelly/images/shellyVoltage.svg);}
 .vis-shelly_DeviceBody > [name="info"] [name="humidity"] {background-image: url(/vis/widgets/vis-shelly/images/shellyDeviceHumidity.svg);}
 .vis-shelly_DeviceBody > [name="info"] [name="brightness"] {background-image: url(/vis/widgets/vis-shelly/images/shellyDeviceLight.svg);}
+.vis-shelly_DeviceBody > [name="info"] [name="temperature"] {background-image: url(/vis/widgets/vis-shelly/images/shellyDeviceTemperature.svg);}
+.vis-shelly_DeviceBody > [name="info"] [name="valvePosition"] {background-image: url(/vis/widgets/vis-shelly/images/shellyDeviceValvePosition.svg);}
 .vis-shelly_DeviceBody > [name="info"] [name="devicePower"].externalPower {background-image: url(/vis/widgets/vis-shelly/images/shellyDeviceEnergyPlug.svg);}
 .vis-shelly_DeviceBody > [name="info"] [name="devicePower"].battery {background-image: url(/vis/widgets/vis-shelly/images/shellyDeviceBattery.svg);}
 /* .vis-shelly_DeviceBody > [name="info"] .value{height: 100%;display: inline-block;position: absolute;font-size: 15px;top: 1px;} */
