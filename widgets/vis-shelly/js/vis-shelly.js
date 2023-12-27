@@ -66,8 +66,10 @@ vis.binds["vis-shelly"] = {
             }, 100);
         }
         vis.conn.subscribe("vis-shelly.0.devices.ids",()=>{});
+        
         console.log("vis")
         console.log(vis);
+
         $('#' + widgetID).empty();
         var getStateObject=function(state){
             if(typeof state==null)return {"ack":true,from:"",lc:0,q:0,ts:0,user:"",val:""}
@@ -130,10 +132,10 @@ vis.binds["vis-shelly"] = {
                     update:{"humidity":{"name":"humidity","unit":"%","updateValue":basicUpdateValueUnit},"temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}},
                     view:{info:{"humidity":{"name":"humidity","class":"icon","html":""},"externalPower":{"name":"devicePower","class":"icon","html":""}},"action":{"temperature":{"name":"temperature","class":"temperature","html":""}}},
                     dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
-
+                default: return false;break;
                 
             }
-            if(typeof typeConfig.dataPoint!=="undefined")return false;
+            if(typeof typeConfig.dataPoint!="undefined")return false;
             $.each(typeConfig.dataPoint,(dpKey,dpVal)=>{
                 // console.log(dpVal);
                 var deviceDomID=typeConfig.domID+dpKey;
