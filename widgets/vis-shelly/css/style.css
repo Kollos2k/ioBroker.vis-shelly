@@ -35,6 +35,7 @@ body{--shellyButtonOuterOpacity:0.49;--shellyButtonOuterOffset:1;--shellyButtonO
 .vis-shelly_DeviceBody > [name="info"] [name="voltage"] {background-image: url(/vis/widgets/vis-shelly/images/shellyVoltage.svg);}
 /* .vis-shelly_DeviceBody > [name="info"] .value{height: 100%;display: inline-block;position: absolute;font-size: 15px;top: 1px;} */
 .vis-shelly_DeviceBody > [name="action"]{grid-area: action;}
+.vis-shelly_DeviceBody > [name="action"] .temperature{background-color: #444;color: white;display: flex;height: calc(100% - 10px);margin: 5px;text-align: center;justify-content: center;align-items: center;padding: 5px;border-radius: 10px;font-size: 16px;}
 .vis-shelly_DeviceBody [name="svgShellyButton"] {padding:3px;cursor: pointer;}
 .vis-shelly_DeviceBody .wait [name="svgShellyButton"] {--shellyButtonOuterColor: rgba(219, 118, 118, 0.849);}
 .vis-shelly_DeviceBody .active [name="svgShellyButton"] {--shellyButtonOuterColor: #44f;}
