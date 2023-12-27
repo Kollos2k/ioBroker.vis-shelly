@@ -22,7 +22,7 @@ Moin,
 
 dieses Projekt soll eine einfache Möglichkeit bieten Shelly Geräte die sich peer MQQT mit der Shelly App verbunden haben in VIS zu integrieren. Bisher werden alle Geräte erkannt und bekannte TYPEN automatisch dargestellt.
 
-(readme/images/FotoShellyAnleitung1.png)
+<img src="readme/images/FotoShellyAnleitung1.png">
 
 Das Projekt ist erst am Anfang und noch lange nicht stable.
 
