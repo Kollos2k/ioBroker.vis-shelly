@@ -50,7 +50,7 @@ $.extend(
 
 // this code can be placed directly in vis-shelly.html
 vis.binds["vis-shelly"] = {
-    version: "0.0.1",
+    version: "0.0.3",
     showVersion: function () {
         if (vis.binds["vis-shelly"].version) {
             console.log('Version vis-shelly: ' + vis.binds["vis-shelly"].version);
@@ -134,21 +134,63 @@ vis.binds["vis-shelly"] = {
                     update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"voltage":{"name":"voltage","unit":"V","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
                     view:{info:{"power":{"name":"power","class":"icon","html":""},"voltage":{"name":"voltage","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
                     action:{"switch":{"name":"switch","click":basicSwitchAction}},
-                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;     
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
+                    break;
                 case "shellyplus2pm":typeConfig={"domID":domID,
                     update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"voltage":{"name":"voltage","unit":"V","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
                     view:{info:{"power":{"name":"power","class":"icon","html":""},"voltage":{"name":"voltage","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
                     action:{"switch":{"name":"switch","click":basicSwitchAction}},
-                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName"}}};break;     
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName"}}};
+                    break;
                 case "shellyplusht":typeConfig={"domID":domID,
-                    update:{"humidity":{"name":"humidity","unit":"%","updateValue":basicUpdateValueUnit},"batteryPercent":{"name":"devicePower","updateValue":basicUpdateDevicePower},"externalPower":{"name":"devicePower","updateValue":basicUpdateDevicePower},"temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}},
-                    view:{info:{"humidity":{"name":"humidity","class":"icon","html":""},"externalPower":{"name":"devicePower","class":"icon","html":""}},"action":{"temperature":{"name":"temperature","class":"temperature","html":""}}},
-                    dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;
-                case "SHTRV-01":typeConfig={"domID":domID,
-                    update:{"valvePosition":{"name":"valvePosition","unit":"%","updateValue":basicUpdateValueUnit},"batteryPercent":{"name":"devicePower","updateValue":basicUpdateDevicePower},"externalPower":{"name":"devicePower","updateValue":basicUpdateDevicePower},"temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}},
-                    view:{info:{"temperature":{"name":"temperature","class":"temperature","html":""},"valvePosition":{"name":"valvePosition","class":"icon","html":""},"devicePower":{"name":"devicePower","class":"icon","html":""}},"action":{}},
-                    dataPoint:{0:{"temperature":val.stateId+".tmp.temperatureC","valvePosition":val.stateId+".tmp.valvePosition","externalPower":val.stateId+".bat.charger","batteryPercent":val.stateId+".bat.value","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;dataPoint:{0:{"temperature":val.stateId+".Temperature0.Celsius","humidity":val.stateId+".Humidity0.Relative","externalPower":val.stateId+".DevicePower0.ExternalPower","batteryPercent":val.stateId+".DevicePower0.BatteryPercent","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};break;                
-                
+                    update:{
+                        "humidity":{"name":"humidity","unit":"%","updateValue":basicUpdateValueUnit},
+                        "batteryPercent":{"name":"devicePower","updateValue":basicUpdateDevicePower},
+                        "externalPower":{"name":"devicePower","updateValue":basicUpdateDevicePower},
+                        "temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},
+                        "name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}
+                    },
+                    view:{
+                        info:{
+                            "humidity":{"name":"humidity","class":"icon","html":""},
+                            "externalPower":{"name":"devicePower","class":"icon","html":""}},
+                        action:{"temperature":{"name":"temperature","class":"temperature","html":""}}
+                    },
+                    dataPoint:{
+                        0:{
+                            "temperature":val.stateId+".Temperature0.Celsius",
+                            "humidity":val.stateId+".Humidity0.Relative",
+                            "externalPower":val.stateId+".DevicePower0.ExternalPower",
+                            "batteryPercent":val.stateId+".DevicePower0.BatteryPercent",
+                            "name":val.stateId+".name","oname":vsID+".0.overrideName"
+                        }
+                    }};                            
+                break;
+                case "SHTRV-01":
+                    typeConfig={"domID":domID,
+                    update:{
+                        "valvePosition":{"name":"valvePosition","unit":"%","updateValue":basicUpdateValueUnit},
+                        "batteryPercent":{"name":"devicePower","updateValue":basicUpdateDevicePower},
+                        "externalPower":{"name":"devicePower","updateValue":basicUpdateDevicePower},
+                        "temperature":{"name":"temperature","unit":"°C","updateValue":basicUpdateValueUnit},
+                        "name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName}
+                    },
+                    view:{
+                        info:{
+                            "temperature":{"name":"temperature","class":"temperature","html":""},
+                            "valvePosition":{"name":"valvePosition","class":"icon","html":""},
+                            "devicePower":{"name":"devicePower","class":"icon","html":""}},
+                        "action":{}},
+                    dataPoint:{
+                        0:{
+                            "temperature":val.stateId+".tmp.temperatureC",
+                            "valvePosition":val.stateId+".tmp.valvePosition",
+                            "externalPower":val.stateId+".bat.charger",
+                            "batteryPercent":val.stateId+".bat.value",
+                            "name":val.stateId+".name","oname":vsID+".0.overrideName"
+                        }
+                    }};
+                break;                
             }
             if(typeof typeConfig.dataPoint=="undefined")return false;
             $.each(typeConfig.dataPoint,(dpKey,dpVal)=>{
