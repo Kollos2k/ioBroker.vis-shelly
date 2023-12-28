@@ -27,6 +27,17 @@ dieses Projekt soll eine einfache Möglichkeit bieten Shelly Geräte die sich pe
 Das Projekt ist erst am Anfang und noch lange nicht stable.
 
 
+Bisher unterstützte Devices
+
+Dimmer 2
+Motion 2
+PlugS
+PlugS Plus
+1PM Plus
+2PM Plus
+plusht
+TRV
+
 ### DISCLAIMER
 
 Please make sure that you consider copyrights and trademarks when you use names or logos of a company and add a disclaimer to your README.
