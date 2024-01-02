@@ -106,8 +106,7 @@ For later updates, the above procedure is not necessary. Just do the following:
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.4-alpha.0 (2024-01-02)
 * (Kollos2k) initial release
 
 ## License

@@ -1,114 +1,127 @@
 {
-    "common": {
-        "name": "vis-shelly",
-        "version": "0.0.3",
-        "news": {
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "uk": "Початкова версія",
-                "zh-cn": "首次出版"
-            }
-        },
-        "title": "Shelly VIS",
-        "titleLang": {
-            "en": "Shelly VIS",
-            "de": "Shelly VIS",
-            "ru": "Шелли ВИС",
-            "pt": "Shelly VIS",
-            "nl": "Shelly VIS",
-            "fr": "Shelly VIS",
-            "it": "ShellyVIS",
-            "es": "Shelly VIS",
-            "pl": "Shelly VIS",
-            "uk": "Шелі ВІС",
-            "zh-cn": "雪莉可见光"
-        },
-        "desc": {
-            "en": "A VIS adapter for display Shelly devices",
-            "de": "Ein VIS-Adapter für Display-Shelly-Geräte",
-            "ru": "Адаптер VIS для дисплеев Shelly",
-            "pt": "Um adaptador VIS para dispositivos Shelly de exibição",
-            "nl": "Een VIS-adapter voor het weergeven van Shelly-apparaten",
-            "fr": "Un adaptateur VIS pour les appareils d'affichage Shelly",
-            "it": "Un adattatore VIS per visualizzare i dispositivi Shelly",
-            "es": "Un adaptador VIS para mostrar dispositivos Shelly",
-            "pl": "Adapter VIS do wyświetlaczy urządzeń Shelly",
-            "uk": "Адаптер VIS для дисплеїв Shelly",
-            "zh-cn": "用于显示 Shelly 设备的 VIS 适配器"
-        },
-        "authors": [
-            "Kollos2k <kollos@vorsicht-bissig.de>"
-        ],
-        "keywords": [
-            "vis",
-            "shelly"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "vis-shelly.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Kollos2k/ioBroker.vis-shelly/main/admin/vis-shelly.png",
-        "readme": "https://github.com/Kollos2k/ioBroker.vis-shelly/blob/main/README.md",
-        "loglevel": "info",
-        "restartAdapters": [
-            "vis"
-        ],
-        "connectionType": "local",
-        "dataSource": "assumption",
-        "compact": true,
-        "type": "visualization",
-        "mode": "daemon",
-        "tier": 3,
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.3.22"
-            },
-            "vis"
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=6.0.0"
-            }
-        ]
+  "common": {
+    "name": "vis-shelly",
+    "version": "0.0.4-alpha.0",
+    "news": {
+      "0.0.4-alpha.0": {
+        "en": "initial release",
+        "de": "erstausstrahlung",
+        "ru": "начальный выпуск",
+        "pt": "lançamento inicial",
+        "nl": "niet",
+        "fr": "initial release",
+        "it": "rilascio iniziale",
+        "es": "liberación inicial",
+        "pl": "pierwsze wydanie",
+        "uk": "початковий реліз",
+        "zh-cn": "初步释放"
+      },
+      "0.0.1": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "uk": "Початкова версія",
+        "zh-cn": "首次出版"
+      }
     },
-    "native": {
-        "option1": true,
-        "option2": "42"
+    "title": "Shelly VIS",
+    "titleLang": {
+      "en": "Shelly VIS",
+      "de": "Shelly VIS",
+      "ru": "Шелли ВИС",
+      "pt": "Shelly VIS",
+      "nl": "Shelly VIS",
+      "fr": "Shelly VIS",
+      "it": "ShellyVIS",
+      "es": "Shelly VIS",
+      "pl": "Shelly VIS",
+      "uk": "Шелі ВІС",
+      "zh-cn": "雪莉可见光"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "A VIS adapter for display Shelly devices",
+      "de": "Ein VIS-Adapter für Display-Shelly-Geräte",
+      "ru": "Адаптер VIS для дисплеев Shelly",
+      "pt": "Um adaptador VIS para dispositivos Shelly de exibição",
+      "nl": "Een VIS-adapter voor het weergeven van Shelly-apparaten",
+      "fr": "Un adaptateur VIS pour les appareils d'affichage Shelly",
+      "it": "Un adattatore VIS per visualizzare i dispositivi Shelly",
+      "es": "Un adaptador VIS para mostrar dispositivos Shelly",
+      "pl": "Adapter VIS do wyświetlaczy urządzeń Shelly",
+      "uk": "Адаптер VIS для дисплеїв Shelly",
+      "zh-cn": "用于显示 Shelly 设备的 VIS 适配器"
+    },
+    "authors": [
+      "Kollos2k <kollos@vorsicht-bissig.de>"
+    ],
+    "keywords": [
+      "vis",
+      "shelly"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "vis-shelly.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Kollos2k/ioBroker.vis-shelly/main/admin/vis-shelly.png",
+    "readme": "https://github.com/Kollos2k/ioBroker.vis-shelly/blob/main/README.md",
+    "loglevel": "info",
+    "restartAdapters": [
+      "vis"
+    ],
+    "connectionType": "local",
+    "dataSource": "assumption",
+    "compact": true,
+    "type": "visualization",
+    "mode": "daemon",
+    "tier": 3,
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.22"
+      },
+      "vis"
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.0.0"
+      }
     ]
+  },
+  "native": {
+    "option1": true,
+    "option2": "42"
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }

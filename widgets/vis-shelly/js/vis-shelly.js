@@ -50,7 +50,7 @@ $.extend(
 
 // this code can be placed directly in vis-shelly.html
 vis.binds["vis-shelly"] = {
-    version: "0.0.3",
+    version: "0.0.4",
     showVersion: function () {
         if (vis.binds["vis-shelly"].version) {
             console.log('Version vis-shelly: ' + vis.binds["vis-shelly"].version);
