@@ -59,9 +59,11 @@
         "extIcon": "https://raw.githubusercontent.com/Kollos2k/ioBroker.vis-shelly/main/admin/vis-shelly.png",
         "readme": "https://github.com/Kollos2k/ioBroker.vis-shelly/blob/main/README.md",
         "loglevel": "info",
-        "restartAdapters": ["vis"],
-		"connectionType": "local",
-		"dataSource": "assumption",
+        "restartAdapters": [
+            "vis"
+        ],
+        "connectionType": "local",
+        "dataSource": "assumption",
         "compact": true,
         "type": "visualization",
         "mode": "daemon",
@@ -73,7 +75,7 @@
             {
                 "js-controller": ">=3.3.22"
             },
-			"vis"
+            "vis"
         ],
         "globalDependencies": [
             {
@@ -86,27 +88,27 @@
         "option2": "42"
     },
     "objects": [],
-	"instanceObjects": [
-		{
-			"_id": "info",
-			"type": "channel",
-			"common": {
-				"name": "Information"
-			},
-			"native": {}
-		},
-		{
-			"_id": "info.connection",
-			"type": "state",
-			"common": {
-				"role": "indicator.connected",
-				"name": "Device or service connected",
-				"type": "boolean",
-				"read": true,
-				"write": false,
-				"def": false
-			},
-			"native": {}
-		}
-	]
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Device or service connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
 }
