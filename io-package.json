@@ -122,6 +122,27 @@
         "def": false
       },
       "native": {}
+    },
+    {
+      "_id": "rooms",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en":"Rooms",
+          "de":"Räume"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "devices",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en":"Devices"
+        }
+      },
+      "native": {}
     }
   ]
 }

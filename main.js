@@ -13,9 +13,10 @@ class visShelly extends utils.Adapter {
 	 * @param {Partial<ioBroker.AdapterOptions>} [options={}]
 	 */
 	constructor(options) {
+		// @ts-ignore
 		super({
 			...options,
-			name: "vis-shelly",
+			name: "vis-shelly"
 		});
 		this.on("ready", this.onReady.bind(this));
 		this.on("objectChange", this.onObjectChange.bind(this));
@@ -30,6 +31,7 @@ class visShelly extends utils.Adapter {
 	async onReady() {
 		this.setState("info.connection", false, true);
 		await this.subscribeForeignObjectsAsync("shelly.*");
+		await this.subscribeObjectsAsync("rooms.*");
 		// Initialize your adapter here
 
 
@@ -54,8 +56,18 @@ class visShelly extends utils.Adapter {
 		// 	native: {},
 		// });
 
-		this.log.info("config option1: " + this.config.option1);
-		this.log.info("config option2: " + this.config.option2);
+		// this.log.info("config option1: " + this.config.option1);
+		// this.log.info("config option2: " + this.config.option2);
+		// await this.setObjectNotExistsAsync("rooms", {
+		// 	type: "channel",
+		// 	common: {
+		// 		name: {
+		// 			"en":"Rooms",
+		// 			"de":"Räume"
+		// 		}
+		// 	},
+		// 	native: {},
+		// });
 		this.updateDeviceList();
 		this.setState("info.connection", true, true);
 
@@ -64,8 +76,45 @@ class visShelly extends utils.Adapter {
 	async updateDeviceList(){
 		var shellyDevices = await this.getForeignObjectsAsync("shelly.*","device");
 		var keysDevices=Object.keys(shellyDevices);	
-	   	var devJSON=[]
-		await this.setObjectAsync("devices.ids", {
+	   	var devJSON=[];
+
+
+
+		// "_id": "enum.rooms",
+		// "type": "enum",
+		// "common": {
+		// 	"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgNS42OWw1IDQuNVYxOGgtMnYtNkg5djZIN3YtNy44MWw1LTQuNU0xMiAzTDIgMTJoM3Y4aDZ2LTZoMnY2aDZ2LThoM0wxMiAzeiIvPg0KPC9zdmc+",
+		// 	"name": {
+		// 		"en": "Rooms",
+		// 		"de": "Räume",
+		// 		"ru": "Комнаты",
+		// 		"pt": "Quartos",
+		// 		"nl": "Kamers",
+		// 		"fr": "Pièces",
+		// 		"it": "Camere",
+		// 		"es": "Habitaciones",
+		// 		"pl": "Pokoje",
+		// 		"uk": "Номери",
+		// 		"zh-cn": "客房"
+		// 	},
+		// 	"desc": {
+		// 		"en": "List of the rooms",
+		// 		"de": "Liste der Räume",
+		// 		"ru": "Список комнат",
+		// 		"pt": "Lista dos quartos",
+		// 		"nl": "Lijst met kamers",
+		// 		"fr": "Liste des chambres",
+		// 		"it": "Elenco delle stanze",
+		// 		"es": "Lista de las habitaciones",
+		// 		"pl": "Lista pokoi",
+		// 		"uk": "Список номерів",
+		// 		"zh-cn": "房间清单"
+		// 	},
+		// 	"members": [],
+		// 	"dontDelete": true
+		// },
+
+		await this.setObjectNotExistsAsync("devices.ids", {
 			type: "state",
 			common: {
 				name: "Shelly DeviceList",
@@ -90,7 +139,7 @@ class visShelly extends utils.Adapter {
 			await this.setObjectNotExistsAsync("devices."+deviceName, {
 				type: "device",
 				common: {
-					name: "Device "+deviceName
+					name: deviceName
 				},
 				native: {},
 			});				
@@ -141,6 +190,54 @@ class visShelly extends utils.Adapter {
 		this.log.info("Devices updated");
 	}
 
+	async updateRoomsList(){
+		var roomList = await this.getStatesOfAsync("","rooms");
+		var shellyDevices = await this.getObjectViewAsync("system","device",{startkey:`vis-shelly.${this.instance}.devices.`,endkey:`vis-shelly.${this.instance}.devices.\u9999`});
+		// this.log.info(JSON.stringify(roomList));
+		// this.log.info(JSON.stringify(shellyDevices));
+		let roomEnum={};
+		for(let roomKey of Object.keys(roomList)){
+			let room=roomList[roomKey];
+			roomEnum[room._id]=room.common.name;
+		}
+		for(let devKey of Object.keys(shellyDevices.rows)){
+			let dev=shellyDevices.rows[devKey];
+			
+			let devName = [...dev.id.matchAll(/[.]([^.]*[.][0-9]*)$/g)];
+			this.log.info(JSON.stringify(devName))
+			if(devName.length==0)continue;
+			// String(dev.id).substring(String(dev.id).lastIndexOf(".")+1);
+			// @ts-ignore
+			this.setObjectAsync("devices."+devName[0][1]+".room", {
+				type: "state",
+				common: {
+					name: "room",
+					type: "multistate",
+					role: "name",
+					read: true,
+					write: true,
+					"states":roomEnum
+				},
+				native: {},
+			});
+
+		}
+
+		this.setObjectAsync("devices.roomIds", {
+			type: "state",
+			common: {
+				name: "room",
+				type: "array",
+				role: "name",
+				read: true,
+				write: false
+			},
+			native: {},
+		});
+        await this.setStateAsync("devices.roomIds", { val: JSON.stringify(roomEnum), ack: true });
+
+		
+	}
 	/**
 	 * Is called when adapter shuts down - callback has to be called under any circumstances!
 	 * @param {() => void} callback
@@ -161,13 +258,17 @@ class visShelly extends utils.Adapter {
 	 * @param {ioBroker.Object | null | undefined} obj
 	 */
 	onObjectChange(id, obj) {
-		if (obj) {
-			// The object was changed
-			if(obj.type=="device")this.updateDeviceList();
-			// this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-		} else {
-			// The object was deleted
-			// this.log.info(`object ${id} deleted`);
+		// this.log.info(id);
+		// this.log.info(JSON.stringify(obj));
+
+		if(id.indexOf("vis-shelly")>-1){
+			if(id.indexOf(".rooms.")>-1){
+				this.updateRoomsList();
+			}
+		}else{
+			if (obj) {
+				if(obj.type=="device")this.updateDeviceList();
+			}
 		}
 	}
 

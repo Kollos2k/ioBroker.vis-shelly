@@ -57,18 +57,29 @@ vis.binds["vis-shelly"] = {
             vis.binds["vis-shelly"].version = null;
         }
     },
-    createAllDevicesWidget: function (widgetID, view, data, style) {
+    createAllDevicesWidget: function (widgetID, view, widData, style,byRoom=false) {
         var $div = $('#' + widgetID);
         // if nothing found => wait
         if (!$div.length) {
             return setTimeout(function () {
-                vis.binds["vis-shelly"].createAllDevicesWidget(widgetID, view, data, style);
+                vis.binds["vis-shelly"].createAllDevicesWidget(widgetID, view, widData, style,byRoom);
             }, 100);
         }
         vis.conn.subscribe("vis-shelly.0.devices.ids",()=>{});
+        vis.conn.subscribe("vis-shelly.0.devices.roomIds",()=>{});
+        if(widData.display=="flex"){
+            $div.addClass("flex");
+        } else {
+            $div.removeClass("flex");
+        }
         
-        console.log("vis")
+        // console.log("vis")
         console.log(vis);
+        console.log(widData);
+        let roomID="";
+        if(byRoom!=false){
+            roomID=vis.views[view].widgets[widgetID].data.roomid;
+        }
 
         $('#' + widgetID).empty();
         var getStateObject=function(state){
@@ -126,31 +137,31 @@ vis.binds["vis-shelly"] = {
                     update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"brightness":{"name":"brightness","unit":"%","updateValue":basicUpdateValueBrightness},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
                     view:{info:{"power":{"name":"power","class":"icon","html":""},"brightness":{"name":"brightness","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
                     action:{"switch":{"name":"switch","click":basicSwitchAction}},
-                    dataPoint:{0:{"power":val.stateId+".lights.Power","switch":val.stateId+".lights.Switch","brightness":val.stateId+".lights.brightness","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
+                    dataPoint:{0:{"power":val.stateId+".lights.Power","switch":val.stateId+".lights.Switch","brightness":val.stateId+".lights.brightness","name":val.stateId+".name","oname":vsID+".0.overrideName","room":vsID+".0.room"}}};
                     break;
                 case "SHPLG-S":typeConfig={"domID":domID,
-                    update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
-                    view:{info:{"power":{"name":"power","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
-                    action:{"switch":{"name":"switch","click":basicSwitchAction}},
-                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
+                        update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
+                        view:{info:{"power":{"name":"power","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
+                        action:{"switch":{"name":"switch","click":basicSwitchAction}},
+                        dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","name":val.stateId+".name","oname":vsID+".0.overrideName","room":vsID+".0.room"}}};
                     break;
                 case "shellyplus1pm":typeConfig={"domID":domID,
                     update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"voltage":{"name":"voltage","unit":"V","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
                     view:{info:{"power":{"name":"power","class":"icon","html":""},"voltage":{"name":"voltage","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
                     action:{"switch":{"name":"switch","click":basicSwitchAction}},
-                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName","room":vsID+".0.room"}}};
                     break;
                 case "shellyplusplugs":typeConfig={"domID":domID,
                     update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"voltage":{"name":"voltage","unit":"V","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
                     view:{info:{"power":{"name":"power","class":"icon","html":""},"voltage":{"name":"voltage","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
                     action:{"switch":{"name":"switch","click":basicSwitchAction}},
-                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"}}};
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName","room":vsID+".0.room"}}};
                     break;
                 case "shellyplus2pm":typeConfig={"domID":domID,
                     update:{"power":{"name":"power","unit":"W","updateValue":basicUpdateValueUnit},"voltage":{"name":"voltage","unit":"V","updateValue":basicUpdateValueUnit},"name":{"name":"name","updateValue":basicUpdateValueName},"oname":{"name":"name","updateValue":basicUpdateValueName},"switch":{"name":"switch","updateValue":basicUpdateSwitch}},
                     view:{info:{"power":{"name":"power","class":"icon","html":""},"voltage":{"name":"voltage","class":"icon","html":""}},"action":{"switch":{"name":"switch","class":"","html":switchButton}}},
                     action:{"switch":{"name":"switch","click":basicSwitchAction}},
-                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName"}}};
+                    dataPoint:{0:{"power":val.stateId+".Relay0.Power","switch":val.stateId+".Relay0.Switch","voltage":val.stateId+".Relay0.Voltage","name":val.stateId+".name","oname":vsID+".0.overrideName","room":vsID+".0.room"},1:{"power":val.stateId+".Relay1.Power","switch":val.stateId+".Relay1.Switch","voltage":val.stateId+".Relay1.Voltage","name":val.stateId+".name","oname":vsID+".1.overrideName","room":vsID+".1.room"}}};
                     break;
                 case "shellyplusht":typeConfig={"domID":domID,
                     update:{
@@ -172,10 +183,11 @@ vis.binds["vis-shelly"] = {
                             "humidity":val.stateId+".Humidity0.Relative",
                             "externalPower":val.stateId+".DevicePower0.ExternalPower",
                             "batteryPercent":val.stateId+".DevicePower0.BatteryPercent",
-                            "name":val.stateId+".name","oname":vsID+".0.overrideName"
+                            "name":val.stateId+".name","oname":vsID+".0.overrideName",
+                            "room":vsID+".0.room"
                         }
                     }};                            
-                break;
+                    break;
                 case "SHTRV-01":
                     typeConfig={"domID":domID,
                     update:{
@@ -197,7 +209,8 @@ vis.binds["vis-shelly"] = {
                             "valvePosition":val.stateId+".tmp.valvePosition",
                             "externalPower":val.stateId+".bat.charger",
                             "batteryPercent":val.stateId+".bat.value",
-                            "name":val.stateId+".name","oname":vsID+".0.overrideName"
+                            "name":val.stateId+".name","oname":vsID+".0.overrideName",
+                            "room":vsID+".0.room"
                         }
                     }};
                 break;
@@ -222,81 +235,65 @@ vis.binds["vis-shelly"] = {
                             "motion":val.stateId+".sensor.motion",
                             "lux":val.stateId+".sensor.lux",
                             "batteryPercent":val.stateId+".sensor.battery",
-                            "name":val.stateId+".name","oname":vsID+".0.overrideName"
+                            "name":val.stateId+".name","oname":vsID+".0.overrideName",
+                            "room":vsID+".0.room"
                         }
                     }};
                 break;
             }
             if(typeof typeConfig.dataPoint=="undefined")return false;
             $.each(typeConfig.dataPoint,(dpKey,dpVal)=>{
-                // console.log(dpVal);
-                var deviceDomID=typeConfig.domID+dpKey;
-                let text=`<div id="${deviceDomID}" class="vis-shelly_DeviceBody" title="${val.stateID}">`;
-                text+=`<span name="status"><span><span class="connectionState connectionStateOnline"></span></span></span>`;
-                text+=`<span name="icon"></span>`;
-                text+=`<span name="name" data_sname="" data_oname="">${deviceDomID}</span>`;
-                text+=`<span name="info">`;
-                $.each(typeConfig.view.info,(viewKey,viewValue)=>{
-                    text+=`<span><span name="${viewValue.name}" class="${viewValue.class}">${viewValue.html}</span></span>`;
-                });
-                // if(typeof dpVal.power!="undefined"){text+=`<span><span name="power" class="icon"></span></span>`;}
-                // if(typeof dpVal.voltage!="undefined"){text+=`<span><span name="voltage" class="icon"></span></span>`;}
-                // if(typeof dpVal.humidity!="undefined"){text+=`<span><span name="humidity" class="icon"></span></span>`;}
-                // if(typeof dpVal.externalPower!="undefined"||typeof dpVal.batteryPercent!="undefined"){text+=`<span><span name="devicePower" class="icon"></span></span>`;}
-                text+=`</span>`;
-                text+=`<span name="action">`;
-                $.each(typeConfig.view.action,(viewKey,viewValue)=>{
-                    text+=`<span><span name="${viewValue.name}" class="${viewValue.class}">${viewValue.html}</span></span>`;
-                });
-                // if(typeof dpVal.switch!="undefined"){text+=`<span name="switch" curState="false"></span>`;}
-                // if(typeof dpVal.temperature!="undefined"){text+=`<span name="temperature"></span>`;}
-                text+=`</span>`;
-                $('#' + widgetID).append(text);
-                let $domDev=$('#' + widgetID).find("#"+deviceDomID)
-                if(typeof typeConfig["action"]!="undefined"){
-                    $.each(typeConfig.action,(k,v)=>{
-                        let $aDom=$domDev.find("[name='"+v.name+"']");
-                        if(typeof v.click=="function")$aDom.click(()=>{v.click(dpVal[k],$domDev);});
-                    });
-                }
-                // $domDev.data("config",typeConfig);
-                // $domDev.find("[name='switch']").click(function(){$(this).addClass("wait");vis.setValue(dpVal.switch,$(this).attr("curState")=="true"?false:true);});
-                
-                // console.log("GetStates: ");
-                // console.log(Object.values(dpVal));
                 vis.conn.getStates(Object.values(dpVal),(error, data)=>{
+                    // console.log("data");
+                    // console.log(data);
+                    if(byRoom!=false){
+                        if(data[dpVal.room]==null||data[dpVal.room].val!=roomID){
+                            return true;
+                        }
+                    }
+                    // console.log(data[dpVal.room]);
+                    // console.log(roomID);
+                    // console.log(dpVal);
+                    var deviceDomID=typeConfig.domID+dpKey;
+                    let text=`<div id="${deviceDomID}" class="vis-shelly_DeviceBody" title="${val.stateId}" style="width:${widData.deviceWidth};">`;
+                    text+=`<span name="status"><span><span class="connectionState connectionStateOnline"></span></span></span>`;
+                    text+=`<span name="icon"></span>`;
+                    text+=`<span name="name" data_sname="" data_oname="">${deviceDomID}</span>`;
+                    text+=`<span name="info">`;
+                    $.each(typeConfig.view.info,(viewKey,viewValue)=>{
+                        text+=`<span><span name="${viewValue.name}" class="${viewValue.class}">${viewValue.html}</span></span>`;
+                    });
+                    
+                    text+=`</span>`;
+                    text+=`<span name="action">`;
+                    $.each(typeConfig.view.action,(viewKey,viewValue)=>{
+                        text+=`<span><span name="${viewValue.name}" class="${viewValue.class}">${viewValue.html}</span></span>`;
+                    });
+                    // if(typeof dpVal.switch!="undefined"){text+=`<span name="switch" curState="false"></span>`;}
+                    // if(typeof dpVal.temperature!="undefined"){text+=`<span name="temperature"></span>`;}
+                    text+=`</span>`;
+                    $('#' + widgetID).append(text);
+                    let $domDev=$('#' + widgetID).find("#"+deviceDomID)
+                    if(typeof typeConfig["action"]!="undefined"){
+                        $.each(typeConfig.action,(k,v)=>{
+                            let $aDom=$domDev.find("[name='"+v.name+"']");
+                            if(typeof v.click=="function")$aDom.click(()=>{v.click(dpVal[k],$domDev);});
+                        });
+                    }
                     $domDev.data("data",data);
-                    // console.log("done");
                     vis.updateStates(data);
                     vis.conn.subscribe(Object.values(dpVal));
-                    // console.log("");
-                    // console.log(deviceDomID);
+
                     $.each(dpVal,(sType,sID)=>{
-                        // console.log("bind "+sType);
-                        // console.log(data[sID]);
+                        console.log(sID);
                         if(typeof data[sID]!="undefined"){
                             vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,typeConfig,sType,sID);
                             vis.states.bind(sID+".val" , (e, newVal, oldVal)=>{                           
                                 vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,typeConfig,sType,sID,newVal);
                             });
                         } else {
-                            // console.log(sID+ " == undefined");
                         }
                     });
-
-                    
-                    // vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"name",getStateObject(data[dpVal["oname"]]).val.length>0?data[dpVal["oname"]].val:getStateObject(data[dpVal["name"]]).val);
-
-
-                    // vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,typeConfig,"name",sID);
-                    // vis.binds["vis-shelly"].updateDeviceValue(widgetID,deviceDomID,"oname",getStateObject(data[dpVal["oname"]]).val);
-                    
-
-
-                    // vis.states.bind(key+".val" , (e, newVal, oldVal)=>{
-                    //     console.log(searchText + ": " +newVal);
-                    //     vis.binds["vis-shelly"].repaintDeviceValue(widgetID,domID,searchText,key,newVal,type);
-                    // });
                 });
             });
         }
@@ -311,19 +308,11 @@ vis.binds["vis-shelly"] = {
 
     },
     updateDeviceValue: function (widgetID, deviceDomID,typeConfig, sType,sID, newVal=undefined) {
-        // if(deviceDomID=="shellyplushtd4d4da7cdcd410"){
-        //     console.log(widgetID);
-        //     console.log(deviceDomID);
-        //     console.log(typeConfig);
-        //     console.log(sType);
-        //     console.log(sID);
-        //     console.log(newVal);
-        // }
         if(typeof typeConfig.update=="undefined")return false;
         if(typeof typeConfig.update[sType]=="undefined")return false;
         let configUpdate=typeConfig.update[sType];
         // console.log(configUpdate.getValue(newVal,configUpdate));
-        let $domDev=$("#"+deviceDomID);
+        let $domDev=$("#"+widgetID).find("#"+deviceDomID);
         // console.log($domDev.length);
         if($domDev.length==0)return false;
         let $dom=$domDev.find("[name='"+configUpdate.name+"']");
@@ -331,9 +320,7 @@ vis.binds["vis-shelly"] = {
         if($dom.length==0)return false;
         
         var data=$domDev.data("data");
-        // if(deviceDomID=="shellyplushtd4d4da7cdcd410")console.log(data);
-        // console.log(data);
-        // console.log(sID);
+        
         if(typeof data[sID]==null)data[sID]={val:""};
         if(typeof newVal=="undefined"){
             newVal=data[sID].val;
@@ -343,30 +330,7 @@ vis.binds["vis-shelly"] = {
             if(typeof newVal=="object")newVal=newVal.val;
             $domDev.data("data",data);
         }
-        configUpdate.updateValue($dom,newVal,configUpdate,data,sID);
-        // $dom.html(configUpdate.getValue(newVal,configUpdate,data));
-
-        // console.log(typeConfig.update[sType].value(newVal,{"unit":typeConfig.update[sType].unit}));
-        // console.log("NEW VALUE");
-        // console.log($("#"+deviceDomID).data("data"));
-        // console.log(deviceDomID+"      "+sType+"     "+newVal);
-        // console.log(newVal);
-
-        // if(typeof newVal=="object")newVal=newVal.val;
-        // if(newVal==null)newVal="";
-        // let dom=null;
-        // switch(sType){
-        //     case "name":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_sname",newVal);if(String(dom.attr("data_oname")).length==0)dom.html(newVal+" // "+deviceDomID);break;
-        //     case "oname":dom=$("#"+deviceDomID).find("[name='name']");dom.attr("data_oname",newVal);dom.html(newVal.length==0?dom.attr("data_sname")+" // "+deviceDomID:newVal+" // "+deviceDomID);break;
-        //     case "power":$("#"+deviceDomID).find("[name='power']").html(newVal+" W");break;
-        //     case "voltage":$("#"+deviceDomID).find("[name='voltage']").html(newVal+" V");break;            
-            
-        //     case "temperature":$("#"+deviceDomID).find("[name='temperature']").html(newVal+" °C");break;
-        //     case "humidity":$("#"+deviceDomID).find("[name='humidity']").html(newVal+" V");break;
-        //     case "externalPower":$("#"+deviceDomID).find("[name='devicePower']").html(newVal+" V");break;
-        //     case "switch":dom=$("#"+deviceDomID).find("[name='switch']");dom.removeClass("wait");if(newVal==true){dom.addClass("active");}else{dom.removeClass("active");} dom.attr("curState",newVal); break;
-        // };
-        
+        configUpdate.updateValue($dom,newVal,configUpdate,data,sID);        
     },    
     createWidget: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
@@ -429,7 +393,39 @@ vis.binds["vis-shelly"] = {
 
 			vis.hideShowAttr("iNavWait", false);
         });
+    },
+
+    //VIS Editor select Room
+    visEditor_selectRoom: function(wid_attr, options){
+        console.log(vis);
+        let view=vis.activeView;
+        let wid=vis.activeWidgets[0];
+        // vis.views[view].widgets[wid].data.roomid=1;
+        let curValue=vis.views[view].widgets[wid].data.roomid;
+
+        vis.conn.getStates(["vis-shelly.0.devices.roomIds"],(error, data)=>{
+            let roomObj=JSON.parse(data["vis-shelly.0.devices.roomIds"].val);
+            let select=$("#"+wid+"_roomid")
+            $.each(roomObj,(k,v)=>{
+                select.append(`<option value="${k}" ${k==curValue?"selected":""}>${v}</option>`);
+            });
+        });
+        let inputTxt=`<select id="${wid}_roomid" onchange='vis.binds["vis-shelly"].visEditor_selectRoomSelect(this)'>`;
+        inputTxt+="<option value=''>--Please Choose an Option--</option>";
+        inputTxt+="</select>"
+		return {
+            input: inputTxt
+        };
+    },
+    visEditor_selectRoomSelect: function(select){
+        let view=vis.activeView;
+        let wid=vis.activeWidgets[0];
+        vis.views[view].widgets[wid].data.roomid=$(select).val();
+        let data=vis.views[view].widgets[wid].data;
+        data.wid=wid;
+        vis.binds['vis-shelly'].createAllDevicesWidget(wid, view, data, vis.views[view].widgets[wid].style,true);
     }
 }
 
 vis.binds["vis-shelly"].showVersion();
+
