@@ -1,0 +1,18 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true
+	},
+	"extends2": ["plugin:react/recommended"],
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true,
+			"modules": true
+		},
+		"sourceType": "module",
+		"project": "./tsconfig.json"
+	},
+	"rules": {
+		"react/prop-types": "off"
+	}
+}
