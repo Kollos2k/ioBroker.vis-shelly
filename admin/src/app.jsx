@@ -89,9 +89,9 @@ class App extends GenericApp {
 	}
 
 	render() {
-		// if (!this.state.loaded) {
-		// 	return <div className="App">Test State not loaded</div>;
-		// }
+		if (!this.state.loaded) {
+			return <div className="App">Warten auf Daten</div>;
+		}
 
 		return (
 			<StyledEngineProvider injectFirst>
