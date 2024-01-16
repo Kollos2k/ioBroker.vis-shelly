@@ -3,6 +3,7 @@
 !.vscode/
 !.github/
 cp-vis-shelly.sh
+cp-vis-shelly2.sh
 push.sh
 
 

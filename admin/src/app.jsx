@@ -69,12 +69,42 @@ class App extends GenericApp {
 			},
 		};
 		// extendedProps.sentryDSN = window.sentryDSN;
-		extendedProps.Connection = AdminConnection;
+		// extendedProps.socket = { port: parseInt(window.location.port, 10) };
+		// only for debug purposes
+		// if (extendedProps.socket.port === 3000) {
+		// 	extendedProps.socket.port = 8081;
+		// }
+		// extendedProps.Connection = AdminConnection;
 		super(props, extendedProps);
+		// super(props, { Connection: AdminConnection });
+		console.log(this);
 	}
-	onPrepareLoad(settings) {
+	onPrepareLoad(native) {
+		const roomList = this.socket.getObjectViewCustom(
+			"system",
+			"channel",
+			`vis-shelly.${this.instance}.rooms.`,
+			`vis-shelly.${this.instance}.rooms.\u9999`,
+		);
+		console.log(Object.keys(roomList.rows));
 		console.log("onPrepareLoad");
-		console.log(settings);
+		console.log(typeof native);
+		console.log(native);
+		console.log(this.state.native["rooms"]);
+		console.log(this);
+		// if (typeof this.state.native["rooms"] == "undefined") {
+		// 	console.log(native.rooms);
+		// 	console.log("rooms undefined");
+		// 	native.rooms = { test: "bla" };
+
+		// 	console.log(typeof native.rooms);
+		// 	// this.props.changeNative(native);
+		// 	console.log(typeof native.rooms);
+		// 	this.setState({ native: native });
+		// } else {
+		// 	console.log(native.rooms);
+		// }
+		console.log(native.rooms);
 		// settings.pass = this.decode(settings.pass);
 	}
 
@@ -90,7 +120,13 @@ class App extends GenericApp {
 
 	render() {
 		if (!this.state.loaded) {
-			return <div className="App">Warten auf Daten</div>;
+			return (
+				<StyledEngineProvider injectFirst>
+					<ThemeProvider theme={this.state.theme}>
+						<Loader theme={this.state.themeType} />
+					</ThemeProvider>
+				</StyledEngineProvider>
+			);
 		}
 
 		return (
