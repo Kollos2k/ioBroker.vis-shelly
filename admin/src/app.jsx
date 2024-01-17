@@ -69,24 +69,26 @@ class App extends GenericApp {
 			},
 		};
 		// extendedProps.sentryDSN = window.sentryDSN;
-		// extendedProps.socket = { port: parseInt(window.location.port, 10) };
+		extendedProps.socket = { port: parseInt(window.location.port, 10) };
 		// only for debug purposes
-		// if (extendedProps.socket.port === 3000) {
-		// 	extendedProps.socket.port = 8081;
-		// }
-		// extendedProps.Connection = AdminConnection;
+		if (extendedProps.socket.port === 3000) {
+			extendedProps.socket.port = 8081;
+		}
+		extendedProps.Connection = AdminConnection;
 		super(props, extendedProps);
 		// super(props, { Connection: AdminConnection });
+		this.socket.log("text", "error");
 		console.log(this);
 	}
 	onPrepareLoad(native) {
+		this.socket.log("text", "error");
 		const roomList = this.socket.getObjectViewCustom(
 			"system",
 			"channel",
 			`vis-shelly.${this.instance}.rooms.`,
 			`vis-shelly.${this.instance}.rooms.\u9999`,
 		);
-		console.log(Object.keys(roomList.rows));
+		// console.log(Object.keys(roomList.rows));
 		console.log("onPrepareLoad");
 		console.log(typeof native);
 		console.log(native);

@@ -3,7 +3,7 @@
 		<!-- Load ioBroker scripts and styles-->
 		<link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
 		<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-		<!-- <script>
+		<script>
 			var script = document.createElement("script");
 			window.registerSocketOnLoad = function (cb) {
 				window.socketLoadedHandler = cb;
@@ -16,11 +16,16 @@
 					window.location.port === "3000"
 						? window.location.protocol + "//" + window.location.hostname + ":8081/lib/js/socket.io.js"
 						: "%PUBLIC_URL%/../../lib/js/socket.io.js";
-			}, 1000);
+			}, 5000);
 
 			document.head.appendChild(script);
-		</script> -->
-		<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+		</script>
+		<!-- <script type="text/javascript" src="../../socket.io/socket.io.js"></script> -->
+		<!-- <script
+			src="https://cdn.socket.io/4.7.3/socket.io.min.js"
+			integrity="sha384-+miq58Ltmjm+SSP5g8Ok6dpMO/6R4n8xe/x1Yj0Bdb9kiEz25LTnWv/GZQTRQamg"
+			crossorigin="anonymous"
+		></script> -->
 
 		<!-- Load our own files -->
 		<link rel="stylesheet" type="text/css" href="style.css" />
