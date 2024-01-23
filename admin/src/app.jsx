@@ -1,9 +1,11 @@
+// @ts-ignore
 import React, { useEffect, useState, useRef } from "react";
 import { withStyles } from "@mui/styles";
 import { AdminConnection, Loader, I18n } from "@iobroker/adapter-react-v5";
 import { SnackbarProvider } from "notistack";
 
 import GenericApp from "@iobroker/adapter-react-v5/GenericApp";
+// @ts-ignore
 import Settings from "./components/settings";
 import { AppBar, Tabs, Tab } from "@mui/material";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
@@ -11,18 +13,20 @@ import TabRooms from "./tabs/rooms";
 
 const styles = (_theme) => ({
 	root: {},
-	tabContent: {
+	tabContentDiv: {
 		padding: 10,
 		paddingTop: 0,
 		// height: "calc(100% - 64px - 48px - 20px)",
-		height: "calc(100% - 64px - 48px)",
+		// height: "calc(100% - 64px - 48px)",
+		height: "100%",
 		overflow: "auto",
 	},
 	tabContentIFrame: {
 		padding: 10,
 		paddingTop: 0,
 		// height: "calc(100% - 64px - 48px - 20px - 38px)",
-		height: "calc(100% - 64px - 48px)",
+		// height: "calc(100% - 64px - 48px)",
+		height: "95%",
 		overflow: "auto",
 	},
 	tab: {
@@ -75,6 +79,7 @@ class App extends GenericApp {
 		console.log("this");
 		console.log(this);
 	}
+	// @ts-ignore
 	onPrepareLoad(native) {
 		/*
 		//////// getObjectView EXAMPLE
@@ -269,6 +274,7 @@ class App extends GenericApp {
 								<Tabs
 									indicatorColor="secondary"
 									value={this.state.selectedTab || tabs[0].name}
+									// @ts-ignore
 									onChange={(e, value) => this.setState({ selectedTab: value })}
 									variant="scrollable"
 									scrollButtons="auto"
@@ -302,7 +308,11 @@ class App extends GenericApp {
 								id="myContent"
 								className={
 									// @ts-ignore
-									this.isIFrame ? this.props.classes.tabContentIFrame : this.props.classes.tabContent
+									this.isIFrame
+										? // @ts-ignore
+											this.props.classes.tabContentIFrame
+										: // @ts-ignore
+											this.props.classes.tabContentDiv
 								}
 								// style={{ paddingTop: document.getElementById("myTabHolder")?.clientHeight }}
 							>

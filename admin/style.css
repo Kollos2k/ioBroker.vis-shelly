@@ -1,6 +1,6 @@
 /* You can delete those if you want. I just found them very helpful */
 * {
-	box-sizing: border-box
+	box-sizing: border-box;
 }
 .m {
 	/* Don't cut off dropdowns! */
@@ -28,5 +28,22 @@ label > i[title] {
 	/* Don't wrap text in dropdowns */
 	white-space: nowrap;
 }
-
+.roomTable table {
+	height: auto;
+}
+.roomTable thead {
+	height: 60px;
+}
+.roomTable thead th:first-child {
+	width: 40px;
+}
+.roomTable tbody tr {
+	height: 60px;
+}
+.roomTable tbody tr td:first-child {
+	width: 40px;
+}
+.roomTable tbody tr th {
+	width: 100%;
+}
 /* Add your styles here */

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { Component } from "react";
 import PropTypes from "prop-types";
@@ -57,10 +58,12 @@ class Rooms extends Component {
 				title: I18n.t("RoomTitle"), // required, else it will be "field"
 				field: "name", // required
 				editable: true, // or true [default - true]
-				// cellStyle: {
-				// 	overflow: "hidden",
-				// 	wordBreak: "break-word",
-				// },
+				cellStyle: {
+					// 	overflow: "hidden",
+					// 	wordBreak: "break-word",
+					widthMin: "200px",
+					widthMax: "calc(100% - 50px)",
+				},
 				type: "string",
 			},
 			{
@@ -87,6 +90,19 @@ class Rooms extends Component {
 		}
 		return curHash;
 	}
+	// updateTableColumnWidth = () => {
+	// 	// const header = document.getElementById("myHeader");
+	// 	const content = document.getElementById("myContent");
+	// 	if (content) {
+	// 		const tHead = document.getElementsByTagName("thead")[0].children;
+	// 		const tRows = document.getElementsByTagName("tbody")[0].children;
+	// 		// @ts-ignore
+	// 		tHead[0].style.width = "40px";
+	// 		Array.from(tRows).forEach((row) => {
+	// 			row.children[0].style.width = "40px";
+	// 		});
+	// 	}
+	// };
 
 	render() {
 		// console.log("tableClass");
@@ -94,18 +110,20 @@ class Rooms extends Component {
 		return (
 			<div className={this.props.classes.tableDiv}>
 				<TreeTable
-					name="rooms"
+					id="roomsTable"
+					name="roomsTable"
 					columns={this.columns}
 					data={this.state.data}
-					indentation={30}
-					className={this.props.classes.tableClass}
+					indentation={20}
+					className="roomTable"
+					glowOnChange={true}
 					onUpdate={(newData, oldData) => {
 						const data = JSON.parse(JSON.stringify(this.state.data));
 
 						// Added new line
 						if (newData === true) {
 							let id = this.generateHash();
-
+							// Math.random().toString(36).substr(2, 9)
 							data.push({
 								id,
 								name: I18n.t("New room"),
