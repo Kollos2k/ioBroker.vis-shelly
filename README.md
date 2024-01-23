@@ -44,6 +44,14 @@ Devices supported so far
     ### **WORK IN PROGRESS**
 -->
 
+### 0.0.4-aplha.2
+
+-   Romms are now editable in Admin
+
+### 0.0.4-alpha.1
+
+-   testing only
+
 ### 0.0.4-alpha.0 (2024-01-02)
 
 -   (Kollos2k) initial release
