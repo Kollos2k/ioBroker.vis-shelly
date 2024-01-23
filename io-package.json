@@ -1,8 +1,11 @@
 {
 	"common": {
 		"name": "vis-shelly",
-		"version": "0.0.4-alpha.2",
+		"version": "0.0.4",
 		"news": {
+			"0.0.4": {
+				"en": "release"
+			},
 			"0.0.4-alpha.2": {
 				"en": "React Admin and Room Selection",
 				"de": "React Admin und Zimmerauswahl",
