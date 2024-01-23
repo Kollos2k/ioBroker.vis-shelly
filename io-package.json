@@ -3,6 +3,19 @@
 		"name": "vis-shelly",
 		"version": "0.0.4-alpha.2",
 		"news": {
+			"0.0.4-alpha.2": {
+				"en": "React Admin and Room Selection",
+				"de": "React Admin und Zimmerauswahl",
+				"ru": "Реагируйте на выборы администратора и комнаты",
+				"pt": "Reagir Admin e seleção de quartos",
+				"nl": "Beheers- en ruimteselectie weergeven",
+				"fr": "Réagir Admin et sélection de salle",
+				"it": "Reagisci all'amministratore e alla selezione delle camere",
+				"es": "Reactar Admin y Selección de habitaciones",
+				"pl": "Reakcja administracja i wybór pokoju",
+				"uk": "Вибір адміністратора та номера",
+				"zh-cn": "反应管理员和房间选择"
+			},
 			"0.0.4-alpha.0": {
 				"en": "initial release",
 				"de": "erstausstrahlung",

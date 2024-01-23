@@ -44,7 +44,7 @@ Devices supported so far
     ### **WORK IN PROGRESS**
 -->
 
-### 0.0.4-aplha.2
+### 0.0.4-alpha.2
 
 -   Romms are now editable in Admin
 
