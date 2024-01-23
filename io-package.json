@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "vis-shelly",
-		"version": "0.0.4-alpha.1",
+		"version": "0.0.4-alpha.2",
 		"news": {
 			"0.0.4-alpha.0": {
 				"en": "initial release",
@@ -77,24 +77,6 @@
 		"adminUI": {
 			"config": "materialize"
 		},
-		"adminTab": {
-			"singleton": true,
-			"name": {
-				"en": "reactAdminTest2",
-				"de": "reagierenAdminTest2",
-				"ru": "реакцияAdminTest2",
-				"pt": "reactAdminTest2",
-				"nl": "reageerAdminTest2",
-				"fr": "réagirAdminTest2",
-				"it": "reagireAdminTest2",
-				"es": "reaccionarAdminTest2",
-				"pl": "reakcjaAdminTest2",
-				"uk": "reactAdminTest2",
-				"zh-cn": "反应管理测试2"
-			},
-			"link": "",
-			"fa-icon": "info"
-		},
 		"dependencies": [
 			{
 				"js-controller": ">=3.3.22"
@@ -111,7 +93,13 @@
 		"option1": true,
 		"option2": "42",
 		"option3": "test",
-		"rooms": [{ "id": "testID", "name": "Küche", "icon": "" }]
+		"rooms": [
+			{
+				"id": "testID",
+				"name": "Küche",
+				"icon": ""
+			}
+		]
 	},
 	"objects": [],
 	"instanceObjects": [

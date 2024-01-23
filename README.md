@@ -1,7 +1,6 @@
 ![Logo](admin/vis-shelly.png)
+
 # ioBroker.vis-shelly
-
-
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.vis-shelly.svg)](https://www.npmjs.com/package/iobroker.vis-shelly)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vis-shelly.svg)](https://www.npmjs.com/package/iobroker.vis-shelly)
@@ -18,98 +17,39 @@ A VIS adapter for display Shelly devices
 
 ## Developer manual
 
-Moin,
+With the help of this adapter it should be possible to easily display and control all Shelly devices in plain sight.<br/>
 
-dieses Projekt soll eine einfache Möglichkeit bieten Shelly Geräte die sich peer MQQT mit der Shelly App verbunden haben in VIS zu integrieren. Bisher werden alle Geräte erkannt und bekannte TYPEN automatisch dargestellt.
-
+So far it is possible to display all Shelly devices or to divide the devices into rooms.<br/>
 <img src="readme/images/FotoShellyAnleitung1.png">
 
-Das Projekt ist erst am Anfang und noch lange nicht stable.
+<br/><br/>The project is still in its early stages and is not stable<br/><br/>
 
+Devices supported so far
 
-Bisher unterstützte Devices
-
-Dimmer 2
-Motion 2
-PlugS
-PlugS Plus
-1PM Plus
-2PM Plus
-plusht
-TRV
-
-### DISCLAIMER
-
-Please make sure that you consider copyrights and trademarks when you use names or logos of a company and add a disclaimer to your README.
-You can check other adapters for examples or ask in the developer community. Using a name or logo of a company without permission may cause legal problems for you.
-
-### Getting started
-
-You are almost done, only a few steps left:
-1. Create a new repository on GitHub with the name `ioBroker.vis-shelly`
-
-1. Push all files to the GitHub repo. The creator has already set up the local repository for you:  
-    ```bash
-    git push origin main
-    ```
-1. Add a new secret under https://github.com/Kollos2k/ioBroker.vis-shelly/settings/secrets. It must be named `AUTO_MERGE_TOKEN` and contain a personal access token with push access to the repository, e.g. yours. You can create a new token under https://github.com/settings/tokens.
-
-1. Head over to [widgets/vis-shelly.html](widgets/vis-shelly.html) and start programming!
-
-### Best Practices
-We've collected some [best practices](https://github.com/ioBroker/ioBroker.repositories#development-and-coding-best-practices) regarding ioBroker development and coding in general. If you're new to ioBroker or Node.js, you should
-check them out. If you're already experienced, you should also take a look at them - you might learn something new :)
-
-### Scripts in `package.json`
-Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
-| Script name | Description |
-|-------------|-------------|
-| `test:package` | Ensures your `package.json` and `io-package.json` are valid. |
-| `test` | Performs a minimal test run on package files. |
-| `translate` | Translates texts in your adapter to all required languages, see [`@iobroker/adapter-dev`](https://github.com/ioBroker/adapter-dev#manage-translations) for more details. |
-| `release` | Creates a new release, see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#usage) for more details. |
-
-### Publishing the widget
-Using GitHub Actions, you can enable automatic releases on npm whenever you push a new git tag that matches the form 
-`v<major>.<minor>.<patch>`. We **strongly recommend** that you do. The necessary steps are described in `.github/workflows/test-and-release.yml`.
-
-Since you installed the release script, you can create a new
-release simply by calling:
-```bash
-npm run release
-```
-Additional command line options for the release script are explained in the
-[release-script documentation](https://github.com/AlCalzone/release-script#command-line).
-
-To get your widget released in ioBroker, please refer to the documentation 
-of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
-
-### Test the adapter manually on a local ioBroker installation
-In order to install the adapter locally without publishing, the following steps are recommended:
-1. Create a tarball from your dev directory:  
-    ```bash
-    npm pack
-    ```
-1. Upload the resulting file to your ioBroker host
-1. Install it locally (The paths are different on Windows):
-    ```bash
-    cd /opt/iobroker
-    npm i /path/to/tarball.tgz
-    ```
-
-For later updates, the above procedure is not necessary. Just do the following:
-1. Overwrite the changed files in the adapter directory (`/opt/iobroker/node_modules/iobroker.vis-shelly`)
-1. Execute `iobroker upload vis-shelly` on the ioBroker host
+<div>
+    Dimmer 2<br/>
+    Motion 2<br/>
+    PlugS<br/>
+    PlugS Plus<br/>
+    1PM Plus<br/>
+    2PM Plus<br/>
+    plusht<br/>
+    TRV
+</div>
 
 ## Changelog
+
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
 ### 0.0.4-alpha.0 (2024-01-02)
-* (Kollos2k) initial release
+
+-   (Kollos2k) initial release
 
 ## License
+
 MIT License
 
 Copyright (c) 2024 Kollos2k <kollos@vorsicht-bissig.de>

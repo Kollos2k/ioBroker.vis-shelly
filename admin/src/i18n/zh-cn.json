@@ -1,5 +1,5 @@
 {
-	"react_adapter_test2 adapter settings": "react_adapter_test2的适配器设置",
-	"option1": "选项1",
-	"option2": "选项2"
+    "RoomTitle": "房间名称",
+    "RoomIcon": "房间图标",
+    "tabRooms": "客房"
 }

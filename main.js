@@ -58,6 +58,8 @@ class visShelly extends utils.Adapter {
 
 		// this.log.info("config option1: " + this.config.option1);
 		// this.log.info("config option2: " + this.config.option2);
+		this.log.info("RÄUME");
+		this.log.info(JSON.stringify(this.config["rooms"]));
 		this.updateDeviceList();
 		this.setState("info.connection", true, true);
 	}

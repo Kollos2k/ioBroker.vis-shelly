@@ -1,5 +1,5 @@
 {
-	"react_adapter_test2 adapter settings": "Adapter settings for react_adapter_test2",
-	"option1": "option1",
-	"option2": "option2"
+	"RoomTitle": "Roomname",
+	"RoomIcon": "Roomicon",
+	"tabRooms": "Rooms"
 }

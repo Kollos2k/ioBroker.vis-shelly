@@ -21,8 +21,20 @@ import {
 } from "@mui/material";
 import { TreeTable, I18n } from "@iobroker/adapter-react-v5";
 import { Edit as EditIcon, Info as IconInfo } from "@mui/icons-material";
+import { sha1 } from "crypto-hash";
 
-const styles = (theme) => ({});
+const styles = (theme) => ({
+	tableDiv: {
+		width: "100%",
+		overflow: "hidden",
+		height: "calc(100% - 48px)",
+	},
+	tableClass: {
+		height: "100%",
+		width: "100%",
+	},
+	tabContent: {},
+});
 
 class Rooms extends Component {
 	constructor(props) {
@@ -30,109 +42,86 @@ class Rooms extends Component {
 		console.log("native");
 		console.log(props.native);
 		console.log(props);
-
-		this.state = {
-			data: [
-				{
-					id: "UniqueID1", // required
-					roomName: "Name1",
-					roomIcon: "",
-					myType: "number",
-				},
-				{
-					id: "UniqueID2", // required
-					roomName: "Name12",
-					roomIcon: "",
-					myType: "string",
-				},
-			],
-		};
+		this.state = { data: props.native.rooms };
 		this.columns = [
 			{
-				title: "RoomName", // required, else it will be "field"
-				field: "roomName", // required
-				editable: true, // or true [default - true]
+				title: "RoomID",
+				field: "id",
+				editable: false,
+				hidden: true,
 				cellStyle: {
-					// CSS style - // optional
-					maxWidth: "12rem",
-					overflow: "hidden",
-					wordBreak: "break-word",
-				},
-				lookup: {
-					// optional => edit will be automatically "SELECT"
-					value1: "text1",
-					value2: "text2",
+					display: "none",
 				},
 			},
 			{
-				title: "RoomIcon",
-				field: "roomIcon",
-				editable: true,
-			},
-			{
-				title: "Type", // required, else it will be "field"
-				field: "myType", // required
+				title: I18n.t("RoomTitle"), // required, else it will be "field"
+				field: "name", // required
 				editable: true, // or true [default - true]
-				lookup: {
-					// optional => edit will be automatically "SELECT"
-					number: "Number",
-					string: "String",
-					boolean: "Boolean",
+				// cellStyle: {
+				// 	overflow: "hidden",
+				// 	wordBreak: "break-word",
+				// },
+				type: "string",
+			},
+			{
+				title: I18n.t("RoomIcon"),
+				field: "icon",
+				editable: true,
+				type: "icon",
+				hidden: true,
+				cellStyle: {
+					display: "none",
 				},
-				type: "number/string/color/oid/icon/boolean", // oid=ObjectID,icon=base64-icon
-				editComponent: (props) => (
-					<div>
-						Prefix&#123; <br />
-						<textarea
-							rows={4}
-							style={{ width: "100%", resize: "vertical" }}
-							value={props.value}
-							onChange={(e) => props.onChange(e.target.value)}
-						/>
-						Suffix
-					</div>
-				),
 			},
 		];
 	}
+	generateHash() {
+		const length = 30;
+		const allowedCharRegex = /[0-9a-z]/g;
+		let curHash = "";
+		while (curHash.length < length) {
+			var i = Math.floor(122 * Math.random());
+			if (String.fromCharCode(i).match(allowedCharRegex)) {
+				curHash += String.fromCharCode(i);
+			}
+		}
+		return curHash;
+	}
 
 	render() {
+		// console.log("tableClass");
+		// console.log(this.props.classes.tableClass);
 		return (
 			<div className={this.props.classes.tableDiv}>
 				<TreeTable
+					name="rooms"
 					columns={this.columns}
 					data={this.state.data}
+					indentation={30}
+					className={this.props.classes.tableClass}
 					onUpdate={(newData, oldData) => {
 						const data = JSON.parse(JSON.stringify(this.state.data));
 
 						// Added new line
 						if (newData === true) {
-							// find unique ID
-							let i = 1;
-							let id = "line_" + i;
-
-							// eslint-disable-next-line
-							while (this.state.data.find((item) => item.id === id)) {
-								i++;
-								id = "line_" + i;
-							}
+							let id = this.generateHash();
 
 							data.push({
 								id,
-								name: I18n.t("New resource") + "_" + i,
-								color: "",
-								icon: "",
-								unit: "",
-								price: 0,
+								name: I18n.t("New room"),
 							});
 						} else {
 							// existing line was modifed
 							const pos = this.state.data.indexOf(oldData);
+							// console.log("Data modified");
 							if (pos !== -1) {
 								Object.keys(newData).forEach((attr) => (data[pos][attr] = newData[attr]));
 							}
 						}
 
+						// this.state.native.rooms = data;
+						this.props.native.rooms = data;
+						this.props.changeNative(this.props.native);
 						this.setState({ data });
 					}}
 					onDelete={(oldData) => {
@@ -141,6 +130,8 @@ class Rooms extends Component {
 						if (pos !== -1) {
 							const data = JSON.parse(JSON.stringify(this.state.data));
 							data.splice(pos, 1);
+							this.props.native.rooms = data;
+							this.props.changeNative(this.props.native);
 							this.setState({ data });
 						}
 					}}

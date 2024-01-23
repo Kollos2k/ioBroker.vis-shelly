@@ -1,5 +1,5 @@
 {
-	"react_adapter_test2 adapter settings": "Налаштування адаптера для react_adapter_test2",
-	"option1": "варіант1",
-	"option2": "варіант2"
+    "RoomTitle": "Назва кімнати",
+    "RoomIcon": "Кімната значок",
+    "tabRooms": "Кімнати"
 }
