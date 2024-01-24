@@ -39,6 +39,8 @@ Devices supported so far
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
