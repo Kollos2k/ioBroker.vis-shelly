@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "vis-shelly",
-		"version": "0.0.4-alpha.3",
+		"version": "0.0.4",
 		"news": {
 			"0.0.4": {
 				"en": "initial release",
