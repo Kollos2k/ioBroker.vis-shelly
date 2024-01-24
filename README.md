@@ -38,7 +38,8 @@ Devices supported so far
 </div>
 
 ## Changelog
-### 0.0.5 (2024-01-24)
+
+### 0.0.4 (2024-01-24)
 
 <!--
     Placeholder for the next version (at the beginning of the line):
