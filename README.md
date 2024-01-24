@@ -39,7 +39,9 @@ Devices supported so far
 
 ## Changelog
 
-### 0.0.4 (2024-01-24)
+### **WORK IN PROGRESS**
+
+### 0.0.4-alpha.3 (2024-01-24)
 
 <!--
     Placeholder for the next version (at the beginning of the line):

@@ -1,6 +1,6 @@
 {
   "name": "iobroker.vis-shelly",
-  "version": "0.0.4",
+  "version": "0.0.4-alpha.3",
   "description": "A VIS adapter for display Shelly devices",
   "author": {
     "name": "Kollos2k",

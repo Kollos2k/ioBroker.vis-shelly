@@ -1,9 +1,9 @@
 {
 	"common": {
 		"name": "vis-shelly",
-		"version": "0.0.4",
+		"version": "0.0.4-alpha.3",
 		"news": {
-			"0.0.5": {
+			"0.0.4-alpha.3": {
 				"en": "<!--\n    Placeholder for the next version (at the beginning of the line):\n    ### **WORK IN PROGRESS**\n-->",
 				"de": "<!--\nPlatzhalter für die nächste Version (am Anfang der Linie):\n**WORK IN PROGRESS**\n-->",
 				"ru": "<!--\nМестоположение для следующей версии (в начале линии):\n** В ПРОГРЕССЕ**\n-->",
@@ -15,9 +15,6 @@
 				"pl": "<!--\nUchwyt do następnej wersji (na początku wiersza):\n** * WORK IN PROGRESS **\n-->",
 				"uk": "<!--\nМісцевласника для наступної версії (на початку лінії):\n###**\n-->",
 				"zh-cn": "<!--\n下一个版本(行首)的占位符 :\n** 工作进展**\n-->"
-			},
-			"0.0.4": {
-				"en": "release"
 			},
 			"0.0.4-alpha.2": {
 				"en": "React Admin and Room Selection",
