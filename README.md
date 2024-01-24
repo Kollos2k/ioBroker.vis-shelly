@@ -41,6 +41,8 @@ Devices supported so far
 
 ### **WORK IN PROGRESS**
 
+### 0.0.4
+
 ### 0.0.4-alpha.3 (2024-01-24)
 
 <!--
