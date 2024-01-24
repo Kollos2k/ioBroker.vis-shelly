@@ -106,16 +106,7 @@
 		]
 	},
 	"native": {
-		"option1": true,
-		"option2": "42",
-		"option3": "test",
-		"rooms": [
-			{
-				"id": "testID",
-				"name": "Küche",
-				"icon": ""
-			}
-		]
+		"rooms": []
 	},
 	"objects": [],
 	"instanceObjects": [
