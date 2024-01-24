@@ -31,10 +31,30 @@ jobs:
                   node-version: "18.x"
                   # Uncomment the following line if your adapter cannot be installed using 'npm ci'
                   # install-command: 'npm install'
+                  lint: true
 
-# Deploys the final package to NPM
+    # Runs adapter tests on all supported node versions and OSes
+    adapter-tests:
+        if: contains(github.event.head_commit.message, '[skip ci]') == false
+
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                node-version: [18.x, 20.x]
+                os: [ubuntu-latest, windows-latest, macos-latest]
+
+        steps:
+            - uses: ioBroker/testing-action-adapter@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  os: ${{ matrix.os }}
+                  # Uncomment the following line if your adapter cannot be installed using 'npm ci'
+                  # install-command: 'npm install'
+                  build: true
+
+#  # Deploys the final package to NPM
 deploy:
-    needs: [check-and-lint]
+    needs: [check-and-lint, adapter-tests]
 
     # Trigger this step only when a commit on any branch is tagged with a version number
     if: |
@@ -54,6 +74,7 @@ deploy:
               node-version: "18.x"
               # Uncomment the following line if your adapter cannot be installed using 'npm ci'
               # install-command: 'npm install'
+              build: true
               npm-token: ${{ secrets.NPM_TOKEN }}
               github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -65,5 +86,6 @@ deploy:
               sentry-token: ${{ secrets.SENTRY_AUTH_TOKEN }}
               sentry-project: "iobroker-vis-shelly"
               sentry-version-prefix: "iobroker.vis-shelly"
-              # If your sentry project is linked to a GitHub repository, you can enable the following option
-              # sentry-github-integration: true
+              sentry-sourcemap-paths: "admin/build/"
+          # If your sentry project is linked to a GitHub repository, you can enable the following option
+          # sentry-github-integration: true
