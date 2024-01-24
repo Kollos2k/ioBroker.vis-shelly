@@ -38,6 +38,12 @@ Devices supported so far
 </div>
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+-   Rebuild widget js for future improvements
+-   bugfixes
+
 ### 0.0.6 (2024-01-24)
 
 -   Test for release
