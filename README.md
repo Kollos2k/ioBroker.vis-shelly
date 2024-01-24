@@ -38,8 +38,7 @@ Devices supported so far
 </div>
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 0.0.6 (2024-01-24)
 
 -   Test for release
 
@@ -61,10 +60,6 @@ Devices supported so far
 ### 0.0.4-alpha.1
 
 -   testing only
-
-### 0.0.4-alpha.0 (2024-01-02)
-
--   (Kollos2k) initial release
 
 ## License
 

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "vis-shelly",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "news": {
+      "0.0.6": {
+        "en": "Test for release",
+        "de": "Test zur Freigabe",
+        "ru": "Испытание на высвобождение",
+        "pt": "Teste para liberação",
+        "nl": "Test voor het loslaten",
+        "fr": "Essai de libération",
+        "it": "Test per il rilascio",
+        "es": "Prueba para la liberación",
+        "pl": "Badanie zwolnienia",
+        "uk": "Тест на випуск",
+        "zh-cn": "释放测试"
+      },
       "0.0.5": {
         "en": "Test for release",
         "de": "Test zur Freigabe",
