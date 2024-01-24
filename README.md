@@ -38,6 +38,11 @@ Devices supported so far
 </div>
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+-   Test for release
+
 ### 0.0.5 (2024-01-24)
 
 -   Test for release
