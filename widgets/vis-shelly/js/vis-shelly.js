@@ -11,36 +11,110 @@
 
 // add translations for edit mode
 $.extend(true, systemDictionary, {
-	// Add your translations here, e.g.:
-	// "size": {
-	// 	"en": "Size",
-	// 	"de": "Größe",
-	// 	"ru": "Размер",
-	// 	"pt": "Tamanho",
-	// 	"nl": "Grootte",
-	// 	"fr": "Taille",
-	// 	"it": "Dimensione",
-	// 	"es": "Talla",
-	// 	"pl": "Rozmiar",
-	//  "uk": "Розмір"
-	// 	"zh-cn": "尺寸"
-	// }
-	// "iUniversalValueCount": {
-	// 	"en": "Number of states",
-	// 	"de": "Anzahl der Zustände"
-	// },
-	// "group_iUniversalValues": {
-	// 	"en": "State",
-	// 	"de": "Zustand"
-	// },
-	// "soid1_1": {
-	//     "en":"Sub Item 1_1",
-	//     "de":"Sub Item 1_1"
-	// },
-	// "soid1_": {
-	//     "en":"Sub Item 1",
-	//     "de":"Sub Item 1"
-	// }
+	deviceWidth: {
+		en: "device width",
+		de: "Gerätebreite",
+		ru: "ширина",
+		pt: "largura do dispositivo",
+		nl: "apparaatbreedte",
+		fr: "largeur du dispositif",
+		it: "larghezza del dispositivo",
+		es: "ancho del dispositivo",
+		pl: "szerokość urządzenia",
+		uk: "ширина пристрою",
+		"zh-cn": "设备宽度",
+	},
+	display: {
+		en: "displaymode",
+		de: "Anzeigemodus",
+		ru: "displaymode",
+		pt: "painel de exibição",
+		nl: "weergavemodus",
+		fr: "mode d'affichage",
+		it: "displaymode",
+		es: "displaymode",
+		pl: "displaymode",
+		uk: "дисплей",
+		"zh-cn": "显示模式",
+	},
+	group_iUniversalDeviceValues: {
+		en: "Device values",
+		de: "Gerätewerte",
+		ru: "Значения устройств",
+		pt: "Valores de dispositivo",
+		nl: "Apparaatwaarden",
+		fr: "Valeurs du périphérique",
+		it: "Valori del dispositivo",
+		es: "Valores de dispositivo",
+		pl: "Wartości urządzenia",
+		uk: "Значення пристрою",
+		"zh-cn": "设备值",
+	},
+	iUniversalDeviceCount: {
+		en: "Device count",
+		de: "Anzahl der Geräte",
+		ru: "Количество устройств",
+		pt: "Contagem de dispositivos",
+		nl: "Aantal apparaten",
+		fr: "Nombre de périphériques",
+		it: "Conteggio dispositivi",
+		es: "Conteo de dispositivos",
+		pl: "Liczba urządzeń",
+		uk: "Кількість пристроїв",
+		"zh-cn": "设备计数",
+	},
+	roomid: {
+		en: "Room ID",
+		de: "Zimmer ID",
+		ru: "Номерное удостоверение",
+		pt: "ID do quarto",
+		nl: "Kamer-ID",
+		fr: "Numéro de chambre",
+		it: "ID della camera",
+		es: "Identificación de la habitación",
+		pl: "Identyfikator pokoju",
+		uk: "Ідентифікатор номерів",
+		"zh-cn": "房间编号",
+	},
+	deviceID: {
+		en: "Device ID",
+		de: "Gerätekennung",
+		ru: "ID устройства",
+		pt: "ID do dispositivo",
+		nl: "Apparaat-ID",
+		fr: "ID du périphérique",
+		it: "ID dispositivo",
+		es: "ID de dispositivo",
+		pl: "Identyfikator urządzenia",
+		uk: "Код пристрою",
+		"zh-cn": "设备标识",
+	},
+	deviceType: {
+		en: "Device type",
+		de: "Gerätetyp",
+		ru: "Тип устройства",
+		pt: "Tipo de dispositivo",
+		nl: "Apparaattype",
+		fr: "Type de périphérique",
+		it: "Tipo di dispositivo",
+		es: "Tipo de dispositivo",
+		pl: "Typ urządzenia",
+		uk: "Тип пристрою",
+		"zh-cn": "设备类型",
+	},
+	deviceRelayNumber: {
+		en: "relay number",
+		de: "Relaisnummer",
+		ru: "номер реле",
+		pt: "número de relé",
+		nl: "relaisnummer",
+		fr: "numéro du relais",
+		it: "numero di relè",
+		es: "número de relé",
+		pl: "numer przekaźnika",
+		uk: "кількість релей",
+		"zh-cn": "中继号码",
+	},
 });
 
 // this code can be placed directly in vis-shelly.html
@@ -53,6 +127,47 @@ vis.binds["vis-shelly"] = {
 		}
 	},
 	createWidget: {
+		customDevices: function (widgetID, view, widData, style) {
+			var $div = $("#" + widgetID);
+			if (!$div.length) {
+				return setTimeout(function () {
+					vis.binds["vis-shelly"].createWidget.customDevices(widgetID, view, widData, style);
+				}, 100);
+			}
+			vis.binds["vis-shelly"].createDevice_helper.setBasicWidgetOptions($div, widData);
+			console.debug("CUSTOM WID DATA");
+			console.debug(widData);
+			for (let count = 1; count <= widData.iUniversalDeviceCount; count++) {
+				// $div.append("<div>dev:" + widData["deviceID" + count] + "</div>");
+				// $div.append("<div>type:" + widData["deviceType" + count] + "</div>");
+				if (
+					typeof widData["deviceID" + count] == "undefined" ||
+					typeof widData["deviceType" + count] == "undefined" ||
+					widData["deviceID" + count] == "" ||
+					widData["deviceType" + count] == ""
+				) {
+					/* empty */
+				} else {
+					const v = {
+						stateId: widData["deviceID" + count],
+						type: widData["deviceType" + count],
+						id: widData["deviceID" + count].match(/([^.]*)$/g)[1],
+						relay: widData["deviceRelayNumber" + count],
+					};
+					console.debug(widData["deviceID" + count]);
+					console.debug(v);
+					console.debug(widData["deviceID" + count].match(/([^.]*)$/g));
+					vis.binds["vis-shelly"].createDevice_helper.buildDevice(v, widgetID, widData);
+				}
+			}
+			// [{"stateId":"shelly.0.shellyplus2pm#08b61fce0758#1","id":"shellyplus2pm#08b61fce0758#1","type":"shellyplus2pm"}]
+			// vis.conn.getStates(["vis-shelly.0.devices.ids"], (error, data) => {
+			// 	const deviceIDs = JSON.parse(data["vis-shelly.0.devices.ids"].val);
+			// 	$.each(deviceIDs, (k, v) => {
+			// 		vis.binds["vis-shelly"].createDevice_helper.buildDevice(v, widgetID, widData);
+			// 	});
+			// });
+		},
 		roomDevices: function (widgetID, view, widData, style) {
 			var $div = $("#" + widgetID);
 			if (!$div.length) {
@@ -78,13 +193,17 @@ vis.binds["vis-shelly"] = {
 				}, 100);
 			}
 			vis.binds["vis-shelly"].createDevice_helper.setBasicWidgetOptions($div, widData);
-			// console.log(vis);
-			// console.log(widData);
-			var getStateObject = function (state) {
-				if (typeof state == "undefined") return { ack: true, from: "", lc: 0, q: 0, ts: 0, user: "", val: "" };
-				return state;
-			};
-			vis.conn.getStates(["vis-shelly.0.devices.ids"], (error, data) => {
+			console.log("VIS");
+			console.log(vis);
+			console.log("WID DATA");
+			console.log(widData);
+			console.log("VIEW");
+			console.log(view);
+			// var getStateObject = function (state) {
+			// 	if (typeof state == "undefined") return { ack: true, from: "", lc: 0, q: 0, ts: 0, user: "", val: "" };
+			// 	return state;
+			// };
+			vis.conn.getStates([`vis-shelly.0.devices.ids`], (error, data) => {
 				const deviceIDs = JSON.parse(data["vis-shelly.0.devices.ids"].val);
 				$.each(deviceIDs, (k, v) => {
 					vis.binds["vis-shelly"].createDevice_helper.buildDevice(v, widgetID, widData);
@@ -107,7 +226,7 @@ vis.binds["vis-shelly"] = {
 
 		var data = $domDev.data("data");
 
-		if (typeof data[sID] == "undefined") data[sID] = { val: "" };
+		if (typeof data[sID] == "undefined" || data[sID] == null) data[sID] = { val: "" };
 		if (typeof newVal == "undefined") {
 			newVal = data[sID].val;
 		} else {
@@ -125,36 +244,153 @@ vis.binds["vis-shelly"] = {
 			vis.hideShowAttr("iNavWait", false);
 		});
 	},
-
-	//VIS Editor select Room
-	visEditor_selectRoom: function (wid_attr, options) {
-		console.log(vis);
-		const view = vis.activeView;
-		const wid = vis.activeWidgets[0];
-		// vis.views[view].widgets[wid].data.roomid=1;
-		const curValue = vis.views[view].widgets[wid].data.roomid;
-
-		vis.conn.getStates(["vis-shelly.0.devices.roomIds"], (error, data) => {
-			const roomObj = JSON.parse(data["vis-shelly.0.devices.roomIds"].val);
-			const select = $("#" + wid + "_roomid");
-			$.each(roomObj, (k, v) => {
-				select.append(`<option value="${k}" ${k == curValue ? "selected" : ""}>${v}</option>`);
-			});
-		});
-		let inputTxt = `<select id="${wid}_roomid" onchange='vis.binds["vis-shelly"].visEditor_selectRoomSelect(this)'>`;
-		inputTxt += "<option value=''>--Please Choose an Option--</option>";
-		inputTxt += "</select>";
-		return {
-			input: inputTxt,
-		};
+	visEditor_roomDevices_getRoomSelect: function (wid_attr, options) {
+		return this.visEditor.roomDevices.getRoomSelect(wid_attr, options);
 	},
-	visEditor_selectRoomSelect: function (select) {
-		const view = vis.activeView;
-		const wid = vis.activeWidgets[0];
-		vis.views[view].widgets[wid].data.roomid = $(select).val();
-		const data = vis.views[view].widgets[wid].data;
-		data.wid = wid;
-		vis.binds["vis-shelly"].createAllDevicesWidget(wid, view, data, vis.views[view].widgets[wid].style, true);
+	visEditor_customDevices_getDeviceSelect: function (wid_attr, options) {
+		return this.visEditor.customDevices.getDeviceSelect(wid_attr, options);
+	},
+	visEditor_customDevices_getTypeSelect: function (wid_attr, options) {
+		return this.visEditor.customDevices.getTypeSelect(wid_attr, options);
+	},
+
+	visEditor: {
+		roomDevices: {
+			getRoomSelect: function (wid_attr, options) {
+				const view = vis.activeView;
+				const wid = vis.activeWidgets[0];
+				const curValue = vis.views[view].widgets[wid].data[wid_attr];
+
+				setTimeout(() => {
+					vis.conn.getStates(["vis-shelly.0.devices.roomIds"], (error, data) => {
+						const roomObj = JSON.parse(data["vis-shelly.0.devices.roomIds"].val);
+						const select = $("#" + wid + "_roomid");
+						$.each(roomObj, (k, v) => {
+							select.append(`<option value="${k}" ${k == curValue ? "selected" : ""}>${v}</option>`);
+						});
+					});
+				}, 200);
+				let inputTxt = `<select id="${wid}_roomid" onchange='vis.binds["vis-shelly"].visEditor.roomDevices.selectRoomID(this,"${wid_attr}")'>`;
+				inputTxt += "<option value=''>--Please Choose an Room--</option>";
+				inputTxt += "</select>";
+				return {
+					input: inputTxt,
+				};
+			},
+			selectRoomID: function (select, wid_attr) {
+				const view = vis.activeView;
+				const wid = vis.activeWidgets[0];
+				vis.views[view].widgets[wid].data[wid_attr] = $(select).val();
+				const data = vis.views[view].widgets[wid].data;
+				data.wid = wid;
+				vis.binds["vis-shelly"].createWidget.roomDevices(wid, view, data, vis.views[view].widgets[wid].style);
+			},
+		},
+		customDevices: {
+			getDeviceSelect: function (wid_attr, options) {
+				const view = vis.activeView;
+				const wid = vis.activeWidgets[0];
+				// vis.views[view].widgets[wid].data.roomid=1;
+				console.debug(vis.views[view].widgets[wid]);
+				const curValue = vis.views[view].widgets[wid].data[wid_attr];
+
+				setTimeout(() => {
+					vis.conn.getStates([`vis-shelly.0.devices.ids`], (error, data) => {
+						const deviceIDs = JSON.parse(data["vis-shelly.0.devices.ids"].val);
+						const select = $("#" + wid + "_" + wid_attr);
+						select.empty();
+						select.append("<option value=''>--Please Choose an Device--</option>");
+						$.each(deviceIDs, (k, v) => {
+							select.append(
+								`<option value="${v.stateId}" ${v.stateId == curValue ? "selected" : ""}>${
+									v.id
+								}</option>`,
+							);
+						});
+					});
+				}, 200);
+				let inputTxt = `<select id="${wid}_${wid_attr}" onchange='vis.binds["vis-shelly"].visEditor.customDevices.onSelectDeviceID(this,"${wid_attr}")'>`;
+				inputTxt += "<option value=''>--Please Choose an Device--</option>";
+				inputTxt += "</select>";
+				return {
+					input: inputTxt,
+				};
+			},
+			getTypeSelect: function (wid_attr, options) {
+				const view = vis.activeView;
+				const wid = vis.activeWidgets[0];
+				// vis.views[view].widgets[wid].data.roomid=1;
+				const curValue = vis.views[view].widgets[wid].data[wid_attr];
+				console.error(curValue);
+				const types = [
+					"SHDM-2",
+					"SHPLG-S",
+					"shellyplus1pm",
+					"shellyplusplugs",
+					"shellyplus2pm",
+					"shellyplusht",
+					"SHTRV-01",
+					"SHMOS-02",
+				];
+				let inputTxt = `<select id="${wid}_${wid_attr}" onchange='vis.binds["vis-shelly"].visEditor.customDevices.onSelectType(this,"${wid_attr}")'>`;
+				inputTxt += "<option value=''>--Please Choose an Type--</option>";
+				for (const type of types) {
+					inputTxt += `<option value="${type}" ${type == curValue ? "selected" : ""}>${type}</option>`;
+				}
+				inputTxt += "</select>";
+				return {
+					input: inputTxt,
+				};
+			},
+			onSelectDeviceID: function (select, wid_attr) {
+				const view = vis.activeView;
+				const wid = vis.activeWidgets[0];
+				vis.views[view].widgets[wid].data[wid_attr] = $(select).val();
+				const data = vis.views[view].widgets[wid].data;
+				data.wid = wid;
+				const curValue = vis.views[view].widgets[wid].data[wid_attr];
+				const curIndex = wid_attr.match(/[0-9]*$/g)[0];
+				// console.debug(curValue);
+				// console.debug(curIndex);
+
+				vis.conn.getStates([`vis-shelly.0.devices.ids`], (error, state) => {
+					const deviceIDs = JSON.parse(state["vis-shelly.0.devices.ids"].val);
+					$.each(deviceIDs, (k, v) => {
+						if (v.stateId == curValue) {
+							vis.views[view].widgets[wid].data["deviceType" + curIndex] = v.type;
+							$("#" + wid + "_deviceType" + curIndex).val(v.type);
+							// return false;
+						}
+					});
+					vis.views[view].widgets[wid].data.lastChange = Math.floor(Date.now() / 1000);
+
+					vis.binds["vis-shelly"].createWidget.customDevices(
+						wid,
+						view,
+						data,
+						vis.views[view].widgets[wid].style,
+						true,
+					);
+				});
+			},
+			onSelectType: function (select, wid_attr) {
+				const view = vis.activeView;
+				const wid = vis.activeWidgets[0];
+				vis.views[view].widgets[wid].data[wid_attr] = $(select).val();
+				vis.views[view].widgets[wid].data.lastChange = Math.floor(Date.now() / 1000);
+				const data = vis.views[view].widgets[wid].data;
+				data.wid = wid;
+				// vis.updateStates(vis.views[view].widgets[wid].data);
+				// console.debug(vis);
+				vis.binds["vis-shelly"].createWidget.customDevices(
+					wid,
+					view,
+					data,
+					vis.views[view].widgets[wid].style,
+					true,
+				);
+			},
+		},
 	},
 	createDevice_helper: {
 		getDeviceConfigByType: function (type, domID, val, vsID) {
@@ -605,18 +841,31 @@ vis.binds["vis-shelly"] = {
 				}
 			},
 			basicUpdateValueName: function ($dom, newVal, optons = {}, data = {}, stageID = "") {
+				// console.debug("Update Name");
+				// console.debug(optons);
+				// console.debug(data);
+				// console.debug(stageID);
 				var name = null;
 				var oname = null;
-				var deviceID = null;
+				var deviceID = stageID.match(/[.](.*).[0-9].[^.]*$/g)[1];
 				$.each(data, (k, v) => {
-					if (k.lastIndexOf(".name") > -1) name = v;
-					else if (k.lastIndexOf(".overrideName") > -1) {
-						deviceID = k.match(/[.](.*).[0-9].overrideName/g)[1];
+					if (/[.]name$/g.test(k)) {
+						// deviceID = k.match(/[.](.*).[0-9].name$/g)[1];
+						name = v;
+					} else if (/[.]overrideName$/g.test(k)) {
+						// deviceID = k.match(/[.](.*).[0-9].overrideName$/g)[1];
 						oname = v;
 					}
 				});
-				if (name == null || typeof name != "object") name = { val: "" };
-				if (oname == null || typeof oname != "object") oname = { val: name.val.length == 0 ? deviceID : "" };
+				if (name == null || typeof name != "object" || name.val == null || typeof name.val == "undefined") {
+					name = { val: "" };
+				}
+				if (oname == null || typeof oname != "object" || oname.val == null || typeof oname.val == "undefined") {
+					oname = { val: "" };
+				}
+				if (oname.val.length == 0 && name.val.length == 0 && typeof deviceID != "undefined") {
+					oname.val = deviceID;
+				}
 				$dom.html(oname.val.length > 0 ? oname.val : name.val);
 			},
 			basicUpdateValueUnit: function ($dom, newVal, options = {}, data = {}, stageID = "") {
@@ -690,9 +939,18 @@ vis.binds["vis-shelly"] = {
 			let typeConfig = {};
 			typeConfig = vis.binds["vis-shelly"].createDevice_helper.getDeviceConfigByType(val.type, domID, val, vsID);
 
-			console.log(typeConfig);
 			if (typeof typeConfig.dataPoint == "undefined") return false;
-			$.each(typeConfig.dataPoint, (dpKey, dpVal) => {
+			let dataPoint = [];
+			if (typeof val.relay != "undefined") {
+				dataPoint[0] = typeConfig.dataPoint[val.relay];
+			} else {
+				dataPoint = typeConfig.dataPoint;
+			}
+			console.debug("TypeConfig");
+			console.debug(typeConfig);
+			console.debug("dataPoint");
+			console.debug(dataPoint);
+			$.each(dataPoint, (dpKey, dpVal) => {
 				vis.conn.getStates(Object.values(dpVal), (error, data) => {
 					// console.log("data");
 					console.log(data);

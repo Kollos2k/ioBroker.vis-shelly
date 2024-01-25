@@ -43,6 +43,8 @@ Devices supported so far
 
 -   Rebuild widget js for future improvements
 -   bugfixes
+-   Custom Device List is now possible
+-   Added some Translations
 
 ### 0.0.6 (2024-01-24)
 
