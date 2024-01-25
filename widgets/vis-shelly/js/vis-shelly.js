@@ -178,12 +178,14 @@ vis.binds["vis-shelly"] = {
 			vis.binds["vis-shelly"].createDevice_helper.setBasicWidgetOptions($div, widData);
 			let roomID = "";
 			roomID = vis.views[view].widgets[widgetID].data.roomid;
-			vis.conn.getStates(["vis-shelly.0.devices.ids"], (error, data) => {
-				const deviceIDs = JSON.parse(data["vis-shelly.0.devices.ids"].val);
-				$.each(deviceIDs, (k, v) => {
-					vis.binds["vis-shelly"].createDevice_helper.buildDevice(v, widgetID, widData, roomID);
+			if (roomID.length > 0) {
+				vis.conn.getStates(["vis-shelly.0.devices.ids"], (error, data) => {
+					const deviceIDs = JSON.parse(data["vis-shelly.0.devices.ids"].val);
+					$.each(deviceIDs, (k, v) => {
+						vis.binds["vis-shelly"].createDevice_helper.buildDevice(v, widgetID, widData, roomID);
+					});
 				});
-			});
+			}
 		},
 		allDevices: function (widgetID, view, widData, style) {
 			var $div = $("#" + widgetID);
@@ -933,7 +935,7 @@ vis.binds["vis-shelly"] = {
 				vis.setValue(stateID, newVal);
 			},
 		},
-		buildDevice: function (val, widgetID, widData, roomID = "") {
+		buildDevice: function (val, widgetID, widData, roomID = null) {
 			const vsID = "vis-shelly.0.devices." + val.id;
 			const domID = val.id.replaceAll("#", "");
 			let typeConfig = {};
@@ -942,7 +944,7 @@ vis.binds["vis-shelly"] = {
 			if (typeof typeConfig.dataPoint == "undefined") return false;
 			let dataPoint = [];
 			if (typeof val.relay != "undefined") {
-				dataPoint[0] = typeConfig.dataPoint[val.relay];
+				dataPoint = { [val.relay]: typeConfig.dataPoint[val.relay] };
 			} else {
 				dataPoint = typeConfig.dataPoint;
 			}
@@ -954,7 +956,8 @@ vis.binds["vis-shelly"] = {
 				vis.conn.getStates(Object.values(dpVal), (error, data) => {
 					// console.log("data");
 					console.log(data);
-					if (roomID.length > 0) {
+					if (roomID != null) {
+						if (roomID.length == 0) return false;
 						if (data[dpVal.room] == null || data[dpVal.room].val != roomID) {
 							return true;
 						}
