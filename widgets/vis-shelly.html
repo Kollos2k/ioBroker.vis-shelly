@@ -74,7 +74,7 @@
 	id="tplVis-shellyCustomDeviceList"
 	type="text/ejs"
 	class="vis-tpl"
-	data-vis-prev='<div id="prev_tplVis-shellyCustomDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/images/editor/customDeviceList.png" style="width:100%"></div>'
+	data-vis-prev='<div id="prev_tplVis-shellyCustomDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/vis1/images/editor/customDeviceList.png" style="width:100%"></div>'
 	data-vis-attrs="display[block]/nselect,block,flex;deviceWidth;lastChange/hidden;"
 	data-vis-attrs0="iUniversalDeviceCount[1]/number,1,99,1;group.iUniversalDeviceValues/byindex;"
 	data-vis-attrs1="deviceID(1-iUniversalDeviceCount)/custom,vis-shelly.visEditor_customDevices_getDeviceSelect;
@@ -93,7 +93,7 @@
 	id="tplVis-shellyRoomDevices"
 	type="text/ejs"
 	class="vis-tpl"
-	data-vis-prev='<div id="prev_tplVis-shellyRoomDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/images/editor/deviceByRoom.png" style="width:100%"></div>'
+	data-vis-prev='<div id="prev_tplVis-shellyRoomDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/vis1/images/editor/deviceByRoom.png" style="width:100%"></div>'
 	data-vis-attrs="roomid/custom,vis-shelly.visEditor_roomDevices_getRoomSelect;"
 	data-vis-attrs0="display[block]/nselect,block,flex;deviceWidth;"
 	data-vis-set="vis-shelly"
@@ -109,7 +109,7 @@
 	id="tplVis-shellyAllDevices"
 	type="text/ejs"
 	class="vis-tpl"
-	data-vis-prev='<div id="prev_tplVis-shellyAllDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/images/editor/allDevices.png" style="width:100%"></div>'
+	data-vis-prev='<div id="prev_tplVis-shellyAllDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/vis1/images/editor/allDevices.png" style="width:100%"></div>'
 	data-vis-attrs=""
 	data-vis-attrs0="display[block]/nselect,block,flex;deviceWidth;"
 	data-vis-set="vis-shelly"
@@ -118,6 +118,16 @@
 >
 	<div class="vis-widget <%== this.data.attr('class') %>" style="background-color:darkgray; overflow-y:scroll; min-width: 150px; min-height: 50px" id="<%= this.data.attr('wid') %>">
 	    <% vis.binds['vis-shelly'].createWidget.allDevices(this.data.wid, this.view, this.data, this.style);%>
+
+
+
+
+
+
+
+
+
+
 
 
 

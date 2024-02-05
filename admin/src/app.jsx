@@ -10,6 +10,7 @@ import Settings from "./components/settings";
 import { AppBar, Tabs, Tab } from "@mui/material";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import TabRooms from "./tabs/rooms";
+import TabNames from "./tabs/devicename";
 
 const styles = (_theme) => ({
 	root: {},
@@ -42,9 +43,15 @@ const styles = (_theme) => ({
 });
 const tabs = [
 	{
-		name: "rooms",
+		name: "roomsTab",
 		title: I18n.t("tabRooms"),
 		component: TabRooms,
+		tooltip: "Rooms",
+	},
+	{
+		name: "namesTab",
+		title: I18n.t("tabNames"),
+		component: TabNames,
 		tooltip: "Rooms",
 	},
 ];
@@ -76,8 +83,8 @@ class App extends GenericApp {
 		}
 		extendedProps.Connection = AdminConnection;
 		super(props, extendedProps);
-		console.log("this");
-		console.log(this);
+		// console.log("this");
+		// console.log(this);
 	}
 	// @ts-ignore
 	onPrepareLoad(native) {
@@ -94,7 +101,7 @@ class App extends GenericApp {
 				});
 			});
 			*/
-		console.log("onPrepareLoad");
+		// console.log("onPrepareLoad");
 		// console.log(native);
 		// if (typeof this.state.native["rooms"] == "undefined") {
 		// 	console.log(native.rooms);
@@ -110,6 +117,12 @@ class App extends GenericApp {
 		// }
 		// console.log(native.rooms);
 		// settings.pass = this.decode(settings.pass);
+		native.deviceNames = {};
+		console.debug(this.socket.getstate(`vis-shelly.${this.instance}.devices.ids`));
+		// this.socket.setState(`vis-shelly.${this.instance}.devices.roomIds`, {
+		// 	val: JSON.stringify(roomEnum),
+		// 	ack: true,
+		// });
 	}
 
 	onPrepareSave(native) {

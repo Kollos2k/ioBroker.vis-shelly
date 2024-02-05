@@ -98,7 +98,7 @@ class visShelly extends utils.Adapter {
 				},
 				native: {},
 			});
-
+			/** Create DEVICE TYPE */
 			await this.setObjectNotExistsAsync("devices." + deviceName + ".type", {
 				type: "state",
 				common: {
@@ -111,6 +111,7 @@ class visShelly extends utils.Adapter {
 				native: {},
 			});
 
+			/** GET RELAY COUNT example: plus2pm with more than 1 relay */
 			let relayCount = 1;
 			const typeState = await this.getForeignStateAsync(deviceID + ".type");
 			if (typeState != null) {
@@ -118,7 +119,7 @@ class visShelly extends utils.Adapter {
 				devJSON.push({ stateId: deviceID, id: deviceName, type: typeState.val });
 				if (typeState.val == "shellyplus2pm") relayCount = 2;
 			}
-
+			/** CREATE vis-shelly DEVICE FROM shelly OBJECTS*/
 			for (let i = 0; i < relayCount; i++) {
 				await this.setObjectNotExistsAsync("devices." + deviceName + "." + i, {
 					type: "device",
@@ -127,60 +128,53 @@ class visShelly extends utils.Adapter {
 					},
 					native: {},
 				});
+				/** Set Name */
 				this.setObjectNotExists(
-					"devices." + deviceName + "." + i + ".overrideName",
+					"devices." + deviceName + "." + i + ".name",
 					{
 						type: "state",
 						common: {
-							name: deviceName + ".overrideName",
+							name: deviceName + ".name",
 							type: "string",
 							role: "name",
 							read: true,
 							write: true,
+							def: null,
 						},
 						native: {},
 					},
-					() => {},
+					() => {
+						/* Update default Name */
+						this.getState(`devices.${deviceName}.${i}.name`, (err, state) => {
+							if (state == null) {
+								this.getForeignState(deviceID + ".name", (err, state) => {
+									let newName = "";
+									if (state == null || state.val == null || state.val == "") newName = deviceName;
+									else newName = state.val.toString();
+									if (relayCount > 1) newName += `-${i}`;
+									this.setState(`devices.${deviceName}.${i}.name`, { val: newName, ack: true });
+								});
+							}
+						});
+					},
 				);
 			}
 		}
 		await this.setStateAsync("devices.ids", { val: JSON.stringify(devJSON), ack: true });
+		this.updateRoomsList();
 		this.log.info("Devices updated");
 	}
 
 	async updateRoomsList() {
-		const roomList = await this.getObjectViewAsync("system", "channel", {
-			startkey: `vis-shelly.${this.instance}.rooms.`,
-			endkey: `vis-shelly.${this.instance}.rooms.\u9999`,
-		});
+		const roomEnum = {};
+		for (const roomKey of Object.keys(this.config["rooms"])) {
+			const curRoom = this.config["rooms"][roomKey];
+			roomEnum[curRoom.id] = curRoom.name;
+		}
 		const shellyDevices = await this.getObjectViewAsync("system", "device", {
 			startkey: `vis-shelly.${this.instance}.devices.`,
 			endkey: `vis-shelly.${this.instance}.devices.\u9999`,
 		});
-		// this.log.info(JSON.stringify(roomList));
-		// this.log.info(JSON.stringify(shellyDevices));
-		const roomEnum = {};
-		for (const roomKey of Object.keys(roomList.rows)) {
-			const room = roomList.rows[roomKey];
-			this.log.info(JSON.stringify(room));
-			roomEnum[room.id] = room.value.common.name;
-			this.log.info(room.id);
-			this.setForeignObjectNotExists(
-				`${room.id}.icon`,
-				{
-					type: "state",
-					common: {
-						name: "Icon Path",
-						type: "string",
-						role: "icon",
-						read: true,
-						write: true,
-					},
-					native: {},
-				},
-				() => {},
-			);
-		}
 		for (const devKey of Object.keys(shellyDevices.rows)) {
 			const dev = shellyDevices.rows[devKey];
 

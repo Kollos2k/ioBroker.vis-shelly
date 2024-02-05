@@ -1,0 +1,219 @@
+<link rel="stylesheet" href="widgets/vis-shelly/vis1/css/style.css" />
+<script type="text/javascript" src="widgets/vis-shelly/vis1/js/vis-shelly.js"></script>
+
+<script
+	id="tplVis-shellyShowValues"
+	type="text/ejs"
+	class="vis-tpl"
+	data-vis-prev='<div id="prev_tplVis-shellyShowValues" style="position: relative; text-align: initial;padding: 4px "></div>'
+	data-vis-attrs="title/text;titleImage/image;backcolor/color;textcolor/color;
+                iUniversalValueCount[1]/number,1,30,1/updateUniversalDataFields();group.iUniversalValues/byindex;
+                title(1-iUniversalValueCount)/text;
+                oid(1-iUniversalValueCount)/id;
+                unit(1-iUniversalValueCount)/text;
+                icon(1-iUniversalValueCount)/image;
+                seperator(1-iUniversalValueCount)/checkbox;
+                oids1_(1-iUniversalValueCount)/id;
+                units1_(1-iUniversalValueCount)/text;
+                icons1_(1-iUniversalValueCount)/image;
+                oids2_(1-iUniversalValueCount)/id;
+                units2_(1-iUniversalValueCount)/text;
+                icons2_(1-iUniversalValueCount)/image;
+                subitemsHorizontal(1-iUniversalValueCount)/checkbox;
+                "
+	data-vis-set="vis-shelly"
+	data-vis-type="val"
+	data-vis-name="Show Ojbects"
+>
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:210px;border-radius: 10px;box-shadow: 5px 5px 5px black;background-color:<%= this.data.backcolor %>;color:<%= this.data.textcolor %>;" id="<%= this.data.attr('wid') %>" >
+
+	    <div class="vis-shelly-class vis-widget-body <%== this.data.attr('class') %>" style="padding:2px" >
+	        <div class="vis-shelly-itemViewer-headDiv">
+	            <span class="vis-shelly-itemViewer-headIcon"><%== (this.data.attr('titleImage'))?'<img src="' + this.data.titleImage + '" style="width:35px">':'';%></span>
+	            <span class="vis-shelly-itemViewer-headTitle"><%= this.data.title %></span>
+	        </div>
+	        <div class="vis-shelly-itemViewer-item">
+	            <% for(let i = 1; i <= this.data.iUniversalValueCount; i++){ %>
+	                <% if(this.data['seperator'+i]==true){ %><hr><%} %>
+	                <table style="width:100%;">
+	                    <tr>
+	                        <td rowspan="2" class="vis-shelly-itemViewer-itemIconHolder">
+	                            <img src="<%= this.data["icon" + i] %>" class="vis-shelly-itemViewer-itemIcon">
+	                        </td>
+	                        <td class="vis-shelly-itemViewer-itemTitle">
+	                            <%= this.data["title" + i] %>
+	                        </td>
+	                        <td class="vis-shelly-itemViewer-itemValue">
+	                            <%== vis.states.attr(this.data["oid" + i]+".val") %>&nbsp;<%= this.data["unit" + i] %>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td class="vis-shelly-itemViewer-itemTimestamp">
+	                            <%== vis.binds.basic.formatDate(vis.states.attr(this.data["oid" + i] + '.lc'), "", true) %>
+	                        </td>
+	                        <td class="vis-shelly-itemViewer-itemSubItem">
+	                            <div class="<%== (this.data['subitemsHorizontal'+i]==true)?"vis-shelly-itemViewer-itemSubItemFlex":"vis-shelly-itemViewer-itemSubItemGrid";%>">
+	                                <div><%== (this.data.attr('icons1_'+i))?'<img src="' + this.data['icons1_'+i] + '" style="width:15px">':'';%></div>
+	                                <div>&nbsp;<%= vis.states.attr(this.data["oids1_" + i] + '.val') %>&nbsp;<%= this.data["units1_" + i] %></div>
+	                                <div>
+	                                    <%== (this.data.attr('oids1_'+i)&&this.data.attr('oids2_'+i)&&this.data['subitemsHorizontal'+i]==true)?" ,":"";%>
+	                                    <%== (this.data.attr('icons2_'+i))?'<img src="' + this.data['icons2_'+i] + '" style="width:15px">':'';%></div>
+	                                <div>&nbsp;<%= vis.states.attr(this.data["oids2_" + i] + '.val') %>&nbsp;<%= this.data["units2_" + i] %></div>
+	                            </div>
+	                        </td>
+
+	                    </tr>
+	                </table>
+	            <% } %>
+	        </div>
+	    </div>
+	</div>
+</script>
+
+<script
+	id="tplVis-shellyCustomDeviceList"
+	type="text/ejs"
+	class="vis-tpl"
+	data-vis-prev='<div id="prev_tplVis-shellyCustomDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/images/editor/customDeviceList.png" style="width:100%"></div>'
+	data-vis-attrs="display[block]/nselect,block,flex;deviceWidth;lastChange/hidden;"
+	data-vis-attrs0="iUniversalDeviceCount[1]/number,1,99,1;group.iUniversalDeviceValues/byindex;"
+	data-vis-attrs1="deviceID(1-iUniversalDeviceCount)/custom,vis-shelly.visEditor_customDevices_getDeviceSelect;
+					deviceType(1-iUniversalDeviceCount)/custom,vis-shelly.visEditor_customDevices_getTypeSelect;"
+	data-vis-attrs2="deviceRelayNumber(1-iUniversalDeviceCount)[0]/number,0,2,1;"
+	data-vis-set="vis-shelly"
+	data-vis-type="CustomDeviceList"
+	data-vis-name="CustomDeviceList"
+>
+	<div class="vis-widget <%== this.data.attr('class') %>" style="background-color:darkgray; overflow-y:scroll; min-width: 150px; min-height: 50px" id="<%= this.data.attr('wid') %>">
+	    <% vis.binds['vis-shelly'].createWidget.customDevices(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
+<script
+	id="tplVis-shellyRoomDevices"
+	type="text/ejs"
+	class="vis-tpl"
+	data-vis-prev='<div id="prev_tplVis-shellyRoomDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/images/editor/deviceByRoom.png" style="width:100%"></div>'
+	data-vis-attrs="roomid/custom,vis-shelly.visEditor_roomDevices_getRoomSelect;"
+	data-vis-attrs0="display[block]/nselect,block,flex;deviceWidth;"
+	data-vis-set="vis-shelly"
+	data-vis-type="RoomDevices"
+	data-vis-name="RoomDevices"
+>
+	<div class="vis-widget <%== this.data.attr('class') %>" style="background-color:darkgray; overflow-y:scroll; min-width: 150px; min-height: 50px" id="<%= this.data.attr('wid') %>">
+	    <% vis.binds['vis-shelly'].createWidget.roomDevices(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
+<script
+	id="tplVis-shellyAllDevices"
+	type="text/ejs"
+	class="vis-tpl"
+	data-vis-prev='<div id="prev_tplVis-shellyAllDevices" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev "><img src="/vis/widgets/vis-shelly/images/editor/allDevices.png" style="width:100%"></div>'
+	data-vis-attrs=""
+	data-vis-attrs0="display[block]/nselect,block,flex;deviceWidth;"
+	data-vis-set="vis-shelly"
+	data-vis-type="AllDevices"
+	data-vis-name="AllDevices"
+>
+	<div class="vis-widget <%== this.data.attr('class') %>" style="background-color:darkgray; overflow-y:scroll; min-width: 150px; min-height: 50px" id="<%= this.data.attr('wid') %>">
+	    <% vis.binds['vis-shelly'].createWidget.allDevices(this.data.wid, this.view, this.data, this.style);%>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+</script>
+<!-- viewBox="0 0 210 297"-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+	<symbol id="svgShellyButton" width="210mm" height="297mm" version="1.1">
+		<defs>
+			<linearGradient id="linearGradient67">
+				<stop stop-color="var(--shellyButtonOuterColor)" stop-opacity="0" offset="0" />
+				<stop
+					stop-color="var(--shellyButtonOuterColor)"
+					stop-opacity="var(--shellyButtonOuterOpacity)"
+					offset="var(--shellyButtonOuterOffset)"
+				/>
+				<stop stop-color="var(--shellyButtonOuterColor)" offset="1" />
+			</linearGradient>
+			<radialGradient
+				id="radialGradient1052"
+				cx="97.266"
+				cy="108.9"
+				r="42.318"
+				gradientTransform="matrix(1.0601 0 0 1.0601 -58.249 -70.582)"
+				gradientUnits="userSpaceOnUse"
+				xlink:href="#linearGradient67"
+			/>
+			<linearGradient
+				id="linearGradient4508"
+				x1="59.467"
+				x2="162.64"
+				y1="113.54"
+				y2="125.81"
+				gradientTransform="matrix(.99199 0 0 .99199 -51.491 -67.635)"
+				gradientUnits="userSpaceOnUse"
+			>
+				<stop stop-color="#ccc" offset="0" />
+				<stop stop-color="#999" offset="1" />
+			</linearGradient>
+			<radialGradient
+				id="radialGradient5547"
+				cx="97.266"
+				cy="113.72"
+				r="45.336"
+				gradientTransform="matrix(.98949 0 0 .98949 -51.384 -67.661)"
+				gradientUnits="userSpaceOnUse"
+				xlink:href="#linearGradient67"
+			/>
+			<radialGradient
+				id="radialGradient5549"
+				cx="97.266"
+				cy="113.72"
+				r="45.336"
+				gradientTransform="matrix(.99199 0 0 .97581 -51.491 -65.796)"
+				gradientUnits="userSpaceOnUse"
+			>
+				<stop offset="0" />
+				<stop stop-opacity="0" offset="1" />
+			</radialGradient>
+		</defs>
+		<circle
+			id="activeCircle"
+			cx="45"
+			cy="45"
+			r="45"
+			fill="url(#radialGradient1052)"
+			fill-rule="evenodd"
+			stroke="url(#radialGradient5547)"
+			stroke-width=".28048"
+		/>
+		<circle
+			id="buttonCircle"
+			cx="45"
+			cy="45"
+			r="36"
+			fill="url(#linearGradient4508)"
+			fill-rule="evenodd"
+			stroke="url(#radialGradient5549)"
+			stroke-width=".8789"
+		/>
+		<g id="iconPower" transform="translate(-51.893 -69.681)" fill="#0000ff">
+			<path
+				d="m101.21 98.36v3.2392a13.251 13.493 0 0 1 8.9172 12.731 13.251 13.493 0 0 1-13.251 13.493 13.251 13.493 0 0 1-13.251-13.493 13.251 13.493 0 0 1 8.8046-12.684v-3.2384a16.322 16.62 0 0 0-11.855 15.976 16.322 16.62 0 0 0 16.322 16.62 16.322 16.62 0 0 0 16.322-16.62 16.322 16.62 0 0 0-12.008-16.024z"
+			/>
+			<rect x="95.508" y="95.364" width="2.5469" height="13.992" />
+		</g>
+	</symbol>
+</svg>

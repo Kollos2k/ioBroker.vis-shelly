@@ -8,7 +8,7 @@ import App from "./app";
 import pkg from "../../package.json";
 
 let themeName = Utils.getThemeName();
-console.log(`${pkg.name}@${pkg.version} using theme "${themeName}"`);
+// console.log(`${pkg.name}@${pkg.version} using theme "${themeName}"`);
 
 function build() {
 	ReactDOM.render(

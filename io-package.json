@@ -1,216 +1,215 @@
 {
-  "common": {
-    "name": "vis-shelly",
-    "version": "0.0.6",
-    "news": {
-      "0.0.6": {
-        "en": "Test for release",
-        "de": "Test zur Freigabe",
-        "ru": "Испытание на высвобождение",
-        "pt": "Teste para liberação",
-        "nl": "Test voor het loslaten",
-        "fr": "Essai de libération",
-        "it": "Test per il rilascio",
-        "es": "Prueba para la liberación",
-        "pl": "Badanie zwolnienia",
-        "uk": "Тест на випуск",
-        "zh-cn": "释放测试"
-      },
-      "0.0.5": {
-        "en": "Test for release",
-        "de": "Test zur Freigabe",
-        "ru": "Испытание на высвобождение",
-        "pt": "Teste para liberação",
-        "nl": "Test voor het loslaten",
-        "fr": "Essai de libération",
-        "it": "Test per il rilascio",
-        "es": "Prueba para la liberación",
-        "pl": "Badanie zwolnienia",
-        "uk": "Тест на випуск",
-        "zh-cn": "释放测试"
-      },
-      "0.0.4": {
-        "en": "initial release",
-        "de": "erstausstrahlung",
-        "ru": "начальный выпуск",
-        "pt": "lançamento inicial",
-        "nl": "niet",
-        "fr": "initial release",
-        "it": "rilascio iniziale",
-        "es": "liberación inicial",
-        "pl": "pierwsze wydanie",
-        "uk": "початковий реліз",
-        "zh-cn": "初步释放"
-      },
-      "0.0.4-alpha.3": {
-        "en": "<!--\n    Placeholder for the next version (at the beginning of the line):\n    ### **WORK IN PROGRESS**\n-->",
-        "de": "<!--\nPlatzhalter für die nächste Version (am Anfang der Linie):\n**WORK IN PROGRESS**\n-->",
-        "ru": "<!--\nМестоположение для следующей версии (в начале линии):\n** В ПРОГРЕССЕ**\n-->",
-        "pt": "<!--\nPlaceholder para a próxima versão (no início da linha):\n# # # TRABALHO EM PROGRESSO #\n-->",
-        "nl": "<!--\nPlaatshouder voor de volgende versie (aan het begin van de regel):\nWORK IN PROGRESS\n-->",
-        "fr": "<!--\nPlaceholder pour la prochaine version (au début de la ligne):\n### **WORK IN PROGRESS**\n-->",
-        "it": "<!--\nSegnaposto per la prossima versione (all'inizio della linea):\n######WORK IN PROGRESS #\n-->",
-        "es": "<!--\nTitular para la próxima versión (al principio de la línea):\n#### **WORK IN PROGRESS**\n-->",
-        "pl": "<!--\nUchwyt do następnej wersji (na początku wiersza):\n** * WORK IN PROGRESS **\n-->",
-        "uk": "<!--\nМісцевласника для наступної версії (на початку лінії):\n###**\n-->",
-        "zh-cn": "<!--\n下一个版本(行首)的占位符 :\n** 工作进展**\n-->"
-      },
-      "0.0.4-alpha.2": {
-        "en": "React Admin and Room Selection",
-        "de": "React Admin und Zimmerauswahl",
-        "ru": "Реагируйте на выборы администратора и комнаты",
-        "pt": "Reagir Admin e seleção de quartos",
-        "nl": "Beheers- en ruimteselectie weergeven",
-        "fr": "Réagir Admin et sélection de salle",
-        "it": "Reagisci all'amministratore e alla selezione delle camere",
-        "es": "Reactar Admin y Selección de habitaciones",
-        "pl": "Reakcja administracja i wybór pokoju",
-        "uk": "Вибір адміністратора та номера",
-        "zh-cn": "反应管理员和房间选择"
-      },
-      "0.0.4-alpha.0": {
-        "en": "initial release",
-        "de": "erstausstrahlung",
-        "ru": "начальный выпуск",
-        "pt": "lançamento inicial",
-        "nl": "niet",
-        "fr": "initial release",
-        "it": "rilascio iniziale",
-        "es": "liberación inicial",
-        "pl": "pierwsze wydanie",
-        "uk": "початковий реліз",
-        "zh-cn": "初步释放"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "uk": "Початкова версія",
-        "zh-cn": "首次出版"
-      }
-    },
-    "title": "Shelly VIS",
-    "titleLang": {
-      "en": "Shelly VIS",
-      "de": "Shelly VIS",
-      "ru": "Шелли ВИС",
-      "pt": "Shelly VIS",
-      "nl": "Shelly VIS",
-      "fr": "Shelly VIS",
-      "it": "ShellyVIS",
-      "es": "Shelly VIS",
-      "pl": "Shelly VIS",
-      "uk": "Шелі ВІС",
-      "zh-cn": "雪莉可见光"
-    },
-    "desc": {
-      "en": "A VIS adapter for display Shelly devices",
-      "de": "Ein VIS-Adapter für Display-Shelly-Geräte",
-      "ru": "Адаптер VIS для дисплеев Shelly",
-      "pt": "Um adaptador VIS para dispositivos Shelly de exibição",
-      "nl": "Een VIS-adapter voor het weergeven van Shelly-apparaten",
-      "fr": "Un adaptateur VIS pour les appareils d'affichage Shelly",
-      "it": "Un adattatore VIS per visualizzare i dispositivi Shelly",
-      "es": "Un adaptador VIS para mostrar dispositivos Shelly",
-      "pl": "Adapter VIS do wyświetlaczy urządzeń Shelly",
-      "uk": "Адаптер VIS для дисплеїв Shelly",
-      "zh-cn": "用于显示 Shelly 设备的 VIS 适配器"
-    },
-    "authors": [
-      "Kollos2k <kollos@vorsicht-bissig.de>"
-    ],
-    "keywords": [
-      "vis",
-      "shelly"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "main": "main.js",
-    "icon": "vis-shelly.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/Kollos2k/ioBroker.vis-shelly/main/admin/vis-shelly.png",
-    "readme": "https://github.com/Kollos2k/ioBroker.vis-shelly/blob/main/README.md",
-    "loglevel": "info",
-    "restartAdapters": [
-      "vis"
-    ],
-    "connectionType": "local",
-    "dataSource": "assumption",
-    "compact": true,
-    "type": "visualization",
-    "mode": "daemon",
-    "tier": 3,
-    "adminUI": {
-      "config": "materialize"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=3.3.22"
-      },
-      "vis"
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=6.0.0"
-      }
-    ]
-  },
-  "native": {
-    "rooms": []
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "Device or service connected",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "rooms",
-      "type": "device",
-      "common": {
-        "name": {
-          "en": "Rooms",
-          "de": "Räume"
-        },
-        "write": true,
-        "members": [
-          "channel"
-        ]
-      },
-      "native": {}
-    },
-    {
-      "_id": "devices",
-      "type": "channel",
-      "common": {
-        "name": {
-          "en": "Devices"
-        }
-      },
-      "native": {}
-    }
-  ]
+	"common": {
+		"name": "vis-shelly",
+		"version": "0.0.6",
+		"news": {
+			"0.0.6": {
+				"en": "Test for release",
+				"de": "Test zur Freigabe",
+				"ru": "Испытание на высвобождение",
+				"pt": "Teste para liberação",
+				"nl": "Test voor het loslaten",
+				"fr": "Essai de libération",
+				"it": "Test per il rilascio",
+				"es": "Prueba para la liberación",
+				"pl": "Badanie zwolnienia",
+				"uk": "Тест на випуск",
+				"zh-cn": "释放测试"
+			},
+			"0.0.5": {
+				"en": "Test for release",
+				"de": "Test zur Freigabe",
+				"ru": "Испытание на высвобождение",
+				"pt": "Teste para liberação",
+				"nl": "Test voor het loslaten",
+				"fr": "Essai de libération",
+				"it": "Test per il rilascio",
+				"es": "Prueba para la liberación",
+				"pl": "Badanie zwolnienia",
+				"uk": "Тест на випуск",
+				"zh-cn": "释放测试"
+			},
+			"0.0.4": {
+				"en": "initial release",
+				"de": "erstausstrahlung",
+				"ru": "начальный выпуск",
+				"pt": "lançamento inicial",
+				"nl": "niet",
+				"fr": "initial release",
+				"it": "rilascio iniziale",
+				"es": "liberación inicial",
+				"pl": "pierwsze wydanie",
+				"uk": "початковий реліз",
+				"zh-cn": "初步释放"
+			},
+			"0.0.4-alpha.3": {
+				"en": "<!--\n    Placeholder for the next version (at the beginning of the line):\n    ### **WORK IN PROGRESS**\n-->",
+				"de": "<!--\nPlatzhalter für die nächste Version (am Anfang der Linie):\n**WORK IN PROGRESS**\n-->",
+				"ru": "<!--\nМестоположение для следующей версии (в начале линии):\n** В ПРОГРЕССЕ**\n-->",
+				"pt": "<!--\nPlaceholder para a próxima versão (no início da linha):\n# # # TRABALHO EM PROGRESSO #\n-->",
+				"nl": "<!--\nPlaatshouder voor de volgende versie (aan het begin van de regel):\nWORK IN PROGRESS\n-->",
+				"fr": "<!--\nPlaceholder pour la prochaine version (au début de la ligne):\n### **WORK IN PROGRESS**\n-->",
+				"it": "<!--\nSegnaposto per la prossima versione (all'inizio della linea):\n######WORK IN PROGRESS #\n-->",
+				"es": "<!--\nTitular para la próxima versión (al principio de la línea):\n#### **WORK IN PROGRESS**\n-->",
+				"pl": "<!--\nUchwyt do następnej wersji (na początku wiersza):\n** * WORK IN PROGRESS **\n-->",
+				"uk": "<!--\nМісцевласника для наступної версії (на початку лінії):\n###**\n-->",
+				"zh-cn": "<!--\n下一个版本(行首)的占位符 :\n** 工作进展**\n-->"
+			},
+			"0.0.4-alpha.2": {
+				"en": "React Admin and Room Selection",
+				"de": "React Admin und Zimmerauswahl",
+				"ru": "Реагируйте на выборы администратора и комнаты",
+				"pt": "Reagir Admin e seleção de quartos",
+				"nl": "Beheers- en ruimteselectie weergeven",
+				"fr": "Réagir Admin et sélection de salle",
+				"it": "Reagisci all'amministratore e alla selezione delle camere",
+				"es": "Reactar Admin y Selección de habitaciones",
+				"pl": "Reakcja administracja i wybór pokoju",
+				"uk": "Вибір адміністратора та номера",
+				"zh-cn": "反应管理员和房间选择"
+			},
+			"0.0.4-alpha.0": {
+				"en": "initial release",
+				"de": "erstausstrahlung",
+				"ru": "начальный выпуск",
+				"pt": "lançamento inicial",
+				"nl": "niet",
+				"fr": "initial release",
+				"it": "rilascio iniziale",
+				"es": "liberación inicial",
+				"pl": "pierwsze wydanie",
+				"uk": "початковий реліз",
+				"zh-cn": "初步释放"
+			},
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"uk": "Початкова версія",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "Shelly VIS",
+		"titleLang": {
+			"en": "Shelly VIS",
+			"de": "Shelly VIS",
+			"ru": "Шелли ВИС",
+			"pt": "Shelly VIS",
+			"nl": "Shelly VIS",
+			"fr": "Shelly VIS",
+			"it": "ShellyVIS",
+			"es": "Shelly VIS",
+			"pl": "Shelly VIS",
+			"uk": "Шелі ВІС",
+			"zh-cn": "雪莉可见光"
+		},
+		"desc": {
+			"en": "A VIS adapter for display Shelly devices",
+			"de": "Ein VIS-Adapter für Display-Shelly-Geräte",
+			"ru": "Адаптер VIS для дисплеев Shelly",
+			"pt": "Um adaptador VIS para dispositivos Shelly de exibição",
+			"nl": "Een VIS-adapter voor het weergeven van Shelly-apparaten",
+			"fr": "Un adaptateur VIS pour les appareils d'affichage Shelly",
+			"it": "Un adattatore VIS per visualizzare i dispositivi Shelly",
+			"es": "Un adaptador VIS para mostrar dispositivos Shelly",
+			"pl": "Adapter VIS do wyświetlaczy urządzeń Shelly",
+			"uk": "Адаптер VIS для дисплеїв Shelly",
+			"zh-cn": "用于显示 Shelly 设备的 VIS 适配器"
+		},
+		"authors": ["Kollos2k <kollos@vorsicht-bissig.de>"],
+		"keywords": ["vis", "shelly"],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "vis-shelly.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/Kollos2k/ioBroker.vis-shelly/main/admin/vis-shelly.png",
+		"readme": "https://github.com/Kollos2k/ioBroker.vis-shelly/blob/main/README.md",
+		"loglevel": "info",
+		"restartAdapters": ["vis", "vis-2"],
+		"connectionType": "local",
+		"dataSource": "assumption",
+		"compact": true,
+		"type": "visualization",
+		"mode": "daemon",
+		"tier": 3,
+		"adminUI": {
+			"config": "materialize"
+		},
+		"dependencies": [
+			{
+				"js-controller": ">=3.3.22"
+			},
+			"vis"
+		],
+		"globalDependencies": [
+			{
+				"admin": ">=6.0.0"
+			}
+		],
+		"visWidgets": {
+			"vis2DemoWidget": {
+				"i18n": "component",
+				"name": "vis2DemoWidget",
+				"url": "vis-shelly/vis2/customWidgets.js",
+				"components": ["DemoWidget"]
+			}
+		}
+	},
+	"native": {
+		"rooms": []
+	},
+	"objects": [],
+	"instanceObjects": [
+		{
+			"_id": "info",
+			"type": "channel",
+			"common": {
+				"name": "Information"
+			},
+			"native": {}
+		},
+		{
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": "Device or service connected",
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "rooms",
+			"type": "device",
+			"common": {
+				"name": {
+					"en": "Rooms",
+					"de": "Räume"
+				},
+				"write": true,
+				"members": ["channel"]
+			},
+			"native": {}
+		},
+		{
+			"_id": "devices",
+			"type": "channel",
+			"common": {
+				"name": {
+					"en": "Devices"
+				}
+			},
+			"native": {}
+		}
+	]
 }

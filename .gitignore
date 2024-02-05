@@ -2,9 +2,10 @@
 .*/
 !.vscode/
 !.github/
-cp-vis-shelly.sh
-cp-vis-shelly.widgets.sh
-cp-vis-shelly2.sh
+widgets_old/
+cp-vis-shelly_dev.sh
+cp-vis-shelly_dev.widgets.sh
+cp-vis-shelly_local.sh
 push.sh
 README_OLD.md
 .gitignore
