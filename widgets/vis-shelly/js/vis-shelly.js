@@ -1005,7 +1005,7 @@ vis.binds["vis-shelly"] = {
 					$dom.html("Energie");
 				} else {
 					$dom.addClass("battery");
-					$dom.html((percent == null || typeof percent != "object" ? 0 : percent.val) + " %");
+					$dom.html((percent == null || typeof percent != "object" ? percent : percent.val) + " %");
 				}
 			},
 			basicUpdateSwitch: function ($dom, newVal, options = {}, data = {}, stateID = "") {
