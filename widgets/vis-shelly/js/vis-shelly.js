@@ -117,7 +117,7 @@ $.extend(true, systemDictionary, {
 	},
 });
 
-const moveDirection = {
+const moveDirectionVS = {
 	up: 0,
 	down: 1,
 };
@@ -183,7 +183,7 @@ vis.binds["vis-shelly"] = {
 									view,
 									widData,
 									count,
-									moveDirection.up,
+									moveDirectionVS.up,
 									style,
 								);
 								// vis.reRenderWidgetEdit($(".vis-view"), view, widgetID);
@@ -201,7 +201,7 @@ vis.binds["vis-shelly"] = {
 									view,
 									widData,
 									count,
-									moveDirection.down,
+									moveDirectionVS.down,
 									style,
 								);
 							});
@@ -479,11 +479,11 @@ vis.binds["vis-shelly"] = {
 			 * @param {String} view
 			 * @param {Object} widData
 			 * @param {Integer} curPosition
-			 * @param {moveDirection} direction "up or down"
+			 * @param {moveDirectionVS} direction "up or down"
 			 */
 			moveDevicePosition: function (widgetID, view, widData, curPosition, direction, style) {
 				// console.debug(widData);
-				const nextPosition = direction == moveDirection.down ? curPosition + 1 : curPosition - 1;
+				const nextPosition = direction == moveDirectionVS.down ? curPosition + 1 : curPosition - 1;
 				if (nextPosition == 0 || nextPosition > Number(widData.iUniversalDeviceCount)) {
 					return false;
 				}
