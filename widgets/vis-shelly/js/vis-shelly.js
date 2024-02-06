@@ -140,8 +140,8 @@ vis.binds["vis-shelly"] = {
 				}, 100);
 			}
 			vis.binds["vis-shelly"].createDevice_helper.setBasicWidgetOptions($div, widData);
-			console.debug("CUSTOM THIS");
-			console.debug(this);
+			// console.debug("CUSTOM THIS");
+			// console.debug(this);
 			// vis.states.bind(vis.activeView, function (e, newVal, oldVal) {
 			// 	if (newVal != oldVal)
 			// 		updateWidget();
@@ -210,7 +210,7 @@ vis.binds["vis-shelly"] = {
 					}
 				}
 			}
-			console.debug(vis);
+			// console.debug(vis);
 		},
 		roomDevices: function (widgetID, view, widData, style) {
 			var $div = $("#" + widgetID);
@@ -228,7 +228,7 @@ vis.binds["vis-shelly"] = {
 				vis.conn.getStates(["vis-shelly.0.devices.ids"], (error, data) => {
 					const deviceIDs = JSON.parse(data["vis-shelly.0.devices.ids"].val);
 					$.each(deviceIDs, (k, v) => {
-						console.error(v);
+						// console.error(v);
 						vis.binds["vis-shelly"].createDevice_helper.buildDevice(v, widgetID, widData, roomID);
 					});
 				});
@@ -242,12 +242,12 @@ vis.binds["vis-shelly"] = {
 				}, 100);
 			}
 			vis.binds["vis-shelly"].createDevice_helper.setBasicWidgetOptions($div, widData);
-			console.log("VIS");
-			console.log(vis);
-			console.log("WID DATA");
-			console.log(widData);
-			console.log("VIEW");
-			console.log(view);
+			// console.log("VIS");
+			// console.log(vis);
+			// console.log("WID DATA");
+			// console.log(widData);
+			// console.log("VIEW");
+			// console.log(view);
 			// var getStateObject = function (state) {
 			// 	if (typeof state == "undefined") return { ack: true, from: "", lc: 0, q: 0, ts: 0, user: "", val: "" };
 			// 	return state;
@@ -274,17 +274,18 @@ vis.binds["vis-shelly"] = {
 		if ($dom.length == 0) return false;
 
 		var data = $domDev.data("data");
-
-		if (typeof data[sID] == "undefined" || data[sID] == null) data[sID] = { val: "" };
-		if (typeof newVal == "undefined") {
-			newVal = data[sID].val;
-		} else {
-			if (typeof newVal == "object") data[sID] = newVal;
-			else data[sID].val = newVal;
-			if (typeof newVal == "object") newVal = newVal.val;
-			$domDev.data("data", data);
+		if (typeof data != "undefined") {
+			if (typeof data[sID] == "undefined" || data[sID] == null) data[sID] = { val: "" };
+			if (typeof newVal == "undefined") {
+				newVal = data[sID].val;
+			} else {
+				if (typeof newVal == "object") data[sID] = newVal;
+				else data[sID].val = newVal;
+				if (typeof newVal == "object") newVal = newVal.val;
+				$domDev.data("data", data);
+			}
+			configUpdate.updateValue($dom, newVal, configUpdate, data, sID);
 		}
-		configUpdate.updateValue($dom, newVal, configUpdate, data, sID);
 	},
 	updateUniversalDataFields: function (wid, view) {
 		vis.activeWidgets.forEach(function (el) {
@@ -303,7 +304,7 @@ vis.binds["vis-shelly"] = {
 		return this.visEditor.customDevices.getTypeSelect(wid_attr, options);
 	},
 	roomIdFilter: function (wid_attr, options) {
-		console.error(options);
+		// console.error(options);
 		return { input: `<input type='text' id='inspect_${wid_attr}'/>` };
 	},
 	visEditor: {
@@ -372,7 +373,7 @@ vis.binds["vis-shelly"] = {
 				const view = vis.activeView;
 				const wid = vis.activeWidgets[0];
 				// vis.views[view].widgets[wid].data.roomid=1;
-				console.debug(vis.views[view].widgets[wid]);
+				// console.debug(vis.views[view].widgets[wid]);
 				const curValue = vis.views[view].widgets[wid].data[wid_attr];
 
 				setTimeout(() => {
@@ -402,7 +403,7 @@ vis.binds["vis-shelly"] = {
 				const wid = vis.activeWidgets[0];
 				// vis.views[view].widgets[wid].data.roomid=1;
 				const curValue = vis.views[view].widgets[wid].data[wid_attr];
-				console.error(curValue);
+				// console.error(curValue);
 				const types = [
 					"SHDM-2",
 					"SHPLG-S",
@@ -505,11 +506,11 @@ vis.binds["vis-shelly"] = {
 					vis.reRenderWidgetEdit(vis.activeViewDiv, vis.activeView, widgetID);
 				});
 
-				console.error(vis);
+				// console.error(vis);
 				vis.binds["vis-shelly"].createWidget.customDevices(widgetID, view, vis.widgets[widgetID].data, style);
 				$("#vis_container").trigger("click");
-				console.log("VIS VIEW");
-				console.log($("#visview_" + view));
+				// console.log("VIS VIEW");
+				// console.log($("#visview_" + view));
 				$("#" + widgetID).trigger("click");
 				$("#visview_" + view).trigger("click");
 				$("#" + widgetID).trigger("click");
@@ -990,7 +991,7 @@ vis.binds["vis-shelly"] = {
 				$dom.append($b2);
 			},
 			basicUpdateDevicePower: function ($dom, newVal, options = {}, data = {}, stageID = "") {
-				console.log("update external");
+				// console.log("update external");
 				var exP = null;
 				var percent = null;
 				$.each(data, (k, v) => {
@@ -1034,7 +1035,7 @@ vis.binds["vis-shelly"] = {
 			},
 		},
 		buildDevice: function (val, widgetID, widData, roomID = null) {
-			console.debug(vis);
+			// console.debug(vis);
 			const ret = { dom: $(), domid: [] };
 			// ret.dom=${""}
 			const vsID = "vis-shelly.0.devices." + val.id;
@@ -1049,10 +1050,10 @@ vis.binds["vis-shelly"] = {
 			} else {
 				dataPoint = typeConfig.dataPoint;
 			}
-			console.debug("TypeConfig");
-			console.debug(typeConfig);
-			console.debug("dataPoint");
-			console.debug(dataPoint);
+			// console.debug("TypeConfig");
+			// console.debug(typeConfig);
+			// console.debug("dataPoint");
+			// console.debug(dataPoint);
 			$.each(dataPoint, (dpKey, dpVal) => {
 				vis.conn.subscribe(Object.values(dpVal));
 				var deviceDomID = typeConfig.domID + dpKey;
@@ -1093,7 +1094,7 @@ vis.binds["vis-shelly"] = {
 				}
 				vis.conn.getStates(Object.values(dpVal), (error, data) => {
 					// console.log("data");
-					console.log(data);
+					// console.log(data);
 					if (roomID != null) {
 						if (roomID.length == 0) return false;
 						if (data[dpVal.room] == null || data[dpVal.room].val != roomID) {
@@ -1102,7 +1103,7 @@ vis.binds["vis-shelly"] = {
 					}
 					$domBody.css("display", "block");
 
-					console.log(data[dpVal.room]);
+					// console.log(data[dpVal.room]);
 					// console.log(roomID);
 					// console.log(dpVal);
 					$domObj.data("data", data);
