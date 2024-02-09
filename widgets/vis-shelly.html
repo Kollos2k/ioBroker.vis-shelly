@@ -118,11 +118,14 @@
 >
 	<div class="vis-widget <%== this.data.attr('class') %>" style="background-color:darkgray; overflow-y:scroll; min-width: 150px; min-height: 50px" id="<%= this.data.attr('wid') %>">
 	    <% vis.binds['vis-shelly'].createWidget.allDevices(this.data.wid, this.view, this.data, this.style);%>
+
+
+
 	</div>
 </script>
 <!-- viewBox="0 0 210 297"-->
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
-	<symbol id="svgShellyButton" width="210mm" height="297mm" version="1.1">
+	<symbol id="svgShellyButton" width="90mm" height="90mm" version="1.1">
 		<defs>
 			<linearGradient id="linearGradient67">
 				<stop stop-color="var(--shellyButtonOuterColor)" stop-opacity="0" offset="0" />
@@ -200,6 +203,144 @@
 				d="m101.21 98.36v3.2392a13.251 13.493 0 0 1 8.9172 12.731 13.251 13.493 0 0 1-13.251 13.493 13.251 13.493 0 0 1-13.251-13.493 13.251 13.493 0 0 1 8.8046-12.684v-3.2384a16.322 16.62 0 0 0-11.855 15.976 16.322 16.62 0 0 0 16.322 16.62 16.322 16.62 0 0 0 16.322-16.62 16.322 16.62 0 0 0-12.008-16.024z"
 			/>
 			<rect x="95.508" y="95.364" width="2.5469" height="13.992" />
+		</g>
+	</symbol>
+</svg>
+<!-- TRV BUTTON -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: none">
+	<symbol id="svgShellyTRVButton" width="226.67mm" height="90.04mm" version="1.1">
+		<defs>
+			<linearGradient id="linearGradient5543">
+				<stop stop-color="#000000" offset="0" />
+				<stop stop-color="#000000" stop-opacity="0" offset="1" />
+			</linearGradient>
+			<linearGradient id="linearGradient4506">
+				<stop stop-color="#cccccc" offset="0" />
+				<stop stop-color="#999999" offset="1" />
+			</linearGradient>
+			<linearGradient
+				id="linearGradient4508"
+				x1="59.467"
+				x2="162.64"
+				y1="113.54"
+				y2="125.81"
+				gradientTransform="matrix(.99199 0 0 .99199 -51.491 -67.495)"
+				gradientUnits="userSpaceOnUse"
+				xlink:href="#linearGradient4506"
+			/>
+			<radialGradient
+				id="radialGradient5549"
+				cx="97.266"
+				cy="113.72"
+				r="45.336"
+				gradientTransform="matrix(.99199 0 0 .97581 -51.491 -65.655)"
+				gradientUnits="userSpaceOnUse"
+				xlink:href="#linearGradient5543"
+			/>
+			<radialGradient
+				id="radialGradient5549-2"
+				cx="97.266"
+				cy="113.72"
+				r="45.336"
+				gradientTransform="matrix(.99199 0 0 .97581 85.464 -65.655)"
+				gradientUnits="userSpaceOnUse"
+				xlink:href="#linearGradient5543"
+			/>
+			<linearGradient
+				id="linearGradient2964"
+				x1="59.467"
+				x2="162.64"
+				y1="113.54"
+				y2="125.81"
+				gradientTransform="matrix(.99199 0 0 .99199 85.464 -67.495)"
+				gradientUnits="userSpaceOnUse"
+				xlink:href="#linearGradient4506"
+			/>
+			<radialGradient
+				id="radialGradient881"
+				cx="430.64"
+				cy="168.9"
+				r="428.36"
+				gradientTransform="matrix(1.6619 .0019052 -.00075833 .66146 -283.27 56.776)"
+				gradientUnits="userSpaceOnUse"
+			>
+				<stop stop-color="#0000ff" offset="0" />
+				<stop stop-color="#0000ff" stop-opacity="0" offset="1" />
+			</radialGradient>
+		</defs>
+		<g transform="translate(.00051676 -.14004)">
+			<g>
+				<rect
+					x="45.422"
+					y="9.9885"
+					width="140.55"
+					height="70.305"
+					fill="#444444"
+					stroke-linejoin="round"
+					stroke-width="1.865"
+					style="paint-order: fill markers stroke"
+				/>
+				<path
+					transform="scale(.26458)"
+					d="m169.55 0.5293a169.55 169.55 0 0 0-169.55 169.55 169.55 169.55 0 0 0 169.55 169.55 169.55 169.55 0 0 0 0.31054-0.0117v1.2246h522.33v-1.4004a169.55 169.55 0 0 0 164.53-169.36 169.55 169.55 0 0 0-169.55-169.55 169.55 169.55 0 0 0-4.0664 0.15234h-506.71a169.55 169.55 0 0 0-6.8516-0.15234zm2.125 37.223h531.2v265.72h-531.2z"
+					fill="url(#radialGradient881)"
+					style="paint-order: fill markers stroke"
+				/>
+				<circle
+					id="buttonCircle"
+					cx="45"
+					cy="45.141"
+					r="37.061"
+					fill="url(#linearGradient4508)"
+					fill-rule="evenodd"
+					stroke="url(#radialGradient5549)"
+					stroke-width=".8789"
+				/>
+				<circle
+					cx="181.95"
+					cy="45.141"
+					r="37.061"
+					fill="url(#linearGradient2964)"
+					fill-rule="evenodd"
+					stroke="url(#radialGradient5549-2)"
+					stroke-width=".8789"
+				/>
+				<rect
+					x="28.963"
+					y="41.41"
+					width="32.074"
+					height="5"
+					fill="#0000ff"
+					style="paint-order: fill markers stroke"
+				/>
+				<rect
+					x="165.92"
+					y="41.41"
+					width="32.074"
+					height="5"
+					fill="#ff0000"
+					style="paint-order: fill markers stroke"
+				/>
+				<rect
+					transform="matrix(.0096391 .99995 -.99991 .013142 0 0)"
+					x="30.172"
+					y="-183.87"
+					width="32.074"
+					height="4.6912"
+					fill="#ff0000"
+					style="paint-order: fill markers stroke"
+				/>
+			</g>
+			<rect
+				x="44.859"
+				y=".14004"
+				width="141.11"
+				height="80.153"
+				fill-opacity="0"
+				stroke-linejoin="round"
+				stroke-width="1.865"
+				style="paint-order: fill markers stroke"
+			/>
 		</g>
 	</symbol>
 </svg>

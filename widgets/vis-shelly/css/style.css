@@ -86,9 +86,9 @@ body {
 	margin: 5px 10px 5px 10px;
 	border-radius: 10px;
 	height: 70px;
-	grid-template-columns: 10px auto 70px;
-	grid-template-rows: 10px 30px 20px;
-	grid-template-areas: "status status status" "icon name action" "icon info action";
+	grid-template-columns: 10px auto min-content;
+	grid-template-rows: 10px 30px 20px auto;
+	grid-template-areas: "status status status" "icon name action" "icon info action" "none none action";
 	position: relative;
 }
 .vis-shelly_DeviceBody > [name="status"] {
@@ -179,10 +179,30 @@ body {
 /* .vis-shelly_DeviceBody > [name="info"] .value{height: 100%;display: inline-block;position: absolute;font-size: 15px;top: 1px;} */
 .vis-shelly_DeviceBody > [name="action"] {
 	grid-area: action;
+	position: relative;
+	height: 60px;
+}
+.vis-shelly_DeviceBody > [name="action"]:has(.TRVValue) {
+	width: 135px;
 }
 .vis-shelly_DeviceBody > [name="action"] [name="switch"] {
 	text-align: right;
 	display: block;
+}
+.vis-shelly_DeviceBody > [name="action"] .TRVValue {
+	position: absolute;
+	color: white;
+	width: 34px;
+	left: calc(50% - 17px);
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 11pt;
+	text-align: center;
+	z-index: 1;
+}
+.vis-shelly_DeviceBody > [name="action"] .TRVButton {
+	position: absolute;
+	left: 2px;
 }
 .vis-shelly_DeviceBody > [name="action"] [name="motion"] {
 	background-color: #444;
@@ -206,11 +226,15 @@ body {
 .vis-shelly_DeviceBody > [name="action"] [name="motion"].motionno {
 	background-image: url(/vis/widgets/vis-shelly/images/shellyDeviceMotionNo.svg);
 }
+.vis-shelly_DeviceBody > [name="action"] .actionButton {
+	cursor: pointer;
+	position: absolute;
+}
 .vis-shelly_DeviceBody > [name="action"] .temperature {
 	background-color: #444;
 	color: white;
 	display: flex;
-	height: calc(100% - 10px);
+	height: calc(100% - 20px);
 	margin: 5px;
 	text-align: center;
 	justify-content: center;

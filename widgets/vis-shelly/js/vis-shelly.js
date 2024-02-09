@@ -6,7 +6,6 @@
     Copyright 2023 Kollos2k kollos@vorsicht-bissig.de
 */
 "use strict";
-
 /* global $, vis, systemDictionary */
 
 // add translations for edit mode
@@ -133,6 +132,7 @@ vis.binds["vis-shelly"] = {
 	},
 	createWidget: {
 		customDevices: function (widgetID, view, widData, style) {
+			console.debug(vis);
 			var $div = $("#" + widgetID);
 			if (!$div.length) {
 				return setTimeout(function () {
@@ -261,9 +261,11 @@ vis.binds["vis-shelly"] = {
 		},
 	},
 
-	updateDeviceValue: function (widgetID, deviceDomID, typeConfig, sType, sID, newVal = undefined) {
+	updateDeviceValue: function (widgetID, deviceDomID, typeConfig, sType, sID, newVal = undefined, dataPoint = {}) {
 		if (typeof typeConfig.update == "undefined") return false;
 		if (typeof typeConfig.update[sType] == "undefined") return false;
+		// console.debug("update");
+		// console.debug(dataPoint);
 		const configUpdate = typeConfig.update[sType];
 		// console.log(configUpdate.getValue(newVal,configUpdate));
 		const $domDev = $("#" + widgetID).find("#" + deviceDomID);
@@ -284,7 +286,8 @@ vis.binds["vis-shelly"] = {
 				if (typeof newVal == "object") newVal = newVal.val;
 				$domDev.data("data", data);
 			}
-			configUpdate.updateValue($dom, newVal, configUpdate, data, sID);
+			// configUpdate.dataPoint = dataPoint;
+			configUpdate.updateValue($dom, newVal, configUpdate, data, sID, dataPoint);
 		}
 	},
 	updateUniversalDataFields: function (wid, view) {
@@ -383,9 +386,10 @@ vis.binds["vis-shelly"] = {
 						select.empty();
 						select.append("<option value=''>--Please Choose an Device--</option>");
 						$.each(deviceIDs, (k, v) => {
+							// console.debug(v);
 							select.append(
 								`<option value="${v.stateId}" ${v.stateId == curValue ? "selected" : ""}>${
-									v.id
+									vis.states[`vis-shelly.0.devices.${v.id}.0.name.val`]
 								}</option>`,
 							);
 						});
@@ -522,6 +526,7 @@ vis.binds["vis-shelly"] = {
 		getDeviceConfigByType: function (type, domID, val, vsID) {
 			var typeConfig = {};
 			const switchButton = `<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`;
+			const switchTRVButton = `<svg name='svgShellyTRVButton' viewBox="0 0 226.67 90.04" width="130" style="margin-top:5px;margin-right: 3px;" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyTRVButton" href="#svgShellyTRVButton"></use></svg>`;
 			switch (type) {
 				case "SHDM-2":
 					typeConfig = {
@@ -556,12 +561,19 @@ vis.binds["vis-shelly"] = {
 								power: { name: "power", class: "icon", html: "" },
 								brightness: { name: "brightness", class: "icon", html: "" },
 							},
-							action: { switch: { name: "switch", class: "", html: switchButton } },
+							action: {
+								switch: { name: "switch", style: "width: 70px;", class: "", html: switchButton },
+							},
 						},
 						action: {
 							switch: {
 								name: "switch",
-								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicSwitchAction,
+								x: "0px",
+								y: "0px",
+								w: "100%",
+								h: "100%",
+								dataPoint: "switch",
+								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicActionBooleanToggle,
 							},
 						},
 						dataPoint: {
@@ -600,12 +612,19 @@ vis.binds["vis-shelly"] = {
 						},
 						view: {
 							info: { power: { name: "power", class: "icon", html: "" } },
-							action: { switch: { name: "switch", class: "", html: switchButton } },
+							action: {
+								switch: { name: "switch", style: "width: 70px;", class: "", html: switchButton },
+							},
 						},
 						action: {
 							switch: {
 								name: "switch",
-								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicSwitchAction,
+								x: "0px",
+								y: "0px",
+								w: "100%",
+								h: "100%",
+								dataPoint: "switch",
+								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicActionBooleanToggle,
 							},
 						},
 						dataPoint: {
@@ -651,12 +670,19 @@ vis.binds["vis-shelly"] = {
 								power: { name: "power", class: "icon", html: "" },
 								voltage: { name: "voltage", class: "icon", html: "" },
 							},
-							action: { switch: { name: "switch", class: "", html: switchButton } },
+							action: {
+								switch: { name: "switch", style: "width: 70px;", class: "", html: switchButton },
+							},
 						},
 						action: {
 							switch: {
 								name: "switch",
-								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicSwitchAction,
+								x: "0px",
+								y: "0px",
+								w: "100%",
+								h: "100%",
+								dataPoint: "switch",
+								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicActionBooleanToggle,
 							},
 						},
 						dataPoint: {
@@ -703,12 +729,19 @@ vis.binds["vis-shelly"] = {
 								power: { name: "power", class: "icon", html: "" },
 								voltage: { name: "voltage", class: "icon", html: "" },
 							},
-							action: { switch: { name: "switch", class: "", html: switchButton } },
+							action: {
+								switch: { name: "switch", style: "width: 70px;", class: "", html: switchButton },
+							},
 						},
 						action: {
 							switch: {
 								name: "switch",
-								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicSwitchAction,
+								x: "0px",
+								y: "0px",
+								w: "100%",
+								h: "100%",
+								dataPoint: "switch",
+								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicActionBooleanToggle,
 							},
 						},
 						dataPoint: {
@@ -755,12 +788,19 @@ vis.binds["vis-shelly"] = {
 								power: { name: "power", class: "icon", html: "" },
 								voltage: { name: "voltage", class: "icon", html: "" },
 							},
-							action: { switch: { name: "switch", class: "", html: switchButton } },
+							action: {
+								switch: { name: "switch", style: "width: 70px;", class: "", html: switchButton },
+							},
 						},
 						action: {
 							switch: {
 								name: "switch",
-								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicSwitchAction,
+								x: "0px",
+								y: "0px",
+								w: "100%",
+								h: "100%",
+								dataPoint: "switch",
+								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicActionBooleanToggle,
 							},
 						},
 						dataPoint: {
@@ -819,7 +859,14 @@ vis.binds["vis-shelly"] = {
 								humidity: { name: "humidity", class: "icon", html: "" },
 								externalPower: { name: "devicePower", class: "icon", html: "" },
 							},
-							action: { temperature: { name: "temperature", class: "temperature", html: "" } },
+							action: {
+								temperature: {
+									name: "temperature",
+									style: "width: 70px;",
+									class: "temperature",
+									html: "",
+								},
+							},
 						},
 						dataPoint: {
 							0: {
@@ -865,6 +912,11 @@ vis.binds["vis-shelly"] = {
 								name: "name",
 								updateValue: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateValueName,
 							},
+							temperatureTarget: {
+								name: "temperatureTarget",
+								unit: "°C",
+								updateValue: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateValueUnit,
+							},
 						},
 						view: {
 							info: {
@@ -872,11 +924,51 @@ vis.binds["vis-shelly"] = {
 								valvePosition: { name: "valvePosition", class: "icon", html: "" },
 								devicePower: { name: "devicePower", class: "icon", html: "" },
 							},
-							action: {},
+							action: {
+								temperatureTarget: {
+									name: "temperatureTarget",
+									style: "",
+									class: "TRVValue",
+									html: "",
+								},
+								buttons: {
+									name: "buttons",
+									style: "width: 135px;",
+									class: "TRVButton",
+									html: switchTRVButton,
+								},
+							},
+						},
+						action: {
+							down: {
+								name: "buttons",
+								x: "5px",
+								y: "5px",
+								w: "45px",
+								h: "50px",
+								minValue: 15,
+								maxValue: 30,
+								step: -0.5,
+								dataPoint: "temperatureTarget",
+								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicActionNumberStepper,
+							},
+							up: {
+								name: "buttons",
+								x: "85px",
+								y: "5px",
+								w: "45px",
+								h: "50px",
+								minValue: 15,
+								maxValue: 30,
+								step: +0.5,
+								dataPoint: "temperatureTarget",
+								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicActionNumberStepper,
+							},
 						},
 						dataPoint: {
 							0: {
 								temperature: val.stateId + ".tmp.temperatureC",
+								temperatureTarget: val.stateId + ".tmp.temperatureTargetC",
 								valvePosition: val.stateId + ".tmp.valvePosition",
 								externalPower: val.stateId + ".bat.charger",
 								batteryPercent: val.stateId + ".bat.value",
@@ -925,7 +1017,7 @@ vis.binds["vis-shelly"] = {
 								batteryPercent: { name: "batteryPercent", class: "icon", html: "" },
 								lux: { name: "lux", class: "icon", html: "" },
 							},
-							action: { motion: { name: "motion", class: "", html: "" } },
+							action: { motion: { name: "motion", style: "width: 70px;", class: "", html: "" } },
 						},
 						dataPoint: {
 							0: {
@@ -990,13 +1082,15 @@ vis.binds["vis-shelly"] = {
 				$dom.append($b1);
 				$dom.append($b2);
 			},
-			basicUpdateDevicePower: function ($dom, newVal, options = {}, data = {}, stageID = "") {
+			basicUpdateDevicePower: function ($dom, newVal, options = {}, data = {}, stageID = "", curDataPoint = {}) {
 				// console.log("update external");
 				var exP = null;
 				var percent = null;
+
 				$.each(data, (k, v) => {
-					if (k.lastIndexOf(".ExternalPower") > -1) exP = v;
-					else if (k.lastIndexOf(".BatteryPercent") > -1) percent = v;
+					if (typeof curDataPoint.externalPower != "undefined" && curDataPoint.externalPower == k) exP = v;
+					else if (typeof curDataPoint.batteryPercent != "undefined" && curDataPoint.batteryPercent == k)
+						percent = v;
 				});
 				$dom.removeClass("externalPower");
 				$dom.removeClass("battery");
@@ -1019,7 +1113,18 @@ vis.binds["vis-shelly"] = {
 					}
 				}
 			},
-			basicSwitchAction: function (stateID, $mainDOM) {
+			basicActionNumberStepper: function (stateID, $mainDOM, action) {
+				const data = $mainDOM.data("data");
+				let newVal =
+					typeof data[stateID] == "undefined" || data[stateID] == null ? action.minValue : data[stateID].val;
+				newVal += action.step;
+				if (newVal < action.minValue) newVal = action.minValue;
+				if (newVal > action.maxValue) newVal = action.maxValue;
+				// typeof data[stateID] != "undefined" ? (data[stateID] == null ? 0 : data[stateID].val - 5) : false;
+				// if (!$mainDOM.hasClass("wait"))
+				if (data[stateID].ack) vis.conn.setState(stateID, { val: newVal, ack: false });
+			},
+			basicActionBooleanToggle: function (stateID, $mainDOM, action) {
 				const data = $mainDOM.data("data");
 				const newVal =
 					typeof data[stateID] != "undefined"
@@ -1064,13 +1169,14 @@ vis.binds["vis-shelly"] = {
 				text += `<span name="name">${val.id}</span>`;
 				text += `<span name="info">`;
 				$.each(typeConfig.view.info, (viewKey, viewValue) => {
-					text += `<span><span name="${viewValue.name}" class="${viewValue.class}">${viewValue.html}</span></span>`;
+					text += `<span><span name="${viewValue.name}" class="${viewValue.class}" style="${viewValue.style}">${viewValue.html}</span></span>`;
 				});
 
 				text += `</span>`;
 				text += `<span name="action">`;
 				$.each(typeConfig.view.action, (viewKey, viewValue) => {
-					text += `<span><span name="${viewValue.name}" class="${viewValue.class}">${viewValue.html}</span></span>`;
+					// text += `<span><span name="${viewValue.name}" class="${viewValue.class}" style="${viewValue.style}">${viewValue.html}</span></span>`;
+					text += `<span name="${viewValue.name}" class="${viewValue.class}" style="${viewValue.style}">${viewValue.html}</span>`;
 				});
 				// if(typeof dpVal.switch!="undefined"){text+=`<span name="switch" curState="false"></span>`;}
 				// if(typeof dpVal.temperature!="undefined"){text+=`<span name="temperature"></span>`;}
@@ -1084,12 +1190,17 @@ vis.binds["vis-shelly"] = {
 				$("#" + widgetID).append($domBody);
 				// const $domDev = $("#" + widgetID).find("#" + deviceDomID);
 				if (typeof typeConfig["action"] != "undefined") {
-					$.each(typeConfig.action, (k, v) => {
-						const $aDom = $domObj.find("[name='" + v.name + "']");
-						if (typeof v.click == "function")
-							$aDom.click(() => {
-								v.click(dpVal[k], $domObj);
+					$.each(typeConfig.action, (k, action) => {
+						const $aDom = $domObj.find("[name='" + action.name + "']");
+						if (typeof action.click == "function") {
+							const $actionDom = $(
+								`<div class="actionButton" style="top:${action.y};left:${action.x};width:${action.w};height:${action.h}"></div>`,
+							);
+							$aDom.append($actionDom);
+							$actionDom.click(() => {
+								action.click(dpVal[action.dataPoint], $domObj, action);
 							});
+						}
 					});
 				}
 				vis.conn.getStates(Object.values(dpVal), (error, data) => {
@@ -1113,7 +1224,15 @@ vis.binds["vis-shelly"] = {
 					$.each(dpVal, (sType, sID) => {
 						// console.log(sID);
 						if (typeof data[sID] != "undefined") {
-							vis.binds["vis-shelly"].updateDeviceValue(widgetID, deviceDomID, typeConfig, sType, sID);
+							vis.binds["vis-shelly"].updateDeviceValue(
+								widgetID,
+								deviceDomID,
+								typeConfig,
+								sType,
+								sID,
+								undefined,
+								dpVal,
+							);
 							vis.states.bind(sID + ".val", (e, newVal, oldVal) => {
 								vis.binds["vis-shelly"].updateDeviceValue(
 									widgetID,
@@ -1122,6 +1241,7 @@ vis.binds["vis-shelly"] = {
 									sType,
 									sID,
 									newVal,
+									dpVal,
 								);
 							});
 						} else {
