@@ -3,6 +3,9 @@ body {
 	--shellyButtonOuterOpacity: 0.49;
 	--shellyButtonOuterOffset: 1;
 	--shellyButtonOuterColor: #444;
+	--shellyTRVOuterColor: #44f;
+	--shellyTRVOuterOpacity: 0.9;
+	--shellyTRVOuterOffset: 1;
 }
 .vis-shelly-class {
 }
@@ -244,7 +247,8 @@ body {
 	font-size: 16px;
 }
 .vis-shelly_DeviceBody [name="svgShellyButton"] {
-	padding: 3px;
+	margin: 5px;
+	width: 50px;
 	cursor: pointer;
 }
 .vis-shelly_DeviceBody .wait [name="svgShellyButton"] {
@@ -252,6 +256,22 @@ body {
 }
 .vis-shelly_DeviceBody .active [name="svgShellyButton"] {
 	--shellyButtonOuterColor: #44f;
+}
+.vis-shelly_DeviceBody [name="svgShellyTRVButton"] {
+	--shellyTRVOuterColor: #44f;
+}
+.trvOuterBorderAction {
+	animation: example 1s;
+	animation-iteration-count: 10;
+}
+
+@keyframes example {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0.2;
+	}
 }
 .vis-shelly_DeviceBody .editModeMoveButton {
 	z-index: 1000;

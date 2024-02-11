@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90"  width="90mm" height="90mm" version="1.1" >
+    <style>
+        svg {
+            --shellyButtonOuterColor: #444;
+        }
+        .active {
+            --shellyButtonOuterColor: #44f;
+        }
+        .animatedAction {
+            --shellyButtonOuterColor:#f44;
+        }
+        .animatedAction #activeCircle {
+            animation: animationOpacity 1s 10;
+        }
+        @keyframes animationOpacity {        
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0.2;
+            }
+        }
+    </style>
+    <defs>
+        <linearGradient id="linearGradient67">
+            <stop stop-color="var(--shellyButtonOuterColor)" stop-opacity="0" offset="0" />
+            <stop stop-color="var(--shellyButtonOuterColor)" stop-opacity="0.49" offset="1" />
+            <stop stop-color="var(--shellyButtonOuterColor)" offset="1" />
+        </linearGradient>
+        <radialGradient
+            id="radialGradient1052"
+            cx="97.266"
+            cy="108.9"
+            r="42.318"
+            gradientTransform="matrix(1.0601 0 0 1.0601 -58.249 -70.582)"
+            gradientUnits="userSpaceOnUse"
+            xlink:href="#linearGradient67"
+        />
+        <linearGradient
+            id="linearGradient4508"
+            x1="59.467"
+            x2="162.64"
+            y1="113.54"
+            y2="125.81"
+            gradientTransform="matrix(.99199 0 0 .99199 -51.491 -67.635)"
+            gradientUnits="userSpaceOnUse"
+        >
+            <stop stop-color="#ccc" offset="0" />
+            <stop stop-color="#999" offset="1" />
+        </linearGradient>
+        <radialGradient
+            id="radialGradient5547"
+            cx="97.266"
+            cy="113.72"
+            r="45.336"
+            gradientTransform="matrix(.98949 0 0 .98949 -51.384 -67.661)"
+            gradientUnits="userSpaceOnUse"
+            xlink:href="#linearGradient67"
+        />
+        <radialGradient
+            id="radialGradient5549"
+            cx="97.266"
+            cy="113.72"
+            r="45.336"
+            gradientTransform="matrix(.99199 0 0 .97581 -51.491 -65.796)"
+            gradientUnits="userSpaceOnUse"
+        >
+            <stop offset="0" />
+            <stop stop-opacity="0" offset="1" />
+        </radialGradient>
+    </defs>
+    <circle
+        id="activeCircle"
+        cx="45"
+        cy="45"
+        r="45"
+        fill="url(#radialGradient1052)"
+        fill-rule="evenodd"
+        stroke="url(#radialGradient5547)"
+        stroke-width=".28048"
+    />
+    <circle
+        id="buttonCircle"
+        cx="45"
+        cy="45"
+        r="36"
+        fill="url(#linearGradient4508)"
+        fill-rule="evenodd"
+        stroke="url(#radialGradient5549)"
+        stroke-width=".8789"
+    />
+    <g id="iconPower" transform="translate(-51.893 -69.681)" fill="#0000ff">
+        <path
+            d="m101.21 98.36v3.2392a13.251 13.493 0 0 1 8.9172 12.731 13.251 13.493 0 0 1-13.251 13.493 13.251 13.493 0 0 1-13.251-13.493 13.251 13.493 0 0 1 8.8046-12.684v-3.2384a16.322 16.62 0 0 0-11.855 15.976 16.322 16.62 0 0 0 16.322 16.62 16.322 16.62 0 0 0 16.322-16.62 16.322 16.62 0 0 0-12.008-16.024z"
+        />
+        <rect x="95.508" y="95.364" width="2.5469" height="13.992" />
+    </g>
+</svg>

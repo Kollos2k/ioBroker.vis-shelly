@@ -6,6 +6,7 @@
     Copyright 2023 Kollos2k kollos@vorsicht-bissig.de
 */
 "use strict";
+
 /* global $, vis, systemDictionary */
 
 // add translations for edit mode
@@ -264,15 +265,10 @@ vis.binds["vis-shelly"] = {
 	updateDeviceValue: function (widgetID, deviceDomID, typeConfig, sType, sID, newVal = undefined, dataPoint = {}) {
 		if (typeof typeConfig.update == "undefined") return false;
 		if (typeof typeConfig.update[sType] == "undefined") return false;
-		// console.debug("update");
-		// console.debug(dataPoint);
 		const configUpdate = typeConfig.update[sType];
-		// console.log(configUpdate.getValue(newVal,configUpdate));
 		const $domDev = $("#" + widgetID).find("#" + deviceDomID);
-		// console.log($domDev.length);
 		if ($domDev.length == 0) return false;
 		const $dom = $domDev.find("[name='" + configUpdate.name + "']");
-		// console.log($dom.length);
 		if ($dom.length == 0) return false;
 
 		var data = $domDev.data("data");
@@ -286,8 +282,30 @@ vis.binds["vis-shelly"] = {
 				if (typeof newVal == "object") newVal = newVal.val;
 				$domDev.data("data", data);
 			}
-			// configUpdate.dataPoint = dataPoint;
 			configUpdate.updateValue($dom, newVal, configUpdate, data, sID, dataPoint);
+		}
+	},
+	updateDeviceAck: function (widgetID, deviceDomID, typeConfig, sType, sID, newVal) {
+		if (typeof typeConfig.update == "undefined") return false;
+		if (typeof typeConfig.update[sType] == "undefined") return false;
+		const configUpdate = typeConfig.update[sType];
+		const $domDev = $("#" + widgetID).find("#" + deviceDomID);
+		if ($domDev.length == 0) return false;
+		const $dom = $domDev.find("[name='" + configUpdate.name + "']");
+		if ($dom.length == 0) return false;
+
+		var data = $domDev.data("data");
+		if (typeof data != "undefined") {
+			if (typeof data[sID] == "undefined" || data[sID] == null) data[sID] = { ack: false };
+			if (typeof newVal == "undefined") {
+				// newVal = data[sID].ack;
+			} else {
+				if (typeof newVal == "object") data[sID] = newVal;
+				else data[sID].ack = newVal;
+				// if (typeof newVal == "object") newVal = newVal.ack;
+				$domDev.data("data", data);
+			}
+			configUpdate.updateAck($dom, sID, data);
 		}
 	},
 	updateUniversalDataFields: function (wid, view) {
@@ -525,8 +543,12 @@ vis.binds["vis-shelly"] = {
 		/** TYPE DECLARATIONS */
 		getDeviceConfigByType: function (type, domID, val, vsID) {
 			var typeConfig = {};
-			const switchButton = `<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`;
-			const switchTRVButton = `<svg name='svgShellyTRVButton' viewBox="0 0 226.67 90.04" width="130" style="margin-top:5px;margin-right: 3px;" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyTRVButton" href="#svgShellyTRVButton"></use></svg>`;
+			// const switchButton = `<svg name='svgShellyButton' viewBox="0 0 100 100" width="60" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyButton" href="#svgShellyButton"></use></svg>`;
+			const switchButton = `<object name='svgShellyButton' type="image/svg+xml" data="/vis/widgets/vis-shelly/images/shellySwitchButton.svg"></object>`;
+			// const switchTRVButton = `<img src="/vis/widgets/vis-shelly/images/shellyTRVButton.svg" style="margin-top:5px;margin-right: 3px;width:135px;"/>`;
+			const switchTRVButton = `<object name='svgShellyTRVButton' type="image/svg+xml" data="/vis/widgets/vis-shelly/images/shellyTRVButton.svg" style="margin:5px;width:125px;"></object>`;
+			// const switchTRVButton = `<svg name='svgShellyTRVButton' viewBox="0 0 226.67 90.04" width="130" style="margin-top:5px;margin-right: 3px;" preserveAspectRatio="xMidYMid meet"><use name='svgShellyTRVBorder' xlink:href="#svgShellyTRVBorder" href="#svgShellyTRVBorder"></use><use xlink:href="#svgShellyTRVButton" href="#svgShellyTRVButton"></use></svg>`;
+			// const switchTRVBorder = `<svg name='svgShellyTRVBorder' viewBox="0 0 226.67 90.04" width="130" style="margin-top:5px;margin-right: 3px;" preserveAspectRatio="xMidYMid meet"><use xlink:href="#svgShellyTRVBorder" href="#svgShellyTRVBorder"></use></svg>`;
 			switch (type) {
 				case "SHDM-2":
 					typeConfig = {
@@ -553,6 +575,7 @@ vis.binds["vis-shelly"] = {
 							},
 							switch: {
 								name: "switch",
+								updateAck: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitchAck,
 								updateValue: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitch,
 							},
 						},
@@ -607,6 +630,7 @@ vis.binds["vis-shelly"] = {
 							},
 							switch: {
 								name: "switch",
+								updateAck: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitchAck,
 								updateValue: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitch,
 							},
 						},
@@ -662,6 +686,7 @@ vis.binds["vis-shelly"] = {
 							},
 							switch: {
 								name: "switch",
+								updateAck: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitchAck,
 								updateValue: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitch,
 							},
 						},
@@ -721,6 +746,7 @@ vis.binds["vis-shelly"] = {
 							},
 							switch: {
 								name: "switch",
+								updateAck: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitchAck,
 								updateValue: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitch,
 							},
 						},
@@ -780,6 +806,7 @@ vis.binds["vis-shelly"] = {
 							},
 							switch: {
 								name: "switch",
+								updateAck: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitchAck,
 								updateValue: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateSwitch,
 							},
 						},
@@ -915,6 +942,7 @@ vis.binds["vis-shelly"] = {
 							temperatureTarget: {
 								name: "temperatureTarget",
 								unit: "°C",
+								updateAck: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateTRVAck,
 								updateValue: vis.binds["vis-shelly"].createDevice_helper.actions.basicUpdateValueUnit,
 							},
 						},
@@ -962,6 +990,11 @@ vis.binds["vis-shelly"] = {
 								maxValue: 30,
 								step: +0.5,
 								dataPoint: "temperatureTarget",
+								onClick: {
+									find: `[name='svgShellyTRVButton']`,
+									contentDocument: true,
+									className: "animatedAction",
+								},
 								click: vis.binds["vis-shelly"].createDevice_helper.actions.basicActionNumberStepper,
 							},
 						},
@@ -1102,26 +1135,74 @@ vis.binds["vis-shelly"] = {
 					$dom.html((percent == null || typeof percent != "object" ? percent : percent.val) + " %");
 				}
 			},
+			basicUpdateTRVAck: function ($dom, stateID, data) {
+				let element;
+				if ($dom.find("[name='svgShellyTRVButton']").length > 0) {
+					element = $dom.find("[name='svgShellyTRVButton']").get(0).contentDocument.firstChild;
+				} else {
+					element = $dom.get(0);
+				}
+				if (data[stateID].ack == true) {
+					element.classList.remove("animatedAction");
+				} else {
+					element.classList.add("animatedAction");
+				}
+			},
+			basicUpdateSwitchAck: function ($dom, stateID, data) {
+				let element;
+				if ($dom.find("[name='svgShellyButton']").length > 0) {
+					element = $dom.find("[name='svgShellyButton']").get(0).contentDocument.firstChild;
+				} else {
+					element = $dom.get(0);
+				}
+				if (data[stateID].ack == true) {
+					element.classList.remove("animatedAction");
+				} else {
+					element.classList.add("animatedAction");
+				}
+			},
 			basicUpdateSwitch: function ($dom, newVal, options = {}, data = {}, stateID = "") {
 				// console.error(data);
-				if (data[stateID].ack) {
-					$dom.removeClass("wait");
-					if (newVal == true) {
-						$dom.addClass("active");
-					} else {
-						$dom.removeClass("active");
-					}
+				let element;
+				if ($dom.find("[name='svgShellyButton']").length > 0) {
+					element = $dom.find("[name='svgShellyButton']").get(0).contentDocument.firstChild;
+				} else {
+					element = $dom.get(0);
+				}
+				if (vis.states[`${stateID}.val`] == true) {
+					element.classList.add("active");
+				} else {
+					element.classList.remove("active");
 				}
 			},
 			basicActionNumberStepper: function (stateID, $mainDOM, action) {
+				// if (typeof action.onClick != "undefined") {
+				// 	let element = undefined;
+				// 	if (typeof action.onClick.find != "undefined") {
+				// 		element = $mainDOM.find(action.onClick.find).get(0);
+				// 	}
+				// 	if (action.onClick.contentDocument == true) {
+				// 		element = element.contentDocument.firstChild;
+				// 	}
+				// 	console.debug(element);
+				// 	element.classList.add(action.onClick.className);
+				// }
+				// const $border = $mainDOM.find(`#radialGradient881`);
+				// const $border2 = document.getElementById("testid");
+				// console.debug($border2.contentDocument);
+				// console.debug($border2.contentDocument.getElementById("radialGradient8811"));
+				//$border2.contentDocument.getElementById("radialGradient8811").style.setProperty("--test", "#44f");
+				// $border2.contentDocument.getElementsByTagName("svg")[0].classList.add("animate");
+				// console.debug($mainDOM);
+				// console.debug("length:" + $border.length);
+				// console.debug($border2);
+				// $border.prop("class", "trvOuterBorderAction");
 				const data = $mainDOM.data("data");
 				let newVal =
 					typeof data[stateID] == "undefined" || data[stateID] == null ? action.minValue : data[stateID].val;
 				newVal += action.step;
 				if (newVal < action.minValue) newVal = action.minValue;
 				if (newVal > action.maxValue) newVal = action.maxValue;
-				// typeof data[stateID] != "undefined" ? (data[stateID] == null ? 0 : data[stateID].val - 5) : false;
-				// if (!$mainDOM.hasClass("wait"))
 				if (data[stateID].ack) vis.conn.setState(stateID, { val: newVal, ack: false });
 			},
 			basicActionBooleanToggle: function (stateID, $mainDOM, action) {
@@ -1135,7 +1216,10 @@ vis.binds["vis-shelly"] = {
 								: true
 						: false;
 				// if (!$mainDOM.hasClass("wait"))
-				if (data[stateID].ack) vis.conn.setState(stateID, { val: newVal, ack: false });
+				// console.debug(stateID);
+				// console.debug(vis.states[`${stateID}.ack`]);
+				// console.debug(vis);
+				if (data[stateID].ack == true) vis.conn.setState(stateID, { val: newVal, ack: false });
 				// vis.setValue(stateID, newVal);
 			},
 		},
@@ -1213,16 +1297,9 @@ vis.binds["vis-shelly"] = {
 						}
 					}
 					$domBody.css("display", "block");
-
-					// console.log(data[dpVal.room]);
-					// console.log(roomID);
-					// console.log(dpVal);
 					$domObj.data("data", data);
-					// vis.updateStates(data);
-					// vis.conn.subscribe(Object.values(dpVal));
 
 					$.each(dpVal, (sType, sID) => {
-						// console.log(sID);
 						if (typeof data[sID] != "undefined") {
 							vis.binds["vis-shelly"].updateDeviceValue(
 								widgetID,
@@ -1244,6 +1321,24 @@ vis.binds["vis-shelly"] = {
 									dpVal,
 								);
 							});
+							// console.debug(typeConfig.update[sType]);
+							if (
+								typeof typeConfig.update[sType] != "undefined" &&
+								typeof typeConfig.update[sType].updateAck != "undefined"
+							) {
+								vis.states.bind(sID + ".ack", (e, newVal, oldVal) => {
+									// console.debug("ACK");
+									// console.debug(newVal);
+									vis.binds["vis-shelly"].updateDeviceAck(
+										widgetID,
+										deviceDomID,
+										typeConfig,
+										sType,
+										sID,
+										newVal,
+									);
+								});
+							}
 						} else {
 							/* empty */
 						}
