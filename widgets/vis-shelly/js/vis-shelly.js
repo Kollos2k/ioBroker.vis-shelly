@@ -1169,7 +1169,7 @@ vis.binds["vis-shelly"] = {
 				} else {
 					element = $dom.get(0);
 				}
-				if (vis.states[`${stateID}.val`] == true) {
+				if (data[stateID].val == true) {
 					element.classList.add("active");
 				} else {
 					element.classList.remove("active");
@@ -1216,12 +1216,7 @@ vis.binds["vis-shelly"] = {
 								? false
 								: true
 						: false;
-				// if (!$mainDOM.hasClass("wait"))
-				// console.debug(stateID);
-				// console.debug(vis.states[`${stateID}.ack`]);
-				// console.debug(vis);
 				if (data[stateID].ack == true) vis.conn.setState(stateID, { val: newVal, ack: false });
-				// vis.setValue(stateID, newVal);
 			},
 		},
 		buildDevice: function (val, widgetID, widData, roomID = null) {
