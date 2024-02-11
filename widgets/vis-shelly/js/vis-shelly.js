@@ -1203,7 +1203,8 @@ vis.binds["vis-shelly"] = {
 				newVal += action.step;
 				if (newVal < action.minValue) newVal = action.minValue;
 				if (newVal > action.maxValue) newVal = action.maxValue;
-				if (data[stateID].ack) vis.conn.setState(stateID, { val: newVal, ack: false });
+				// if (data[stateID].ack)
+				vis.conn.setState(stateID, { val: newVal, ack: false });
 			},
 			basicActionBooleanToggle: function (stateID, $mainDOM, action) {
 				const data = $mainDOM.data("data");
