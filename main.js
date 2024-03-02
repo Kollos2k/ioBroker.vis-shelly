@@ -139,7 +139,7 @@ class visShelly extends utils.Adapter {
 			}
 		}
 		if (changeDeviceIds) await this.setStateAsync("devices.ids", { val: JSON.stringify(devJSON), ack: true });
-		this.log.info("Devices updated");
+		this.log.info(`Devices updated (Force:${forceUpdate ? "yes" : "no"})`);
 	}
 
 	async updateRoomsList() {
