@@ -63,6 +63,8 @@ class visShelly extends utils.Adapter {
 			const devIdsState = await this.getStateAsync("devices.ids");
 			if (typeof devIdsState === "string") devJSON = JSON.parse(devIdsState);
 			if (!Array.isArray(devJSON)) devJSON = [];
+		} else {
+			this.config["knownShellyIDs"] = {};
 		}
 		for (const deviceID of keysDevices) {
 			if (await this.updateDevice(deviceID, devJSON, forceUpdate)) changeDeviceIds = true;
@@ -102,6 +104,7 @@ class visShelly extends utils.Adapter {
 			if (typeState != null) {
 				this.setState("devices." + deviceName + ".type", { val: typeState.val, ack: true });
 				devJSON.push({ stateId: deviceID, id: deviceName, type: typeState.val });
+				this.config["knownShellyIDs"][deviceID] = true;
 				changeDeviceIds = true;
 				if (typeState.val == "shellyplus2pm") relayCount = 2;
 			}
@@ -215,14 +218,21 @@ class visShelly extends utils.Adapter {
 	 * @param {ioBroker.Object | null | undefined} obj
 	 */
 	onObjectChange(id, obj) {
+		// this.log.info(id);
+		// this.log.info(JSON.stringify(obj));
 		if (id.indexOf("vis-shelly") > -1) {
 			// if (id.indexOf(".rooms.") > -1) {
 			// 	this.updateRoomsList();
 			// }
 		} else {
 			if (obj) {
-				this.log.debug(JSON.stringify(obj));
-				// if (obj.type == "device") this.updateDeviceList();
+				// this.log.info(JSON.stringify(obj));
+				if (obj.type == "device" && typeof this.config["knownShellyIDs"][obj._id] === "undefined") {
+					this.log.info("update new Device");
+					this.log.info(JSON.stringify(this.config["knownShellyIDs"]));
+					this.log.info(id);
+					this.updateDeviceList();
+				}
 			}
 		}
 	}
