@@ -1,6 +1,6 @@
 {
   "name": "iobroker.vis-shelly",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A VIS adapter for display Shelly devices",
   "author": {
     "name": "Kollos2k",
@@ -88,7 +88,7 @@
     "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "build-widget" :"gulp",
+    "build-widget": "gulp",
     "build": "build-adapter react",
     "watch": "build-adapter react --watch",
     "prebuild:react": "rimraf admin/build",

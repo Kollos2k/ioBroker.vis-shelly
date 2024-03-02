@@ -38,8 +38,7 @@ Devices supported so far
 </div>
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 0.0.7 (2024-03-02)
 
 -   Rebuild widget js for future improvements
 -   bugfixes
@@ -66,10 +65,6 @@ Devices supported so far
 ### 0.0.4-alpha.2
 
 -   Romms are now editable in Admin
-
-### 0.0.4-alpha.1
-
--   testing only
 
 ## License
 
