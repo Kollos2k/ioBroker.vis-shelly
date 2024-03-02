@@ -150,6 +150,9 @@ vis.binds["vis-shelly"] = {
 
 			// console.debug("CUSTOM WID DATA");
 			// console.debug(widData);
+			console.debug(widData);
+			console.debug(widData["deviceID1"]);
+			widData["deviceID1"] = 1;
 			for (let count = 1; count <= widData.iUniversalDeviceCount; count++) {
 				if (
 					typeof widData["deviceID" + count] == "undefined" ||
@@ -450,50 +453,42 @@ vis.binds["vis-shelly"] = {
 				const view = vis.activeView;
 				const wid = vis.activeWidgets[0];
 				// vis.setAttrValue(view, wid, wid_attr, false, $(select).val());
-				vis.views[view].widgets[wid].data[wid_attr] = $(select).val();
-				const data = vis.views[view].widgets[wid].data;
+				// vis.views[view].widgets[wid].data[wid_attr] = $(select).val();
+				vis.widgets[wid].data[wid_attr] = $(select).val();
+				const data = vis.widgets[wid].data;
 				data.wid = wid;
-				const curValue = vis.views[view].widgets[wid].data[wid_attr];
+				const curValue = vis.widgets[wid].data[wid_attr];
 				const curIndex = wid_attr.match(/[0-9]*$/g)[0];
 				// console.debug(curValue);
 				// console.debug(curIndex);
+				vis.save($("#visview_" + view), view, () => {
+					// vis.reRenderWidgetEdit(vis.activeViewDiv, vis.activeView, widgetID);
+				});
 
 				vis.conn.getStates([`vis-shelly.0.devices.ids`], (error, state) => {
 					const deviceIDs = JSON.parse(state["vis-shelly.0.devices.ids"].val);
 					$.each(deviceIDs, (k, v) => {
 						if (v.stateId == curValue) {
-							vis.views[view].widgets[wid].data["deviceType" + curIndex] = v.type;
+							vis.widgets[wid].data["deviceType" + curIndex] = v.type;
 							$("#" + wid + "_deviceType" + curIndex).val(v.type);
 							// return false;
 						}
 					});
-					vis.views[view].widgets[wid].data.lastChange = Math.floor(Date.now() / 1000);
+					vis.widgets[wid].data.lastChange = Math.floor(Date.now() / 1000);
 
-					vis.binds["vis-shelly"].createWidget.customDevices(
-						wid,
-						view,
-						data,
-						vis.views[view].widgets[wid].style,
-						true,
-					);
+					vis.binds["vis-shelly"].createWidget.customDevices(wid, view, data, vis.widgets[wid].style, true);
 				});
 			},
 			onSelectType: function (select, wid_attr) {
 				const view = vis.activeView;
 				const wid = vis.activeWidgets[0];
-				vis.views[view].widgets[wid].data[wid_attr] = $(select).val();
-				vis.views[view].widgets[wid].data.lastChange = Math.floor(Date.now() / 1000);
-				const data = vis.views[view].widgets[wid].data;
+				vis.widgets[wid].data[wid_attr] = $(select).val();
+				vis.widgets[wid].data.lastChange = Math.floor(Date.now() / 1000);
+				const data = vis.widgets[wid].data;
 				data.wid = wid;
 				// vis.updateStates(vis.views[view].widgets[wid].data);
 				// console.debug(vis);
-				vis.binds["vis-shelly"].createWidget.customDevices(
-					wid,
-					view,
-					data,
-					vis.views[view].widgets[wid].style,
-					true,
-				);
+				vis.binds["vis-shelly"].createWidget.customDevices(wid, view, data, vis.widgets[wid].style, true);
 			},
 
 			/*
@@ -521,8 +516,8 @@ vis.binds["vis-shelly"] = {
 					// 	vis.views[view].widgets[widgetID].data[`${attr}${curPosition}`];
 					vis.widgets[widgetID].data[`${attr}${curPosition}`] = data[`${attr}${nextPosition}`];
 					vis.widgets[widgetID].data[`${attr}${nextPosition}`] = data[`${attr}${curPosition}`];
-					vis.views[view].widgets[widgetID].data[`${attr}${nextPosition}`] = data[`${attr}${curPosition}`];
-					vis.views[view].widgets[widgetID].data[`${attr}${curPosition}`] = data[`${attr}${nextPosition}`];
+					// vis.views[view].widgets[widgetID].data[`${attr}${nextPosition}`] = data[`${attr}${curPosition}`];
+					// vis.views[view].widgets[widgetID].data[`${attr}${curPosition}`] = data[`${attr}${nextPosition}`];
 				}
 				vis.save($("#visview_" + view), view, () => {
 					vis.reRenderWidgetEdit(vis.activeViewDiv, vis.activeView, widgetID);
@@ -1297,6 +1292,19 @@ vis.binds["vis-shelly"] = {
 
 					$.each(dpVal, (sType, sID) => {
 						if (typeof data[sID] != "undefined") {
+							if (
+								typeof typeConfig.update[sType] != "undefined" &&
+								typeof typeConfig.update[sType].updateAck != "undefined"
+							) {
+								vis.binds["vis-shelly"].updateDeviceAck(
+									widgetID,
+									deviceDomID,
+									typeConfig,
+									sType,
+									sID,
+									undefined,
+								);
+							}
 							vis.binds["vis-shelly"].updateDeviceValue(
 								widgetID,
 								deviceDomID,
