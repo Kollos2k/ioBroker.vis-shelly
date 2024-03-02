@@ -45,6 +45,8 @@ Devices supported so far
 -   bugfixes
 -   Custom Device List is now possible
 -   Added some Translations
+-   Rebuild main.js
+-   SVG in seperate file
 
 ### 0.0.6 (2024-01-24)
 
