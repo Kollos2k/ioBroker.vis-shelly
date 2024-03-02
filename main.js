@@ -1,23 +1,25 @@
 "use strict";
 
 /*
- * Created with @ioBroker/create-adapter v1.21.1
+ * Created with @iobroker/create-adapter v2.6.2
  */
 
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
+
+// Load your modules here, e.g.:
+// const fs = require("fs");
+
 class visShelly extends utils.Adapter {
 	/**
-	 * @param {Partial<ioBroker.AdapterOptions>} [options={}]
+	 * @param {Partial<utils.AdapterOptions>} [options={}]
 	 */
 	constructor(options) {
-		// @ts-ignore
 		super({
 			...options,
 			name: "vis-shelly",
 		});
-
 		this.isUnloaded = false;
 		this.on("ready", this.onReady.bind(this));
 		this.on("objectChange", this.onObjectChange.bind(this));
@@ -32,42 +34,17 @@ class visShelly extends utils.Adapter {
 	 */
 	async onReady() {
 		await this.subscribeForeignObjectsAsync("shelly.*");
-		await this.subscribeObjectsAsync("rooms.*");
-		// Initialize your adapter here
-
-		// await this.setForeignObjectAsync("vis-shelly.0", {
-		// 	type: "meta",
-		// 	common: {
-		// 		"name": {
-		// 		  "en": "Meta storage for user files1",
-		// 		  "de": "Meta-Speicher für Benutzerdateien",
-		// 		  "ru": "Meta Storage для файлов пользователей",
-		// 		  "pt": "Meta de armazenamento para arquivos de usuário",
-		// 		  "nl": "Meta opslag voor gebruikersbestanden",
-		// 		  "fr": "Stockage Meta pour les fichiers utilisateur",
-		// 		  "it": "Meta storage per i file utente",
-		// 		  "es": "Meta almacenamiento para archivos de usuario",
-		// 		  "pl": "Meta storage for user files",
-		// 		  "uk": "Зберігання мета для файлів користувачів",
-		// 		  "zh-cn": "用户档案的储存"
-		// 		},
-		// 		"type": "meta.user"
-		// 	},
-		// 	native: {},
-		// });
-
-		// this.log.info("config option1: " + this.config.option1);
-		// this.log.info("config option2: " + this.config.option2);
-		this.log.info("RÄUME");
-		this.log.info(JSON.stringify(this.config["rooms"]));
-		this.updateDeviceList();
+		// await this.subscribeObjectsAsync("rooms.*");
+		this.updateDeviceList(true);
+		this.updateRoomsList();
 		this.setState("info.connection", true, true);
 	}
 
-	async updateDeviceList() {
+	async updateDeviceList(forceUpdate = false) {
 		const shellyDevices = await this.getForeignObjectsAsync("shelly.*", "device");
 		const keysDevices = Object.keys(shellyDevices);
-		const devJSON = [];
+		let devJSON = [];
+		let changeDeviceIds = false;
 
 		await this.setObjectNotExistsAsync("devices.ids", {
 			type: "state",
@@ -77,91 +54,91 @@ class visShelly extends utils.Adapter {
 				role: "shelly.deviceList",
 				read: true,
 				write: true,
+				def: "[]",
 			},
 			native: {},
 		});
-
+		if (!forceUpdate) {
+			const devIdsState = await this.getStateAsync("devices.ids");
+			if (typeof devIdsState === "string") devJSON = JSON.parse(devIdsState);
+		}
 		for (const deviceID of keysDevices) {
-			await this.setObjectNotExistsAsync(deviceID, {
-				type: "device",
-				common: {
-					name: deviceID,
-				},
-				native: {},
-			});
 			const deviceName = deviceID.substring(deviceID.lastIndexOf(".") + 1, deviceID.length);
 
-			await this.setObjectNotExistsAsync("devices." + deviceName, {
-				type: "device",
-				common: {
-					name: deviceName,
-				},
-				native: {},
-			});
-			/** Create DEVICE TYPE */
-			await this.setObjectNotExistsAsync("devices." + deviceName + ".type", {
-				type: "state",
-				common: {
-					name: deviceName + ".type",
-					type: "string",
-					role: "name",
-					read: true,
-					write: true,
-				},
-				native: {},
-			});
-
-			/** GET RELAY COUNT example: plus2pm with more than 1 relay */
-			let relayCount = 1;
-			const typeState = await this.getForeignStateAsync(deviceID + ".type");
-			if (typeState != null) {
-				this.setState("devices." + deviceName + ".type", { val: typeState.val, ack: true });
-				devJSON.push({ stateId: deviceID, id: deviceName, type: typeState.val });
-				if (typeState.val == "shellyplus2pm") relayCount = 2;
-			}
-			/** CREATE vis-shelly DEVICE FROM shelly OBJECTS*/
-			for (let i = 0; i < relayCount; i++) {
-				await this.setObjectNotExistsAsync("devices." + deviceName + "." + i, {
+			const existDev = await this.getStatesAsync(`devices.${deviceName}`);
+			if (typeof existDev === "undefined" || forceUpdate) {
+				await this.setObjectNotExistsAsync("devices." + deviceName, {
 					type: "device",
 					common: {
-						name: "Device Realay " + deviceName,
+						name: deviceName,
 					},
 					native: {},
 				});
-				/** Set Name */
-				this.setObjectNotExists(
-					"devices." + deviceName + "." + i + ".name",
-					{
-						type: "state",
+				/** Create DEVICE TYPE */
+				await this.setObjectNotExistsAsync("devices." + deviceName + ".type", {
+					type: "state",
+					common: {
+						name: deviceName + ".type",
+						type: "string",
+						role: "name",
+						read: true,
+						write: true,
+					},
+					native: {},
+				});
+
+				/** GET RELAY COUNT example: plus2pm with more than 1 relay */
+				let relayCount = 1;
+				const typeState = await this.getForeignStateAsync(deviceID + ".type");
+				if (typeState != null) {
+					this.setState("devices." + deviceName + ".type", { val: typeState.val, ack: true });
+					devJSON.push({ stateId: deviceID, id: deviceName, type: typeState.val });
+					changeDeviceIds = true;
+					if (typeState.val == "shellyplus2pm") relayCount = 2;
+				}
+				/** CREATE vis-shelly DEVICE FROM shelly OBJECTS*/
+				for (let i = 0; i < relayCount; i++) {
+					await this.setObjectNotExistsAsync("devices." + deviceName + "." + i, {
+						type: "device",
 						common: {
-							name: deviceName + ".name",
-							type: "string",
-							role: "name",
-							read: true,
-							write: true,
-							def: null,
+							name: "Device Realay " + deviceName,
 						},
 						native: {},
-					},
-					() => {
-						/* Update default Name */
-						this.getState(`devices.${deviceName}.${i}.name`, (err, state) => {
-							if (state == null) {
-								this.getForeignState(deviceID + ".name", (err, state) => {
-									let newName = "";
-									if (state == null || state.val == null || state.val == "") newName = deviceName;
-									else newName = state.val.toString();
-									if (relayCount > 1) newName += `-${i}`;
-									this.setState(`devices.${deviceName}.${i}.name`, { val: newName, ack: true });
-								});
-							}
-						});
-					},
-				);
+					});
+					/** Set Name */
+					this.setObjectNotExists(
+						"devices." + deviceName + "." + i + ".name",
+						{
+							type: "state",
+							common: {
+								name: deviceName + ".name",
+								type: "string",
+								role: "name",
+								read: true,
+								write: true,
+								def: null,
+							},
+							native: {},
+						},
+						() => {
+							/* Update default Name */
+							this.getState(`devices.${deviceName}.${i}.name`, (err, state) => {
+								if (state == null) {
+									this.getForeignState(deviceID + ".name", (err, state) => {
+										let newName = "";
+										if (state == null || state.val == null || state.val == "") newName = deviceName;
+										else newName = state.val.toString();
+										if (relayCount > 1) newName += `-${i}`;
+										this.setState(`devices.${deviceName}.${i}.name`, { val: newName, ack: true });
+									});
+								}
+							});
+						},
+					);
+				}
 			}
 		}
-		await this.setStateAsync("devices.ids", { val: JSON.stringify(devJSON), ack: true });
-		this.updateRoomsList();
+		if (changeDeviceIds) await this.setStateAsync("devices.ids", { val: JSON.stringify(devJSON), ack: true });
 		this.log.info("Devices updated");
 	}
 
@@ -187,7 +164,7 @@ class visShelly extends utils.Adapter {
 				type: "state",
 				common: {
 					name: "room",
-					type: "multistate",
+					type: "string",
 					role: "name",
 					read: true,
 					write: true,
@@ -218,6 +195,7 @@ class visShelly extends utils.Adapter {
 		try {
 			this.setState("info.connection", false, true);
 			this.log.info("cleaned everything up...");
+			this.unsubscribeForeignObjects("shelly.*");
 			callback();
 		} catch (e) {
 			callback();
@@ -230,13 +208,10 @@ class visShelly extends utils.Adapter {
 	 * @param {ioBroker.Object | null | undefined} obj
 	 */
 	onObjectChange(id, obj) {
-		// this.log.info(id);
-		// this.log.info(JSON.stringify(obj));
-
 		if (id.indexOf("vis-shelly") > -1) {
-			if (id.indexOf(".rooms.") > -1) {
-				this.updateRoomsList();
-			}
+			// if (id.indexOf(".rooms.") > -1) {
+			// 	this.updateRoomsList();
+			// }
 		} else {
 			if (obj) {
 				if (obj.type == "device") this.updateDeviceList();
@@ -258,30 +233,6 @@ class visShelly extends utils.Adapter {
 			this.log.info(`state ${id} deleted`);
 		}
 	}
-
-	// createAndSetStateIfExists(foreignID, selfID, name, role) {
-	// 	this.getForeignState(foreignID, (err, state) => {
-	// 		if (typeof state.val != "undefined") {
-	// 			this.setObjectNotExists(
-	// 				selfID,
-	// 				{
-	// 					type: "state",
-	// 					common: {
-	// 						name: name,
-	// 						type: "string",
-	// 						role: role,
-	// 						read: true,
-	// 						write: true,
-	// 					},
-	// 					native: {},
-	// 				},
-	// 				() => {
-	// 					this.setState(selfID, { val: foreignID, ack: true });
-	// 				},
-	// 			);
-	// 		}
-	// 	});
-	// }
 
 	createAndSetState(foreignID, selfID, name, role) {
 		this.setObjectNotExists(
@@ -308,24 +259,23 @@ class visShelly extends utils.Adapter {
 	 * Using this method requires "common.message" property to be set to true in io-package.json
 	 * @param {ioBroker.Message} obj
 	 */
-	onMessage(obj) {
-		if (typeof obj === "object" && obj.message) {
-			if (obj.command === "send") {
-				// e.g. send email or pushover or whatever
-				this.log.info("send command");
+	// onMessage(obj) {
+	// 	if (typeof obj === "object" && obj.message) {
+	// 		if (obj.command === "send") {
+	// 			// e.g. send email or pushover or whatever
+	// 			this.log.info("send command");
 
-				// Send response in callback if required
-				if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
-			}
-		}
-	}
+	// 			// Send response in callback if required
+	// 			if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+	// 		}
+	// 	}
+	// }
 }
 
-// @ts-ignore parent is a valid property on module
-if (module.parent) {
+if (require.main !== module) {
 	// Export the constructor in compact mode
 	/**
-	 * @param {Partial<ioBroker.AdapterOptions>} [options={}]
+	 * @param {Partial<utils.AdapterOptions>} [options={}]
 	 */
 	module.exports = (options) => new visShelly(options);
 } else {
