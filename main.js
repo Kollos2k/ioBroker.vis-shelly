@@ -62,9 +62,10 @@ class visShelly extends utils.Adapter {
 		if (!forceUpdate) {
 			const devIdsState = await this.getStateAsync("devices.ids");
 			if (typeof devIdsState === "string") devJSON = JSON.parse(devIdsState);
+			if (!Array.isArray(devJSON)) devJSON = [];
 		}
 		for (const deviceID of keysDevices) {
-			if (await this.updateDevice(deviceID, devJSON)) changeDeviceIds = true;
+			if (await this.updateDevice(deviceID, devJSON, forceUpdate)) changeDeviceIds = true;
 		}
 		if (changeDeviceIds) await this.setStateAsync("devices.ids", { val: JSON.stringify(devJSON), ack: true });
 		this.log.info(`Devices updated (Force:${forceUpdate ? "yes" : "no"})`);
