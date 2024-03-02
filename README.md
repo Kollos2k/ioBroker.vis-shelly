@@ -15,6 +15,14 @@
 
 A VIS adapter for display Shelly devices
 
+## Not for VIS-2 !!!
+
+If you want to use vis-2 please visit https://github.com/Kollos2k/ioBroker.vis-2-shelly
+
+## No more major functions
+
+Because of change to vis-2 and React this Package will no longer become major updates
+
 ## Developer manual
 
 With the help of this adapter it should be possible to easily display and control all Shelly devices in plain sight.<br/>
@@ -38,6 +46,7 @@ Devices supported so far
 </div>
 
 ## Changelog
+
 ### 0.0.7 (2024-03-02)
 
 -   Rebuild widget js for future improvements
